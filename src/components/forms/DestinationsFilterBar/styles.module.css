@@ -1,0 +1,144 @@
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 24px 32px;
+  padding: 24px 28px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(26, 26, 46, 0.08);
+}
+
+.section {
+  flex: 1 1 160px;
+  min-width: 140px;
+}
+
+.sectionWide {
+  flex: 2 1 220px;
+  min-width: 200px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 46, 0.55);
+}
+
+.priceValues {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  color: rgba(26, 26, 46, 0.65);
+}
+
+.starRow {
+  display: flex;
+  gap: 8px;
+}
+
+.starBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(26, 26, 46, 0.15);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-text-dark);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.starBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.starBtnActive {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(13, 110, 110, 0.06);
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.tagInactive {
+  background: rgba(13, 110, 110, 0.08) !important;
+  color: var(--color-primary) !important;
+  border-color: transparent !important;
+}
+
+.tagActive {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+  border-color: var(--color-primary) !important;
+}
+
+.mapSection {
+  flex: 0 0 auto;
+  margin-left: auto;
+  align-self: center;
+}
+
+.mapBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px !important;
+  border-radius: 999px !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  font-weight: 500;
+}
+
+.mapBtn:hover {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  background: rgba(13, 110, 110, 0.06) !important;
+}
+
+@media (max-width: 992px) {
+  .mapSection {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .mapBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .filterBar {
+    padding: 20px 16px;
+  }
+
+  .section,
+  .sectionWide {
+    flex: 1 1 100%;
+  }
+}

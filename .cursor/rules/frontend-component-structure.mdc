@@ -1,0 +1,76 @@
+---
+description: Enforce Travel Discovery frontend folder and component file structure
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Travel Discovery — Frontend Structure (strict)
+
+Follow the project spec. **Never invent a different folder layout.**
+
+## Top-level `src/` layout
+
+```
+src/
+  api/           # Axios functions only (hotels.ts, auth.ts, …)
+  assets/        # images/, icons/, logo/
+  components/
+    layout/      # Header, Footer, MainLayout
+    common/      # Button, Card, Modal, Skeleton, ProtectedRoute, …
+    forms/       # SearchBar, DatePicker, GuestPicker, …
+  configs/       # antdTheme.ts, axios.ts
+  i18n/          # en.json, hy.json, ru.json, index.ts
+  pages/         # One folder per route/page
+  router/        # Route definitions (index.tsx)
+  store/         # Redux Toolkit slices + hooks
+  types/         # Global shared types only
+  utils/         # Global helpers only
+```
+
+## Per-page and per-component folder pattern
+
+Every **page** (`src/pages/<PageName>/`) and every **major feature component** (`src/components/**/<Name>/`) MUST use:
+
+| File | Purpose |
+|------|---------|
+| `index.tsx` | Main React component (default export for pages) |
+| `types.ts` | Component/page types (`type` aliases only) |
+| `styles.module.css` | Scoped CSS — minimal, no animations |
+| `const.ts` | Constants, i18n key names, enums |
+| `utils.ts` | Optional — only when helpers are scoped to this folder |
+
+**Do not** add `interface`, barrel `index.ts` re-exports, or extra files unless the spec requires them.
+
+## TypeScript & i18n (mandatory)
+
+- Use `type` aliases only — **never** `interface`
+- **No** `any` — use `unknown` and narrow
+- **No** `!` non-null assertions — use `?.` and guards
+- Shared types → `src/types/`; page-specific → `pages/<Page>/types.ts`
+- **No hardcoded UI strings** — all visible text via `useTranslation()` / `t()`
+- i18n keys referenced from `const.ts` when page-specific
+
+## UI & state
+
+- Prefer **Ant Design** components; custom CSS only when AntD is insufficient
+- **React Query** for server/async data; **Redux** only for global app state (auth, search, booking)
+- One component per file; lazy-load pages with `React.lazy` + `Suspense`
+- CSS Modules for scoped styles; theme via `ConfigProvider` tokens — avoid hardcoded hex in CSS
+
+## Creating new work
+
+When adding a page (e.g. `HotelDetail`):
+
+```
+src/pages/HotelDetail/
+  index.tsx
+  types.ts
+  styles.module.css
+  const.ts
+```
+
+Register the route in `src/router/index.tsx`. Add translation keys to `en.json`, `hy.json`, and `ru.json`.
+
+## Package manager
+
+Use **pnpm** only (`pnpm install`, `pnpm dev`, `pnpm build`). Do not use npm or yarn. Add direct dependencies with `pnpm add <package>` when importing packages not already declared in `package.json` (pnpm does not hoist undeclared deps).

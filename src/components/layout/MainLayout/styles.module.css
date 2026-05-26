@@ -1,0 +1,39 @@
+.layout {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.content {
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.contentHome {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+}
+
+.contentPlanner {
+  flex: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .content,
+  .contentHome {
+    padding-inline: 16px;
+  }
+
+  .contentHome {
+    padding-bottom: 16px;
+  }
+}

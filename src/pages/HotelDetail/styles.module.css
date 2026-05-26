@@ -1,0 +1,185 @@
+.page {
+  width: 100%;
+  padding-bottom: 32px;
+}
+
+.notFound {
+  padding: 64px 24px;
+  text-align: center;
+  font-size: 1.125rem;
+  color: rgba(26, 26, 46, 0.55);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 40px;
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.description p {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 46, 0.72);
+}
+
+.description p:last-child {
+  margin-bottom: 0;
+}
+
+.amenityGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.amenityCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 26, 46, 0.05);
+  text-align: center;
+}
+
+.amenityIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(13, 110, 110, 0.08);
+  color: var(--color-primary);
+  font-size: 1.25rem;
+}
+
+.amenityLabel {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.galleryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.galleryLink {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.galleryLink:hover {
+  text-decoration: underline;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.galleryImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.reviewsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.reviewsSummary {
+  text-align: right;
+}
+
+.reviewsScore {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.reviewsLabel {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent-dark);
+}
+
+.reviewsCount {
+  display: block;
+  font-size: 0.8125rem;
+  color: rgba(26, 26, 46, 0.55);
+}
+
+.reviewsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.sidebar {
+  min-width: 0;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .sidebar {
+    order: -1;
+  }
+
+  .amenityGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .galleryGrid,
+  .reviewsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .amenityGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "app": {
+    "name": "Travel Discovery",
+    "tagline": "Curating the world's most extraordinary travel experiences"
+  },
+  "nav": {
+    "explore": "Explore",
+    "destinations": "Destinations",
+    "guides": "Guides",
+    "events": "Events",
+    "planner": "Planner",
+    "bookings": "Bookings",
+    "login": "Log in",
+    "profile": "Profile"
+  },
+  "footer": {
+    "contactUs": "Contact Us",
+    "email": "traveldiscovery@gmail.com",
+    "phone": "+1 (555) 123-4567",
+    "company": "Company",
+    "guide": "Guide",
+    "support": "Support",
+    "about": "About Us",
+    "userManual": "User Manual",
+    "explore": "Explore",
+    "destination": "Destinations",
+    "travelPlanner": "Travel Planner",
+    "supportCenter": "Support Center",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© {{year}} Travel Discovery. All rights reserved."
+  },
+  "pages": {
+    "home": {
+      "heroTitle": "Where do you want to go?",
+      "search": {
+        "destination": "Destination",
+        "destinationPlaceholder": "Search places...",
+        "dates": "Dates",
+        "datesPlaceholder": "Add dates",
+        "guests": "Guests",
+        "guestsPlaceholder": "Add guests",
+        "submit": "Search"
+      },
+      "categories": {
+        "eyebrow": "Curated",
+        "title": "Explore by Category",
+        "beaches": "Beaches",
+        "adventure": "Adventure",
+        "luxuryTour": "Luxury Tour",
+        "cabinStays": "Cabin Stays",
+        "foodWine": "Food & Wine"
+      },
+      "trending": {
+        "eyebrow": "Trending",
+        "title": "Popular Right Now",
+        "avgPrice": "Avg. {{price}} / night",
+        "prev": "Previous destinations",
+        "next": "Next destinations",
+        "destinations": {
+          "ubud": { "city": "Ubud, Bali", "country": "Indonesia" },
+          "kyoto": { "city": "Kyoto", "country": "Japan" },
+          "paris": { "city": "Paris", "country": "France" },
+          "venice": { "city": "Venice", "country": "Italy" }
+        }
+      }
+    },
+    "destinations": {
+      "title": "Destinations",
+      "heroTitle": "Find Your Sanctuary",
+      "heroSubtitle": "Discover curated stays across the world's most breathtaking landscapes.",
+      "empty": "No stays match your filters. Try adjusting your search.",
+      "filters": {
+        "priceRange": "Price Range",
+        "starRating": "Star Rating",
+        "topFilters": "Top Filters",
+        "mapView": "Map View",
+        "infinityPool": "Infinity Pool",
+        "privateBeach": "Private Beach"
+      },
+      "card": {
+        "featured": "Featured",
+        "perNight": "/ night",
+        "bookNow": "Book Now"
+      }
+    },
+    "hotelDetail": {
+      "title": "Hotel Detail",
+      "reviewsCount": "{{count}} reviews",
+      "amenitiesTitle": "Amenities & Curated Experiences",
+      "galleryTitle": "Visual Journey",
+      "galleryViewAll": "View All {{count}} Photos",
+      "reviewsTitle": "Guest Whispers",
+      "reviewsSummary": "Based on {{count}} reviews",
+      "reviewsExceptional": "Exceptional",
+      "notFound": "This property could not be found.",
+      "booking": {
+        "perNight": "/ per night",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "guests": "Guests",
+        "guestsPlaceholder": "Select guests",
+        "guestOption2Adults": "2 Adults",
+        "guestOption2Adults1Child": "2 Adults, 1 Child",
+        "guestOption1Adult": "1 Adult",
+        "nightsLine": "{{price}} x {{nights}} nights",
+        "serviceFee": "Service fee",
+        "taxes": "Occupancy taxes",
+        "total": "Total",
+        "bookNow": "Book Now",
+        "notCharged": "You won't be charged yet",
+        "safeBooking": "Safe Booking",
+        "freeCancellation": "Free Cancellation"
+      },
+      "weather": {
+        "sunny": "Sunny"
+      },
+      "amenities": {
+        "infinityPool": "Infinity Pool",
+        "oceanSpa": "Ocean Spa",
+        "michelinDining": "Michelin Dining",
+        "yogaStudio": "Yoga Studio"
+      },
+      "descriptions": {
+        "coastal": {
+          "title": "The Art of Coastal Living",
+          "p1": "Perched above the shimmering Mediterranean, Azure Sands Boutique Resort is a sanctuary where minimalist architecture meets the raw beauty of the Amalfi coastline. Every suite is designed to frame the horizon.",
+          "p2": "From dawn swims in the infinity pool to evenings of Michelin-starred dining under the stars, each moment is curated for those who seek stillness without sacrificing sophistication."
+        },
+        "default": {
+          "title": "An Unforgettable Stay",
+          "p1": "Discover a refined retreat where thoughtful design, warm hospitality, and breathtaking surroundings come together. This property offers an intimate escape tailored to discerning travelers.",
+          "p2": "Whether you are unwinding by the water, exploring local culture, or indulging in world-class amenities, every detail has been considered for a seamless stay."
+        }
+      },
+      "gallery": {
+        "bedroom": "Minimalist suite bedroom",
+        "cocktail": "Craft cocktail at the bar"
+      },
+      "reviews": {
+        "eh": {
+          "author": "Elena Hartwell",
+          "date": "October 2024",
+          "comment": "\"An absolute dream. The views from our suite were unlike anything I've ever seen. The staff anticipated every need before we even asked.\""
+        },
+        "jm": {
+          "author": "James Mitchell",
+          "date": "September 2024",
+          "comment": "\"The perfect blend of luxury and tranquility. We spent our mornings by the pool and evenings exploring the coast. Already planning our return.\""
+        }
+      }
+    },
+    "guides": {
+      "title": "Travel Guides",
+      "placeholder": "Guides list — implementation pending"
+    },
+    "guideDetail": {
+      "title": "Guide Detail",
+      "placeholder": "Guide detail — implementation pending"
+    },
+    "events": {
+      "title": "Events",
+      "placeholder": "Events — implementation pending"
+    },
+    "planner": {
+      "title": "Planner",
+      "comingSoon": "{{feature}} — coming soon",
+      "newChat": "New Chat",
+      "recentExplorations": "Recent Explorations",
+      "trip": {
+        "eyebrow": "Curated Expedition",
+        "title": "Icelandic Ring Road",
+        "dates": "Oct 12 — Oct 24",
+        "travelers": "2 Travelers",
+        "share": "Share",
+        "exportPdf": "Export PDF"
+      },
+      "ai": {
+        "label": "Intelligent Travel Assistant",
+        "title": "Let AI suggest your next activity",
+        "description": "Based on your preferences and the current weather in Vik, we've identified three unique experiences available today.",
+        "generate": "Generate Insights"
+      },
+      "itineraries": {
+        "title": "Suggested Day Itineraries",
+        "subtitle": "Optimized for your current location and interests.",
+        "viewAll": "View All",
+        "usePlan": "Use This Plan",
+        "categories": {
+          "nature": "Nature Focus",
+          "wellness": "Wellness",
+          "adventure": "Adventure"
+        },
+        "items": {
+          "waterfall": {
+            "title": "Seljalandsfoss & Gljúfrabúi",
+            "description": "Walk behind cascading waterfalls and explore hidden canyon grottos along the south coast.",
+            "duration": "6 Hours"
+          },
+          "lagoon": {
+            "title": "Blue Lagoon Retreat",
+            "description": "Unwind in geothermal waters surrounded by volcanic landscapes and premium spa rituals.",
+            "duration": "4 Hours"
+          },
+          "iceCave": {
+            "title": "Crystal Ice Cave Tour",
+            "description": "Venture inside a natural glacier cave with expert guides and dramatic blue ice formations.",
+            "duration": "5 Hours"
+          }
+        }
+      },
+      "explorations": {
+        "iceland": {
+          "title": "Icelandic Northern Lights",
+          "meta": "7 days • Updated 2h ago"
+        },
+        "tuscany": {
+          "title": "Tuscany Vineyard Tour",
+          "meta": "5 days • Updated 1d ago"
+        },
+        "kyoto": {
+          "title": "Kyoto Temple Trail",
+          "meta": "4 days • Updated 3d ago"
+        },
+        "amalfi": {
+          "title": "Amalfi Coastal Drive",
+          "meta": "6 days • Updated 1w ago"
+        }
+      }
+    },
+    "bookings": {
+      "title": "My Bookings",
+      "tabs": {
+        "upcoming": "Upcoming",
+        "past": "Past",
+        "cancelled": "Cancelled"
+      },
+      "card": {
+        "dates": "Dates",
+        "guestsRoom": "{{count}} Guests • {{room}}",
+        "getDirections": "Get Directions",
+        "viewDetails": "View Details",
+        "status": {
+          "confirmed": "Confirmed",
+          "pending": "Pending",
+          "cancelled": "Cancelled",
+          "completed": "Completed"
+        }
+      },
+      "empty": "No bookings in this category.",
+      "cta": {
+        "title": "Need help planning your next trip?",
+        "description": "Let our AI curator craft a personalized itinerary based on your travel style and preferences.",
+        "button": "Go to AI Planner"
+      },
+      "items": {
+        "grandPalazzo": { "roomType": "Suite" },
+        "tealWaters": { "roomType": "Overwater Villa" },
+        "azureHorizon": { "roomType": "Deluxe Room" },
+        "sageEnclave": { "roomType": "Garden View" }
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "verified": "Verified traveler",
+      "tabs": {
+        "savedPlaces": "Saved Places"
+      },
+      "actions": {
+        "bookNow": "Book Now",
+        "planWithAi": "Plan with AI",
+        "removeSaved": "Remove from saved places"
+      },
+      "savedPlaces": {
+        "empty": "You haven't saved any places yet. Explore destinations and tap the heart to save your favorites.",
+        "villaMargherita": {
+          "country": "Italy",
+          "description": "A sun-drenched villa perched above the Amalfi cliffs with private terraces and sea views."
+        },
+        "ryokanHana": {
+          "country": "Japan",
+          "description": "A serene ryokan nestled in Kyoto's hills, offering tatami suites and kaiseki dining."
+        },
+        "azureHorizon": {
+          "country": "Greece",
+          "description": "Cycladic elegance meets infinity pools and whitewashed suites overlooking the caldera."
+        },
+        "tealWaters": {
+          "country": "Maldives",
+          "description": "Overwater villas with glass floors, turquoise lagoons, and world-class reef snorkeling."
+        }
+      }
+    },
+    "auth": {
+      "title": "Log in",
+      "placeholder": "Authentication — implementation pending"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist.",
+      "backHome": "Back to Explore"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "search": "Search",
+    "language": "Language",
+    "saveDestination": "Save destination"
+  }
+}
