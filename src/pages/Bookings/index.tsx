@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { BookingCard } from '@/components/common/BookingCard'
 import { BookingsPlannerCta } from '@/components/common/BookingsPlannerCta'
+import { CITY_TO_EXPLORATION } from '@/pages/Planner/const'
+import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
 import {
   BOOKINGS_I18N,
   BOOKING_TABS,
@@ -38,6 +40,30 @@ const BookingsPage = () => {
     () => filterBookingsByTab(MOCK_BOOKINGS, activeTab),
     [activeTab],
   )
+
+  const primaryUpcoming = useMemo(
+    () => MOCK_BOOKINGS.find((booking) => booking.tab === 'upcoming'),
+    [],
+  )
+
+  const handlePlannerNavigate = () => {
+    if (!primaryUpcoming) {
+      navigate('/planner')
+      return
+    }
+    const cityKey = primaryUpcoming.city.toLowerCase()
+    const exploration =
+      CITY_TO_EXPLORATION[cityKey] ??
+      resolveExplorationFromDestination(primaryUpcoming.country.toLowerCase())
+    navigate(
+      buildPlannerUrl({
+        exploration,
+        destination: cityKey,
+        dates: `${primaryUpcoming.checkIn},${primaryUpcoming.checkOut}`,
+        guests: String(primaryUpcoming.guestCount),
+      }),
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -99,7 +125,7 @@ const BookingsPage = () => {
         title={t(BOOKINGS_I18N.cta.title)}
         description={t(BOOKINGS_I18N.cta.description)}
         buttonLabel={t(BOOKINGS_I18N.cta.button)}
-        onClick={() => navigate('/planner')}
+        onClick={handlePlannerNavigate}
       />
     </div>
   )
