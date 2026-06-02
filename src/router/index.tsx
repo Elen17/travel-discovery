@@ -1,6 +1,7 @@
 import { Spin } from 'antd'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { ProtectedRoute } from '@/components/common/ProtectedRoute'
 import { MainLayout } from '@/components/layout/MainLayout'
 
 const HomePage = lazy(() => import('@/pages/Home'))
@@ -37,8 +38,14 @@ export const router = createBrowserRouter([
       { path: 'guides/:destination', element: withSuspense(<GuideDetailPage />) },
       { path: 'events', element: withSuspense(<EventsPage />) },
       { path: 'planner', element: withSuspense(<PlannerPage />) },
-      { path: 'bookings', element: withSuspense(<BookingsPage />) },
-      { path: 'profile', element: withSuspense(<ProfilePage />) },
+      {
+        path: 'bookings',
+        element: <ProtectedRoute>{withSuspense(<BookingsPage />)}</ProtectedRoute>,
+      },
+      {
+        path: 'profile',
+        element: <ProtectedRoute>{withSuspense(<ProfilePage />)}</ProtectedRoute>,
+      },
       { path: 'auth/login', element: withSuspense(<AuthPage />) },
       { path: '404', element: withSuspense(<NotFoundPage />) },
       { path: '*', element: <Navigate to="/404" replace /> },

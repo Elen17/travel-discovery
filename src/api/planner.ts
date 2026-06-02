@@ -1,4 +1,7 @@
-import { apiClient } from '@/configs/axios'
+/**
+ * AI Planner endpoints are not yet available on the backend.
+ * These types and stubs remain for the Planner UI until the API is implemented.
+ */
 
 export type PlannerMessage = {
   role: 'user' | 'assistant'
@@ -13,16 +16,4 @@ export type PlannerChatPayload = {
 export type PlannerChatResponse = {
   reply: string
   sessionToken: string
-}
-
-export const sendPlannerMessage = async (
-  payload: PlannerChatPayload,
-): Promise<PlannerChatResponse> => {
-  const { data } = await apiClient.post<PlannerChatResponse>('/planner/chat', payload)
-  return data
-}
-
-export const getPlannerHistory = async (): Promise<PlannerMessage[]> => {
-  const { data } = await apiClient.get<PlannerMessage[]>('/planner/history')
-  return data
 }
