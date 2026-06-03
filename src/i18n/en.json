@@ -178,7 +178,7 @@
       "ai": {
         "label": "Intelligent Travel Assistant",
         "title": "Let AI suggest your next activity",
-        "description": "Based on your preferences and the current weather in Vik, we've identified three unique experiences available today.",
+        "description": "Based on your preferences and current conditions, we've identified three unique experiences available today.",
         "generate": "Generate Insights"
       },
       "itineraries": {
@@ -186,45 +186,197 @@
         "subtitle": "Optimized for your current location and interests.",
         "viewAll": "View All",
         "usePlan": "Use This Plan",
+        "viewDetails": "View Details",
         "categories": {
           "nature": "Nature Focus",
           "wellness": "Wellness",
           "adventure": "Adventure"
-        },
-        "items": {
-          "waterfall": {
-            "title": "Seljalandsfoss & Gljúfrabúi",
-            "description": "Walk behind cascading waterfalls and explore hidden canyon grottos along the south coast.",
-            "duration": "6 Hours"
-          },
-          "lagoon": {
-            "title": "Blue Lagoon Retreat",
-            "description": "Unwind in geothermal waters surrounded by volcanic landscapes and premium spa rituals.",
-            "duration": "4 Hours"
-          },
-          "iceCave": {
-            "title": "Crystal Ice Cave Tour",
-            "description": "Venture inside a natural glacier cave with expert guides and dramatic blue ice formations.",
-            "duration": "5 Hours"
-          }
         }
+      },
+      "chat": {
+        "placeholder": "Ask about destinations, activities, or day plans…",
+        "send": "Send",
+        "empty": "Start planning your trip",
+        "emptyHint": "Ask a question or tap Generate Insights for curated day plans.",
+        "offline": "Offline mode — using saved recommendations",
+        "typing": "Assistant is typing…",
+        "loginPrompt": "Log in to sync your chat history across devices."
+      },
+      "applied": {
+        "title": "Today's Plan",
+        "empty": "No activities added yet.",
+        "added": "Activity added to your plan",
+        "remove": "Remove"
+      },
+      "share": {
+        "copied": "Share link copied to clipboard",
+        "failed": "Could not copy link — try again"
+      },
+      "drawer": {
+        "title": "All Suggested Itineraries",
+        "steps": "Itinerary steps",
+        "close": "Close"
+      },
+      "print": {
+        "title": "Travel Plan"
       },
       "explorations": {
         "iceland": {
           "title": "Icelandic Northern Lights",
-          "meta": "7 days • Updated 2h ago"
+          "meta": "7 days • Updated 2h ago",
+          "trip": {
+            "eyebrow": "Curated Expedition",
+            "title": "Icelandic Ring Road",
+            "dates": "Oct 12 — Oct 24",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "waterfall": {
+              "title": "Seljalandsfoss & Gljúfrabúi",
+              "description": "Walk behind cascading waterfalls and explore hidden canyon grottos along the south coast.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Drive from Vik to Seljalandsfoss (30 min)",
+                "1": "Walk the path behind the waterfall",
+                "2": "Explore Gljúfrabúi hidden gorge"
+              }
+            },
+            "lagoon": {
+              "title": "Blue Lagoon Retreat",
+              "description": "Unwind in geothermal waters surrounded by volcanic landscapes and premium spa rituals.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Book timed entry slot in advance",
+                "1": "Silica mud mask and lagoon swim"
+              }
+            },
+            "iceCave": {
+              "title": "Crystal Ice Cave Tour",
+              "description": "Venture inside a natural glacier cave with expert guides and dramatic blue ice formations.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Meet guide at Jökulsárlón parking",
+                "1": "Guided ice cave walk with safety gear"
+              }
+            }
+          }
         },
         "tuscany": {
           "title": "Tuscany Vineyard Tour",
-          "meta": "5 days • Updated 1d ago"
+          "meta": "5 days • Updated 1d ago",
+          "trip": {
+            "eyebrow": "Wine Country Escape",
+            "title": "Chianti & Florence Highlights",
+            "dates": "Sep 5 — Sep 10",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "chianti": {
+              "title": "Chianti Wine Route",
+              "description": "Rolling hills, medieval villages, and cellar tastings across Chianti Classico.",
+              "duration": "7 Hours",
+              "steps": {
+                "0": "Morning departure from Florence",
+                "1": "Two winery visits with guided tastings"
+              }
+            },
+            "terme": {
+              "title": "Tuscan Thermal Springs",
+              "description": "Historic thermal baths in Saturnia with natural cascading pools.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Drive to Saturnia hot springs",
+                "1": "Relax in natural limestone pools"
+              }
+            },
+            "cycling": {
+              "title": "Hilltop Village Cycling",
+              "description": "E-bike tour through cypress-lined roads linking San Gimignano and Volterra.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "E-bike fitting and safety briefing",
+                "1": "Gelato stop in San Gimignano"
+              }
+            }
+          }
         },
         "kyoto": {
           "title": "Kyoto Temple Trail",
-          "meta": "4 days • Updated 3d ago"
+          "meta": "4 days • Updated 3d ago",
+          "trip": {
+            "eyebrow": "Cultural Immersion",
+            "title": "Kyoto Heritage Journey",
+            "dates": "Apr 2 — Apr 6",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "fushimi": {
+              "title": "Fushimi Inari & Bamboo Grove",
+              "description": "Iconic torii gates and serene bamboo paths in eastern Kyoto.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Early visit to Fushimi Inari shrine",
+                "1": "Arashiyama bamboo grove walk"
+              }
+            },
+            "onsen": {
+              "title": "Traditional Onsen Retreat",
+              "description": "Authentic ryokan soak and kaiseki-inspired wellness rituals.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Check in at partner ryokan",
+                "1": "Matcha and wagashi tea service"
+              }
+            },
+            "gion": {
+              "title": "Gion Evening Heritage Walk",
+              "description": "Guided evening walk through Gion with temple illuminations.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Meet guide at Yasaka Shrine",
+                "1": "Lantern-lit stroll through Gion"
+              }
+            }
+          }
         },
         "amalfi": {
           "title": "Amalfi Coastal Drive",
-          "meta": "6 days • Updated 1w ago"
+          "meta": "6 days • Updated 1w ago",
+          "trip": {
+            "eyebrow": "Mediterranean Escape",
+            "title": "Amalfi Coast Expedition",
+            "dates": "Jun 14 — Jun 20",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "path": {
+              "title": "Path of the Gods Hike",
+              "description": "Clifftop trail with sweeping views of the Tyrrhenian Sea.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Bus to Bomerano starting point",
+                "1": "Hike Sentiero degli Dei"
+              }
+            },
+            "boat": {
+              "title": "Amalfi Coast Boat Day",
+              "description": "Private boat cruise with swimming coves and coastal relaxation.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Depart from Amalfi harbor",
+                "1": "Aperitivo on deck at sunset"
+              }
+            },
+            "ravello": {
+              "title": "Ravello Villa Gardens",
+              "description": "Explore Villa Rufolo gardens and clifftop concert terraces.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Scenic drive to Ravello",
+                "1": "Terrace views over the coastline"
+              }
+            }
+          }
         }
       }
     },

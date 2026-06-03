@@ -1,4 +1,4 @@
-import type { ItineraryCategory } from '@/pages/Planner/types'
+import type { ItineraryCategory } from '@/types/planner'
 
 export type ItineraryPlanCardProps = {
   title: string
@@ -9,4 +9,5 @@ export type ItineraryPlanCardProps = {
   duration: string
   usePlanLabel: string
   onUsePlan?: () => void
+  onViewDetails?: () => void
 }

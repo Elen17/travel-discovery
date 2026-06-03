@@ -1,5 +1,5 @@
 import { Button } from 'antd'
-import type { ItineraryCategory } from '@/pages/Planner/types'
+import type { ItineraryCategory } from '@/types/planner'
 import styles from './styles.module.css'
 import type { ItineraryPlanCardProps } from './types'
 
@@ -18,6 +18,7 @@ export const ItineraryPlanCard = ({
   duration,
   usePlanLabel,
   onUsePlan,
+  onViewDetails,
 }: ItineraryPlanCardProps) => {
   return (
     <article className={styles.card}>
@@ -31,7 +32,15 @@ export const ItineraryPlanCard = ({
         </div>
       </div>
       <div className={styles.body}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>
+          {onViewDetails ? (
+            <button type="button" className={styles.titleBtn} onClick={onViewDetails}>
+              {title}
+            </button>
+          ) : (
+            title
+          )}
+        </h3>
         <p className={styles.description}>{description}</p>
         <Button className={styles.useBtn} onClick={onUsePlan}>
           {usePlanLabel}
