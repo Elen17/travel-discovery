@@ -7,20 +7,9 @@ import type {
   PlannerSuggestion,
   SuggestedItinerary,
 } from '@/types/planner'
+import { PLANNER_STORAGE_KEY, type PlannerState } from './planner/types'
 
-export const PLANNER_STORAGE_KEY = 'planner_guest_session'
-
-export type PlannerState = {
-  activeExplorationId: ExplorationId
-  sessionToken: string | null
-  messages: PlannerMessage[]
-  appliedItineraries: AppliedItinerary[]
-  dynamicSuggestions: PlannerSuggestion[] | null
-  dynamicItineraries: SuggestedItinerary[] | null
-  chatVisible: boolean
-  isOfflineMode: boolean
-  isHydrated: boolean
-}
+export { PLANNER_STORAGE_KEY, type PlannerState } from './planner/types'
 
 const loadStoredSession = (): Partial<PlannerState> => {
   try {
@@ -50,7 +39,6 @@ const initialState: PlannerState = {
   appliedItineraries: stored.appliedItineraries ?? [],
   dynamicSuggestions: stored.dynamicSuggestions ?? null,
   dynamicItineraries: null,
-  chatVisible: true,
   isOfflineMode: false,
   isHydrated: false,
 }
@@ -74,7 +62,14 @@ const plannerSlice = createSlice({
       state.isHydrated = action.payload
     },
     setActiveExploration: (state, action: PayloadAction<ExplorationId>) => {
+      if (state.activeExplorationId === action.payload) {
+        return
+      }
       state.activeExplorationId = action.payload
+      state.messages = []
+      state.dynamicSuggestions = null
+      state.dynamicItineraries = null
+      state.isOfflineMode = false
       persistGuestSession(state)
     },
     setSessionToken: (state, action: PayloadAction<string | null>) => {
@@ -109,9 +104,6 @@ const plannerSlice = createSlice({
     setDynamicItineraries: (state, action: PayloadAction<SuggestedItinerary[] | null>) => {
       state.dynamicItineraries = action.payload
     },
-    setChatVisible: (state, action: PayloadAction<boolean>) => {
-      state.chatVisible = action.payload
-    },
     setOfflineMode: (state, action: PayloadAction<boolean>) => {
       state.isOfflineMode = action.payload
     },
@@ -121,7 +113,6 @@ const plannerSlice = createSlice({
       state.appliedItineraries = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
-      state.chatVisible = true
       localStorage.removeItem(PLANNER_STORAGE_KEY)
     },
     hydrateFromUrl: (
@@ -149,7 +140,6 @@ export const {
   removeAppliedItinerary,
   setDynamicSuggestions,
   setDynamicItineraries,
-  setChatVisible,
   setOfflineMode,
   startNewChat,
   hydrateFromUrl,

@@ -19,9 +19,10 @@ Premium multilingual travel platform (React + Vite + Ant Design).
 
 ```bash
 pnpm install
-cp .env.example .env
 pnpm dev
 ```
+
+Create a `.env` file in the project root before running (see [Environment](#environment)).
 
 Open [http://localhost:5173](http://localhost:5173).
 
@@ -37,10 +38,14 @@ Open [http://localhost:5173](http://localhost:5173).
 
 ## Environment
 
+Add a `.env` file in the project root with these variables:
+
 | Variable               | Description                    |
 | ---------------------- | ------------------------------ |
 | `VITE_API_BASE_URL`    | Backend API base URL (must include `/api/v1`) |
 | `VITE_GOOGLE_CLIENT_ID`| Google OAuth client ID         |
+| `VITE_GEMINI_API_KEY`  | Google Gemini API key          |
+| `VITE_GEMINI_API_URL`  | Gemini generateContent endpoint (without `?key=`) |
 
 ## Backend API
 

@@ -23,7 +23,7 @@ export const MainLayout = () => {
       <Content className={contentClass}>
         <Outlet />
       </Content>
-      {!isPlanner && <Footer />}
+      <Footer />
     </Layout>
   )
 }
