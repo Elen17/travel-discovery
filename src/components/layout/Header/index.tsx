@@ -1,8 +1,10 @@
-import { UserOutlined } from '@ant-design/icons'
-import { Button, Layout, Menu } from 'antd'
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Layout, Menu } from 'antd'
+import type { MenuProps } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
+import { useLogout } from '@/hooks/useLogout'
 import { useAppSelector } from '@/store/hooks'
 import { NAV_ITEMS } from './const'
 import styles from './styles.module.css'
@@ -13,7 +15,8 @@ export const Header = () => {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const { isAuthenticated } = useAppSelector((state) => state.auth)
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
+  const { logout, isLoggingOut } = useLogout()
 
   const isProfileActive = location.pathname.startsWith('/profile')
 
@@ -23,7 +26,22 @@ export const Header = () => {
         item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path),
       )?.key ?? 'explore')
 
-  const profilePath = isAuthenticated ? '/profile' : '/auth/login'
+  const profileMenuItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: <Link to="/profile">{t('nav.profile')}</Link>,
+    },
+    { type: 'divider' },
+    {
+      key: 'logout',
+      label: t('nav.logout'),
+      icon: <LogoutOutlined />,
+      danger: true,
+      onClick: () => {
+        void logout()
+      },
+    },
+  ]
 
   return (
     <AntHeader className={styles.header}>
@@ -43,14 +61,27 @@ export const Header = () => {
 
       <div className={styles.actions}>
         <LanguageSwitcher className={styles.langBtn} />
-        <Button
-          type={isProfileActive ? 'text' : 'primary'}
-          icon={<UserOutlined />}
-          className={isProfileActive ? styles.profileLinkActive : styles.profileBtn}
-          onClick={() => navigate(profilePath)}
-        >
-          {t('nav.profile')}
-        </Button>
+        {isAuthenticated ? (
+          <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" trigger={['click']}>
+            <Button
+              type={isProfileActive ? 'text' : 'default'}
+              icon={<UserOutlined />}
+              className={isProfileActive ? styles.profileLinkActive : styles.profileBtn}
+              loading={isLoggingOut}
+            >
+              {user?.fullName ?? t('nav.profile')}
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button
+            type="primary"
+            icon={<UserOutlined />}
+            className={styles.profileBtn}
+            onClick={() => navigate('/auth/login')}
+          >
+            {t('nav.login')}
+          </Button>
+        )}
       </div>
     </AntHeader>
   )

@@ -11,7 +11,8 @@
     "planner": "Պլանավորող",
     "bookings": "Ամրագրումներ",
     "login": "Մուտք",
-    "profile": "Պրոֆիլ"
+    "profile": "Պրոֆիլ",
+    "logout": "Ելք"
   },
   "footer": {
     "contactUs": "Կապ մեզ հետ",
@@ -326,7 +327,44 @@
     },
     "auth": {
       "title": "Մուտք",
-      "placeholder": "Նույնականացում — սպասվում է իրականացում"
+      "brandWelcome": "Բարի վերադարձ Travel Discovery",
+      "login": {
+        "title": "Մուտք",
+        "subtitle": "Մուտք գործեք՝ ամրագրումներն ու պահված վայրերը կառավարելու համար։",
+        "email": "Էլ. փոստ",
+        "emailPlaceholder": "you@example.com",
+        "password": "Գաղտնաբառ",
+        "passwordPlaceholder": "Մուտքագրեք գաղտնաբառը",
+        "submit": "Մուտք",
+        "noAccount": "Հաշիվ չունե՞ք",
+        "switchToRegister": "Գրանցվել"
+      },
+      "register": {
+        "title": "Գրանցում",
+        "subtitle": "Միացեք Travel Discovery-ին՝ ամրագրումներ և ընտրյալ վայրեր պահելու համար։",
+        "fullName": "Անուն ազգանուն",
+        "fullNamePlaceholder": "Ձեր անունը",
+        "email": "Էլ. փոստ",
+        "emailPlaceholder": "you@example.com",
+        "password": "Գաղտնաբառ",
+        "passwordPlaceholder": "Առնվազն 8 նիշ",
+        "submit": "Գրանցվել",
+        "hasAccount": "Արդեն ունե՞ք հաշիվ",
+        "switchToLogin": "Մուտք"
+      },
+      "validation": {
+        "emailRequired": "Էլ. փոստը պարտադիր է",
+        "emailInvalid": "Մուտքագրեք վավեր էլ. հասցե",
+        "passwordRequired": "Գաղտնաբառը պարտադիր է",
+        "passwordMin": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ",
+        "fullNameRequired": "Անունը պարտադիր է",
+        "fullNameMin": "Անունը պետք է լինի առնվազն 2 նիշ"
+      },
+      "errors": {
+        "generic": "Ինչ-որ բան սխալ է։ Կրկին փորձեք։",
+        "invalidCredentials": "Սխալ էլ. փոստ կամ գաղտնաբառ։",
+        "emailTaken": "Այս էլ. հասցեն արդեն գրանցված է։"
+      }
     },
     "notFound": {
       "title": "Էջը չի գտնվել",

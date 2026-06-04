@@ -1,9 +1,8 @@
-export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED'
+export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED'
 
 export type Booking = {
-  id: string
-  hotelId: string
-  hotelName: string
+  id: number
+  hotelId: number
   checkIn: string
   checkOut: string
   guestCount: number
@@ -13,8 +12,9 @@ export type Booking = {
 }
 
 export type CreateBookingPayload = {
-  hotelId: string
+  hotelId: number
   checkIn: string
   checkOut: string
   guestCount: number
+  specialRequests?: string
 }

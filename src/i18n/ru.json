@@ -11,7 +11,8 @@
     "planner": "Планировщик",
     "bookings": "Бронирования",
     "login": "Войти",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "logout": "Выйти"
   },
   "footer": {
     "contactUs": "Связаться с нами",
@@ -326,7 +327,44 @@
     },
     "auth": {
       "title": "Вход",
-      "placeholder": "Авторизация — в разработке"
+      "brandWelcome": "С возвращением в Travel Discovery",
+      "login": {
+        "title": "Вход",
+        "subtitle": "Войдите, чтобы управлять бронированиями и сохранёнными местами.",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Пароль",
+        "passwordPlaceholder": "Введите пароль",
+        "submit": "Войти",
+        "noAccount": "Нет аккаунта?",
+        "switchToRegister": "Зарегистрироваться"
+      },
+      "register": {
+        "title": "Регистрация",
+        "subtitle": "Присоединяйтесь к Travel Discovery для бронирований и избранного.",
+        "fullName": "Имя",
+        "fullNamePlaceholder": "Ваше имя",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Пароль",
+        "passwordPlaceholder": "Минимум 8 символов",
+        "submit": "Зарегистрироваться",
+        "hasAccount": "Уже есть аккаунт?",
+        "switchToLogin": "Войти"
+      },
+      "validation": {
+        "emailRequired": "Укажите email",
+        "emailInvalid": "Введите корректный email",
+        "passwordRequired": "Укажите пароль",
+        "passwordMin": "Пароль должен быть не короче 8 символов",
+        "fullNameRequired": "Укажите имя",
+        "fullNameMin": "Имя должно быть не короче 2 символов"
+      },
+      "errors": {
+        "generic": "Что-то пошло не так. Попробуйте снова.",
+        "invalidCredentials": "Неверный email или пароль.",
+        "emailTaken": "Этот email уже зарегистрирован."
+      }
     },
     "notFound": {
       "title": "Страница не найдена",
