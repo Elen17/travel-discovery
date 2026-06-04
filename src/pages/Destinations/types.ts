@@ -1,23 +1,35 @@
+import type { HotelType } from '@/types/hotel'
+
 export type DestinationsPageProps = Record<string, never>
 
 export type DestinationAmenityFilter = 'infinity-pool' | 'private-beach'
 
-export type DestinationListing = {
-  id: string
-  name: string
-  city: string
-  country: string
-  pricePerNight: number
-  guestRating: number
-  starRating: number
-  imageUrl: string
-  isFeatured: boolean
-  amenities: DestinationAmenityFilter[]
-}
+export type DestinationPropertyType =
+  | 'hotel'
+  | 'resort'
+  | 'guesthouse'
+  | 'hostel'
+  | 'apartment'
+  | 'villa'
+
+export type PropertyTypeFilter = DestinationPropertyType
+
+export type StarRatingFilter = 1 | 2 | 3 | 4 | 5
 
 export type DestinationFilters = {
   minPrice: number
   maxPrice: number
-  minStarRating: number | null
-  amenityFilters: DestinationAmenityFilter[]
+  country: string | null
+  city: string | null
+  propertyTypes: PropertyTypeFilter[]
+  starRatings: StarRatingFilter[]
+}
+
+export type SidebarFiltersState = {
+  priceRange: [number, number]
+  country: string | null
+  countryId: string | null
+  city: string | null
+  starRating: StarRatingFilter | null
+  hotelType: HotelType | null
 }
