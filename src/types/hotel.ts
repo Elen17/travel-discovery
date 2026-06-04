@@ -9,40 +9,38 @@ export type HotelAmenity =
   | 'KIDS_ACTIVITIES'
 
 export type Hotel = {
-  id: string
+  id: number
   name: string
   description: string
   country: string
   city: string
   address: string
-  lat: number
-  lng: number
+  latitude: number
+  longitude: number
   pricePerNight: number
   starRating: number
   mainImageUrl: string
+  isFeatured: boolean
   amenities: HotelAmenity[]
-  isFeatured?: boolean
+  imageUrls: string[]
+  averageRating: number
+  reviewCount: number
 }
 
-export type HotelSearchParams = {
-  city?: string
-  country?: string
+/** Live search — ingests fresh results, returns a plain array. */
+export type HotelLiveSearchParams = {
+  country: string
+  city: string
   checkIn?: string
   checkOut?: string
-  guests?: number
-  minPrice?: number
-  maxPrice?: number
-  rating?: number
-  amenities?: HotelAmenity[]
-  page?: number
-  size?: number
-  sort?: string
+  adults?: number
 }
 
-export type HotelListResponse = {
-  content: Hotel[]
-  totalElements: number
-  totalPages: number
-  page: number
-  size: number
+/** Catalog listing with filters — paginated. */
+export type HotelCatalogParams = {
+  country: string
+  city: string
+  starRating?: number
+  page?: number
+  size?: number
 }

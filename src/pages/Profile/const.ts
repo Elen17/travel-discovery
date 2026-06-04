@@ -2,6 +2,7 @@ import type { ProfileUserDisplay, SavedPlace } from './types'
 
 export const PROFILE_I18N = {
   verified: 'pages.profile.verified',
+  logout: 'pages.profile.logout',
   tabs: {
     savedPlaces: 'pages.profile.tabs.savedPlaces',
   },

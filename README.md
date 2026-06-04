@@ -39,8 +39,29 @@ Open [http://localhost:5173](http://localhost:5173).
 
 | Variable               | Description                    |
 | ---------------------- | ------------------------------ |
-| `VITE_API_BASE_URL`    | Spring Boot API base URL       |
+| `VITE_API_BASE_URL`    | Backend API base URL (must include `/api/v1`) |
 | `VITE_GOOGLE_CLIENT_ID`| Google OAuth client ID         |
+
+## Backend API
+
+Production: [https://travel-discovery-backend-production.up.railway.app](https://travel-discovery-backend-production.up.railway.app)
+
+- **Swagger UI:** `/swagger-ui/index.html`
+- **OpenAPI JSON:** `/v3/api-docs`
+- **Frontend guide:** see `API.md` in the project docs
+
+API modules live in `src/api/`:
+
+| Module        | Endpoints |
+| ------------- | --------- |
+| `auth`        | register, login, logout |
+| `users`       | profile, avatar upload |
+| `hotels`      | search, catalog, detail |
+| `reviews`     | list, upsert, delete |
+| `bookings`    | list, create, cancel |
+| `favourites`  | list, add, remove |
+| `locations`   | countries, cities |
+| `health`      | liveness probe |
 
 ## Project structure
 

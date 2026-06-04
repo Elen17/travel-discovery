@@ -1,17 +1,18 @@
-import { apiClient } from '@/configs/axios'
-import type { AuthTokens, LoginPayload, RegisterPayload, User } from '@/types/user'
+import { apiClient, storeAuthTokens } from '@/configs/axios'
+import type { AuthResponse, LoginPayload, RegisterPayload } from '@/types/user'
 
-export const login = async (payload: LoginPayload): Promise<AuthTokens> => {
-  const { data } = await apiClient.post<AuthTokens>('/auth/login', payload)
+export const login = async (payload: LoginPayload): Promise<AuthResponse> => {
+  const { data } = await apiClient.post<AuthResponse>('/auth/login', payload)
+  storeAuthTokens(data.accessToken, data.refreshToken)
   return data
 }
 
-export const register = async (payload: RegisterPayload): Promise<AuthTokens> => {
-  const { data } = await apiClient.post<AuthTokens>('/auth/register', payload)
+export const register = async (payload: RegisterPayload): Promise<AuthResponse> => {
+  const { data } = await apiClient.post<AuthResponse>('/auth/register', payload)
+  storeAuthTokens(data.accessToken, data.refreshToken)
   return data
 }
 
-export const getCurrentUser = async (): Promise<User> => {
-  const { data } = await apiClient.get<User>('/users/me')
-  return data
+export const logout = async (): Promise<void> => {
+  await apiClient.post('/auth/logout')
 }
