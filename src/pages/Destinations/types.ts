@@ -33,3 +33,16 @@ export type SidebarFiltersState = {
   starRating: StarRatingFilter | null
   hotelType: HotelType | null
 }
+
+export type DestinationListing = {
+  id: string
+  name: string
+  city: string
+  country: string
+  pricePerNight: number
+  guestRating: number
+  starRating: number
+  imageUrl: string
+  isFeatured: boolean
+  amenities: DestinationAmenityFilter[]
+}
