@@ -2,6 +2,7 @@ import { Tabs } from 'antd'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
 import { ProfileHeaderCard } from '@/components/common/ProfileHeaderCard'
 import { SavedPlaceCard } from '@/components/common/SavedPlaceCard'
 import { useAppSelector } from '@/store/hooks'
@@ -51,7 +52,16 @@ const ProfilePage = () => {
                 planWithAiLabel={t(PROFILE_I18N.actions.planWithAi)}
                 removeLabel={t(PROFILE_I18N.actions.removeSaved)}
                 onBookNow={() => navigate(`/hotel/${place.hotelId}`)}
-                onPlanWithAi={() => navigate('/planner')}
+                onPlanWithAi={() =>
+                  navigate(
+                    buildPlannerUrl({
+                      exploration: resolveExplorationFromDestination(place.country),
+                      destination: place.country.toLowerCase(),
+                      hotelId: place.hotelId,
+                      hotelName: place.name,
+                    }),
+                  )
+                }
                 onRemove={() => handleRemove(place.id)}
               />
             ))}

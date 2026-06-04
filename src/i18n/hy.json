@@ -177,7 +177,7 @@
       "ai": {
         "label": "Խելացի ճանապարհորդական օգնական",
         "title": "Թող ԱԲ-ն առաջարկի ձեր հաջորդ գործունեությունը",
-        "description": "Ձեր նախասիրությունների և Վիկում ընթացիկ եղանակի հիման վրա մենք նշել ենք երեք եզակի փորձ այսօր։",
+        "description": "Ձեր նախասիրությունների և ընթացիկ պայմանների հիման վրա մենք նշել ենք երեք եզակի փորձ այսօր։",
         "generate": "Ստեղծել պատկերացումներ"
       },
       "itineraries": {
@@ -185,45 +185,80 @@
         "subtitle": "Օպտիմալացված ձեր տեղադրության և հետաքրքրությունների համար։",
         "viewAll": "Դիտել բոլորը",
         "usePlan": "Օգտագործել այս պլանը",
+        "viewDetails": "Դիտել մանրամասները",
         "categories": {
           "nature": "Բնություն",
           "wellness": "Բարեկեցություն",
           "adventure": "Արկած"
-        },
-        "items": {
-          "waterfall": {
-            "title": "Սելյալանդսֆոս և Գլյուվրաբուի",
-            "description": "Քայլեք ջրվեժների հետևից և բացահայտեք թաքնված կanyon-ները։",
-            "duration": "6 ժամ"
-          },
-          "lagoon": {
-            "title": "Կապույտ լագունի հանգիստ",
-            "description": "Հանգստացեք գեոթերմալ ջրերում հրաբխային բնապատկերների միջև։",
-            "duration": "4 ժամ"
-          },
-          "iceCave": {
-            "title": "Բյուրեղյա սառցային քարայր",
-            "description": "Մտեք բնական սառցադար քարայր փորձագետ ուղեցույցների հետ։",
-            "duration": "5 ժամ"
-          }
         }
+      },
+      "chat": {
+        "placeholder": "Հարցրեք նպատակակետների, գործունեությունների կամ օրական պլանների մասին…",
+        "send": "Ուղարկել",
+        "empty": "Սկսեք ձեր ճանապարհորդության պլանավորումը",
+        "emptyHint": "Հարց տվեք կամ սեղմեք «Ստեղծել պատկերացումներ»։",
+        "offline": "Անցանց ռեժիմ — օգտագործվում են պահված առաջարկներ",
+        "typing": "Օգնականը տպում է…",
+        "loginPrompt": "Մուտք գործեք՝ զրույցի պատմությունը սինхронացնելու համար։"
+      },
+      "applied": {
+        "title": "Այսօրվա պլան",
+        "empty": "Դեռևս ակտիվություններ չեն ավելացվել։",
+        "added": "Ակտիվությունը ավելացվել է պլանին",
+        "remove": "Հեռացնել"
+      },
+      "share": {
+        "copied": "Կիսման հղումը պատճենվել է",
+        "failed": "Չհաջողվեց պատճենել հղումը"
+      },
+      "drawer": {
+        "title": "Բոլոր առաջարկված երթուղիները",
+        "steps": "Երթուղու քայլեր",
+        "close": "Փակել"
+      },
+      "print": {
+        "title": "Ճանապարհորդական պլան"
       },
       "explorations": {
         "iceland": {
           "title": "Իսլանդիայի հյուսիսային լույսեր",
-          "meta": "7 օր • Թարմացվել է 2 ժ առաջ"
+          "meta": "7 օր • Թարմացվել է 2 ժ առաջ",
+          "trip": { "eyebrow": "Ընտրված էքսպեդիցիա", "title": "Իսլանդիայի օղակաձին ճանապարհ", "dates": "Հոկտ 12 — Հոկտ 24", "travelers": "2 ճանապարհորդ" },
+          "itineraries": {
+            "waterfall": { "title": "Սելյալանդսֆոս և Գլյուվրաբուի", "description": "Քայլեք ջրվեժների հետևից։", "duration": "6 ժամ", "steps": { "0": "Մեքենայով Վիկից", "1": "Քայլել ջրվեժի հետևից", "2": "Բացահայտել Գլյուվրաբուի կanyon-ը" } },
+            "lagoon": { "title": "Կապույտ լագունի", "description": "Հանգստացեք գեոթերմալ ջրերում։", "duration": "4 ժամ", "steps": { "0": "Նախապես ամրագրել", "1": "Լագուն և սпа" } },
+            "iceCave": { "title": "Սառցային քարայր", "description": "Բնական սառցադար քարայր փորձագետների հետ։", "duration": "5 ժամ", "steps": { "0": "Հանդիպում Jökulsárlón-ում", "1": "Ուղեցույցով քարայր" } }
+          }
         },
         "tuscany": {
           "title": "Տոսկանայի խաղողյաց տուր",
-          "meta": "5 օր • Թարմացվել է 1 օր առաջ"
+          "meta": "5 օր • Թարմացվել է 1 օր առաջ",
+          "trip": { "eyebrow": "Գինու երկիր", "title": "Չիանti և Ֆլորենցիա", "dates": "Սեպ 5 — Սեպ 10", "travelers": "2 ճանապարհորդ" },
+          "itineraries": {
+            "chianti": { "title": "Չիանti գինու երթուղի", "description": "Բլրեր, գյուղեր և համտեսումներ։", "duration": "7 ժամ", "steps": { "0": "Առավոտ Флорենցիայից", "1": "Երկու գինու գործարան" } },
+            "terme": { "title": "Թermal աղբյուրներ", "description": "Saturnia-ի բնական լողավազաններ։", "duration": "5 ժամ", "steps": { "0": "Երթ Saturnia", "1": "Հանգիստ լողավազաններում" } },
+            "cycling": { "title": "E-bike տուր", "description": "San Gimignano և Volterra միջև։", "duration": "6 ժամ", "steps": { "0": "E-bike briefing", "1": "Պաղպաղակ San Gimignano-ում" } }
+          }
         },
         "kyoto": {
           "title": "Կիոտոյի տաճարային ճանապարհ",
-          "meta": "4 օր • Թարմացվել է 3 օր առաջ"
+          "meta": "4 օր • Թարմացվել է 3 օր առաջ",
+          "trip": { "eyebrow": "Մշակութային ն immersion", "title": "Կիոտոյի ժառանգություն", "dates": "Ապր 2 — Ապր 6", "travelers": "2 ճանապարհորդ" },
+          "itineraries": {
+            "fushimi": { "title": "Fushimi Inari և bamboo", "description": "Torii դարպասներ և bamboo groves։", "duration": "6 ժամ", "steps": { "0": "Fushimi Inari", "1": "Arashiyama bamboo" } },
+            "onsen": { "title": "Onsen retreat", "description": "Ryokan և wellness։", "duration": "4 ժամ", "steps": { "0": "Ryokan check-in", "1": "Matcha tea" } },
+            "gion": { "title": "Gion evening walk", "description": "Երեկոյan heritage walk։", "duration": "5 ժամ", "steps": { "0": "Yasaka Shrine", "1": "Gion stroll" } }
+          }
         },
         "amalfi": {
           "title": "Ամալֆի ափամերձ երթ",
-          "meta": "6 օր • Թարմացվել է 1 շաբաթ առաջ"
+          "meta": "6 օր • Թարմացվել է 1 շաբաթ առաջ",
+          "trip": { "eyebrow": "Միջերկրական ծով", "title": "Amalfi Coast", "dates": "Հուն 14 — Հուն 20", "travelers": "2 ճանապարհորդ" },
+          "itineraries": {
+            "path": { "title": "Path of the Gods", "description": "Clifftop trail ծովի տեսարանով։", "duration": "6 ժամ", "steps": { "0": "Bomerano", "1": "Sentiero degli Dei" } },
+            "boat": { "title": "Boat day", "description": "Private boat cruise։", "duration": "5 ժամ", "steps": { "0": "Amalfi harbor", "1": "Sunset aperitivo" } },
+            "ravello": { "title": "Ravello gardens", "description": "Villa Rufolo gardens։", "duration": "4 ժամ", "steps": { "0": "Drive to Ravello", "1": "Coastal terrace views" } }
+          }
         }
       }
     },
