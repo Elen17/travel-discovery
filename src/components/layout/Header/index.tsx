@@ -20,9 +20,13 @@ export const Header = () => {
 
   const isProfileActive = location.pathname.startsWith('/profile')
 
+  const isAdmin = user?.role === 'Admin'
+
+  const visibleNavItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
+
   const selectedKey = isProfileActive
     ? ''
-    : (NAV_ITEMS.find((item) =>
+    : (visibleNavItems.find((item) =>
         item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path),
       )?.key ?? 'explore')
 
@@ -53,7 +57,7 @@ export const Header = () => {
         mode="horizontal"
         selectedKeys={[selectedKey]}
         className={styles.nav}
-        items={NAV_ITEMS.map((item) => ({
+        items={visibleNavItems.map((item) => ({
           key: item.key,
           label: <Link to={item.path}>{t(item.labelKey)}</Link>,
         }))}

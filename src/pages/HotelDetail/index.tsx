@@ -1,6 +1,7 @@
 import type { Dayjs } from 'dayjs'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { trackDestinationView } from '@/services/analytics'
 import { useNavigate, useParams } from 'react-router-dom'
 import { HotelDetailHero } from '@/components/common/HotelDetailHero'
 import { ReviewCard } from '@/components/common/ReviewCard'
@@ -27,6 +28,16 @@ const HotelDetailPage = () => {
   )
 
   const [nights, setNights] = useState(hotel?.defaultNights ?? 6)
+
+  useEffect(() => {
+    if (!hotel) return
+    trackDestinationView({
+      item_id: String(hotel.id),
+      item_name: hotel.name,
+      item_category: hotel.country,
+      price: hotel.pricePerNight,
+    })
+  }, [hotel])
 
   if (!hotel || !defaultDates) {
     return <p className={styles.notFound}>{t(HOTEL_DETAIL_I18N.notFound)}</p>

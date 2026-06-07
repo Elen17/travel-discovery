@@ -10,6 +10,8 @@
     "events": "Events",
     "planner": "Planner",
     "bookings": "Bookings",
+    "analytics": "Analytics",
+    "users": "Users",
     "login": "Log in",
     "profile": "Profile",
     "logout": "Log out"
@@ -381,6 +383,150 @@
         }
       }
     },
+    "analytics": {
+      "title": "App Analytics",
+      "subtitle": "Charts built from your navigation and in-app events across menu pages.",
+      "exportData": "Export Data",
+      "empty": "No events in this date range. Browse the app or widen the range.",
+      "events": {
+        "dateChange": "Date range changed",
+        "dateChangeDetail": "{{start}} — {{end}}",
+        "export": "Data exported",
+        "exportDetail": "{{start}} — {{end}}"
+      },
+      "kpis": {
+        "totalVisitors": "Total Visitors",
+        "totalPageViews": "Page Views",
+        "activeUsers": "Active Users",
+        "engagementRate": "Engagement Rate",
+        "steady": "Steady"
+      },
+      "charts": {
+        "pageViewTrends": {
+          "title": "Page View Trends",
+          "subtitle": "Current period vs previous period",
+          "currentPeriod": "Current Period",
+          "previousPeriod": "Previous Period"
+        },
+        "menuPageTraffic": {
+          "title": "Menu Page Traffic"
+        },
+        "eventBreakdown": {
+          "title": "Event Breakdown",
+          "total": "Total",
+          "pageView": "Page Views",
+          "search": "Searches",
+          "destinationView": "Destination Views",
+          "custom": "Custom Events"
+        },
+        "topDestinations": {
+          "title": "Top Destinations",
+          "subtitle": "From hotel views and destination searches"
+        },
+        "deviceTypes": {
+          "title": "Device Types",
+          "subtitle": "Unique visitors by device",
+          "mobile": "Mobile",
+          "tablet": "Tablet",
+          "desktop": "Desktop"
+        },
+        "reports": {
+          "booking": {
+            "title": "Booking Reports",
+            "subtitle": "Your bookings in the selected period",
+            "total": "Total bookings",
+            "confirmed": "Confirmed",
+            "upcoming": "Upcoming",
+            "cancelled": "Cancelled",
+            "loginRequired": "Log in to see booking reports."
+          },
+          "revenue": {
+            "title": "Revenue Reports",
+            "subtitle": "Booking revenue in the selected period",
+            "total": "Total revenue",
+            "confirmed": "Confirmed revenue",
+            "average": "Average booking value",
+            "loginRequired": "Log in to see revenue reports."
+          },
+          "user": {
+            "title": "User Reports",
+            "subtitle": "App usage from tracked events",
+            "visitors": "Total visitors",
+            "activeUsers": "Active users",
+            "profileViews": "Profile page views",
+            "bookingsViews": "Bookings page views"
+          }
+        },
+        "topPages": {
+          "title": "Top Pages",
+          "subtitle": "Most visited routes in the selected range",
+          "live": "Live",
+          "other": "Other Pages"
+        },
+        "recentEvents": {
+          "title": "Recent Events",
+          "viewAll": "View All Events",
+          "minutesAgo": "{{count}} mins ago",
+          "eventTypes": {
+            "pageView": "Page View",
+            "search": "Search",
+            "destinationView": "Destination View",
+            "custom": "Custom"
+          }
+        }
+      }
+    },
+    "users": {
+      "title": "Users",
+      "addUser": "Add User",
+      "loadError": "Could not load users. Please try again later.",
+      "empty": "No users found.",
+      "table": {
+        "avatar": "Avatar",
+        "fullName": "Full name",
+        "email": "Email",
+        "role": "Role",
+        "actions": "Actions",
+        "edit": "Edit user",
+        "delete": "Delete user"
+      },
+      "roles": {
+        "admin": "Admin",
+        "user": "User"
+      },
+      "form": {
+        "fullName": "Full name",
+        "fullNamePlaceholder": "Enter full name",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "avatarUrl": "Avatar URL",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg"
+      },
+      "modals": {
+        "addTitle": "Add User",
+        "editTitle": "Edit User",
+        "deleteTitle": "Delete User",
+        "deleteConfirm": "Are you sure you want to delete {{userName}} user?"
+      },
+      "actions": {
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "validation": {
+        "fullNameRequired": "Full name is required",
+        "fullNameMin": "Full name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address"
+      },
+      "messages": {
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "genericError": "Something went wrong. Please try again."
+      }
+    },
     "bookings": {
       "title": "My Bookings",
       "tabs": {
@@ -390,6 +536,7 @@
       },
       "card": {
         "dates": "Dates",
+        "defaultRoomType": "Standard Room",
         "guestsRoom": "{{count}} Guests • {{room}}",
         "getDirections": "Get Directions",
         "viewDetails": "View Details",
@@ -401,6 +548,7 @@
         }
       },
       "empty": "No bookings in this category.",
+      "loadError": "Could not load your bookings. Please try again later.",
       "cta": {
         "title": "Need help planning your next trip?",
         "description": "Let our AI curator craft a personalized itinerary based on your travel style and preferences.",

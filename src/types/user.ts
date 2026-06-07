@@ -1,9 +1,19 @@
+export type UserRole = 'Admin' | 'User'
+
 export type User = {
   id: number
   fullName: string
   email: string
   avatarUrl: string | null
+  role: UserRole
   createdAt: string
+}
+
+export type CreateUserPayload = {
+  fullName: string
+  email: string
+  avatarUrl?: string | null
+  password?: string
 }
 
 export type AuthResponse = {
