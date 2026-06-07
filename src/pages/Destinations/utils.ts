@@ -3,6 +3,7 @@ import type { DestinationAmenityFilter, DestinationFilters, DestinationListing }
 const CATEGORY_AMENITY_MAP: Record<string, DestinationAmenityFilter[]> = {
   beaches: ['private-beach'],
   adventure: [],
+  'europe-tour': ['infinity-pool'],
   'luxury-tour': ['infinity-pool'],
   'cabin-stays': [],
   'food-wine': [],
