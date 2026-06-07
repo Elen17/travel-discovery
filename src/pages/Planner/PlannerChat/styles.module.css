@@ -18,6 +18,14 @@
   border-bottom: 1px solid rgba(13, 110, 110, 0.12);
 }
 
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 8px 12px 0;
+  border-bottom: 1px solid rgba(26, 26, 46, 0.06);
+}
+
 .messages {
   flex: 1;
   overflow-y: auto;

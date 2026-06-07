@@ -5,11 +5,16 @@ import type {
   GuestPlannerSession,
   PlannerMessage,
   PlannerSuggestion,
+  SavedPlannerSession,
   SuggestedItinerary,
 } from '@/types/planner'
 import { PLANNER_STORAGE_KEY, type PlannerState } from './planner/types'
 
-export { PLANNER_STORAGE_KEY, type PlannerState } from './planner/types'
+export {
+  PLANNER_SAVED_SESSIONS_KEY,
+  PLANNER_STORAGE_KEY,
+  type PlannerState,
+} from './planner/types'
 
 const loadStoredSession = (): Partial<PlannerState> => {
   try {
@@ -127,6 +132,17 @@ const plannerSlice = createSlice({
       }
       persistGuestSession(state)
     },
+    restoreSession: (state, action: PayloadAction<SavedPlannerSession>) => {
+      const session = action.payload
+      state.activeExplorationId = session.explorationId
+      state.sessionToken = session.sessionToken
+      state.messages = session.messages
+      state.appliedItineraries = session.appliedItineraries
+      state.dynamicSuggestions = session.dynamicSuggestions
+      state.dynamicItineraries = null
+      state.isOfflineMode = false
+      persistGuestSession(state)
+    },
   },
 })
 
@@ -143,6 +159,7 @@ export const {
   setOfflineMode,
   startNewChat,
   hydrateFromUrl,
+  restoreSession,
 } = plannerSlice.actions
 
 export default plannerSlice.reducer
