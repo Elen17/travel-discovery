@@ -6,7 +6,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import type { NamePath } from 'antd/es/form/interface'
 import { login, register } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setCredentials } from '@/store/authSlice'
+import { completeAuthSession } from '@/store/authSlice'
 import { isValidEmail } from '@/utils/validation'
 import { AUTH_I18N, PASSWORD_MIN_LENGTH } from './const'
 import styles from './styles.module.css'
@@ -64,7 +64,7 @@ const AuthPage = () => {
     setErrorMessage(null)
     try {
       const response = await login(values)
-      dispatch(setCredentials(response))
+      await completeAuthSession(dispatch, response)
       navigate(redirectPath, { replace: true })
     } catch (error) {
       const parsed = parseAuthError(error, t(AUTH_I18N.errors.generic))
@@ -84,7 +84,7 @@ const AuthPage = () => {
     setErrorMessage(null)
     try {
       const response = await register(values)
-      dispatch(setCredentials(response))
+      await completeAuthSession(dispatch, response)
       navigate(redirectPath, { replace: true })
     } catch (error) {
       const parsed = parseAuthError(error, t(AUTH_I18N.errors.generic))

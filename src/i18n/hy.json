@@ -10,6 +10,8 @@
     "events": "Միջոցառումներ",
     "planner": "Պլանավորող",
     "bookings": "Ամրագրումներ",
+    "analytics": "Անալիտիկա",
+    "users": "Օգտատերեր",
     "login": "Մուտք",
     "profile": "Պրոֆիլ",
     "logout": "Ելք"
@@ -59,10 +61,22 @@
         "prev": "Նախորդ ուղղություններ",
         "next": "Հաջորդ ուղղություններ",
         "destinations": {
-          "ubud": { "city": "Ուբուդ, Բալի", "country": "Ինդոնեզիա" },
-          "kyoto": { "city": "Կիոտո", "country": "Ճապոնիա" },
-          "paris": { "city": "Փարիզ", "country": "Ֆրանսիա" },
-          "venice": { "city": "Վենետիկ", "country": "Իտալիա" }
+          "ubud": {
+            "city": "Ուբուդ, Բալի",
+            "country": "Ինդոնեզիա"
+          },
+          "kyoto": {
+            "city": "Կիոտո",
+            "country": "Ճապոնիա"
+          },
+          "paris": {
+            "city": "Փարիզ",
+            "country": "Ֆրանսիա"
+          },
+          "venice": {
+            "city": "Վենետիկ",
+            "country": "Իտալիա"
+          }
         }
       }
     },
@@ -113,7 +127,9 @@
         "safeBooking": "Անվտանգ ամրագրում",
         "freeCancellation": "Անվճար չեղարկում"
       },
-      "weather": { "sunny": "Արևոտ" },
+      "weather": {
+        "sunny": "Արևոտ"
+      },
       "amenities": {
         "infinityPool": "Լողավազան",
         "oceanSpa": "Օվկիանոսային սպա",
@@ -225,41 +241,297 @@
           "meta": "7 օր • Թարմացվել է 2 ժ առաջ",
           "trip": { "eyebrow": "Ընտրված էքսպեդիցիա", "title": "Իսլանդիայի օղակաձև ճանապարհ", "dates": "Հոկտ 12 — Հոկտ 24", "travelers": "2 ճանապարհորդ" },
           "itineraries": {
-            "waterfall": { "title": "Սելյալանդսֆոս և Գլյուվրաբուի", "description": "Քայլեք ջրվեժների հետևից։", "duration": "6 ժամ", "steps": { "0": "Մեքենայով Վիկից", "1": "Քայլել ջրվեժի հետևից", "2": "Բացահայտել Գլյուվրաբուի կanyon-ը" } },
-            "lagoon": { "title": "Կապույտ լագունի", "description": "Հանգստացեք գեոթերմալ ջրերում։", "duration": "4 ժամ", "steps": { "0": "Նախապես ամրագրել", "1": "Լագուն և սпа" } },
-            "iceCave": { "title": "Սառցային քարայր", "description": "Բնական սառցադար քարայր փորձագետների հետ։", "duration": "5 ժամ", "steps": { "0": "Հանդիպում Jökulsárlón-ում", "1": "Ուղեցույցով քարայր" } }
+            "waterfall": {
+              "title": "Սելյալանդսֆոս և Գլյուվրաբուի",
+              "description": "Քայլեք ջրվեժների հետևից։",
+              "duration": "6 ժամ",
+              "steps": {
+                "0": "Մեքենայով Վիկից",
+                "1": "Քայլել ջրվեժի հետևից",
+                "2": "Բացահայտել Գլյուվրաբուի կanyon-ը"
+              }
+            },
+            "lagoon": {
+              "title": "Կապույտ լագունի",
+              "description": "Հանգստացեք գեոթերմալ ջրերում։",
+              "duration": "4 ժամ",
+              "steps": {
+                "0": "Նախապես ամրագրել",
+                "1": "Լագուն և սпа"
+              }
+            },
+            "iceCave": {
+              "title": "Սառցային քարայր",
+              "description": "Բնական սառցադար քարայր փորձագետների հետ։",
+              "duration": "5 ժամ",
+              "steps": {
+                "0": "Հանդիպում Jökulsárlón-ում",
+                "1": "Ուղեցույցով քարայր"
+              }
+            }
           }
         },
         "tuscany": {
           "title": "Տոսկանայի խաղողյաց տուր",
           "meta": "5 օր • Թարմացվել է 1 օր առաջ",
-          "trip": { "eyebrow": "Գինու երկիր", "title": "Չիանti և Ֆլորենցիա", "dates": "Սեպ 5 — Սեպ 10", "travelers": "2 ճանապարհորդ" },
+          "trip": {
+            "eyebrow": "Գինու երկիր",
+            "title": "Չիանti և Ֆլորենցիա",
+            "dates": "Սեպ 5 — Սեպ 10",
+            "travelers": "2 ճանապարհորդ"
+          },
           "itineraries": {
-            "chianti": { "title": "Չիանti գինու երթուղի", "description": "Բլրեր, գյուղեր և համտեսումներ։", "duration": "7 ժամ", "steps": { "0": "Առավոտ Флорենցիայից", "1": "Երկու գինու գործարան" } },
-            "terme": { "title": "Թermal աղբյուրներ", "description": "Saturnia-ի բնական լողավազաններ։", "duration": "5 ժամ", "steps": { "0": "Երթ Saturnia", "1": "Հանգիստ լողավազաններում" } },
-            "cycling": { "title": "E-bike տուր", "description": "San Gimignano և Volterra միջև։", "duration": "6 ժամ", "steps": { "0": "E-bike briefing", "1": "Պաղպաղակ San Gimignano-ում" } }
+            "chianti": {
+              "title": "Չիանti գինու երթուղի",
+              "description": "Բլրեր, գյուղեր և համտեսումներ։",
+              "duration": "7 ժամ",
+              "steps": {
+                "0": "Առավոտ Флорենցիայից",
+                "1": "Երկու գինու գործարան"
+              }
+            },
+            "terme": {
+              "title": "Թermal աղբյուրներ",
+              "description": "Saturnia-ի բնական լողավազաններ։",
+              "duration": "5 ժամ",
+              "steps": {
+                "0": "Երթ Saturnia",
+                "1": "Հանգիստ լողավազաններում"
+              }
+            },
+            "cycling": {
+              "title": "E-bike տուր",
+              "description": "San Gimignano և Volterra միջև։",
+              "duration": "6 ժամ",
+              "steps": {
+                "0": "E-bike briefing",
+                "1": "Պաղպաղակ San Gimignano-ում"
+              }
+            }
           }
         },
         "kyoto": {
           "title": "Կիոտոյի տաճարային ճանապարհ",
           "meta": "4 օր • Թարմացվել է 3 օր առաջ",
-          "trip": { "eyebrow": "Մշակութային ն immersion", "title": "Կիոտոյի ժառանգություն", "dates": "Ապր 2 — Ապր 6", "travelers": "2 ճանապարհորդ" },
+          "trip": {
+            "eyebrow": "Մշակութային ն immersion",
+            "title": "Կիոտոյի ժառանգություն",
+            "dates": "Ապր 2 — Ապր 6",
+            "travelers": "2 ճանապարհորդ"
+          },
           "itineraries": {
-            "fushimi": { "title": "Fushimi Inari և bamboo", "description": "Torii դարպասներ և bamboo groves։", "duration": "6 ժամ", "steps": { "0": "Fushimi Inari", "1": "Arashiyama bamboo" } },
-            "onsen": { "title": "Onsen retreat", "description": "Ryokan և wellness։", "duration": "4 ժամ", "steps": { "0": "Ryokan check-in", "1": "Matcha tea" } },
-            "gion": { "title": "Gion evening walk", "description": "Երեկոյan heritage walk։", "duration": "5 ժամ", "steps": { "0": "Yasaka Shrine", "1": "Gion stroll" } }
+            "fushimi": {
+              "title": "Fushimi Inari և bamboo",
+              "description": "Torii դարպասներ և bamboo groves։",
+              "duration": "6 ժամ",
+              "steps": {
+                "0": "Fushimi Inari",
+                "1": "Arashiyama bamboo"
+              }
+            },
+            "onsen": {
+              "title": "Onsen retreat",
+              "description": "Ryokan և wellness։",
+              "duration": "4 ժամ",
+              "steps": {
+                "0": "Ryokan check-in",
+                "1": "Matcha tea"
+              }
+            },
+            "gion": {
+              "title": "Gion evening walk",
+              "description": "Երեկոյan heritage walk։",
+              "duration": "5 ժամ",
+              "steps": {
+                "0": "Yasaka Shrine",
+                "1": "Gion stroll"
+              }
+            }
           }
         },
         "amalfi": {
           "title": "Ամալֆի ափամերձ երթ",
           "meta": "6 օր • Թարմացվել է 1 շաբաթ առաջ",
-          "trip": { "eyebrow": "Միջերկրական ծով", "title": "Amalfi Coast", "dates": "Հուն 14 — Հուն 20", "travelers": "2 ճանապարհորդ" },
+          "trip": {
+            "eyebrow": "Միջերկրական ծով",
+            "title": "Amalfi Coast",
+            "dates": "Հուն 14 — Հուն 20",
+            "travelers": "2 ճանապարհորդ"
+          },
           "itineraries": {
-            "path": { "title": "Path of the Gods", "description": "Clifftop trail ծովի տեսարանով։", "duration": "6 ժամ", "steps": { "0": "Bomerano", "1": "Sentiero degli Dei" } },
-            "boat": { "title": "Boat day", "description": "Private boat cruise։", "duration": "5 ժամ", "steps": { "0": "Amalfi harbor", "1": "Sunset aperitivo" } },
-            "ravello": { "title": "Ravello gardens", "description": "Villa Rufolo gardens։", "duration": "4 ժամ", "steps": { "0": "Drive to Ravello", "1": "Coastal terrace views" } }
+            "path": {
+              "title": "Path of the Gods",
+              "description": "Clifftop trail ծովի տեսարանով։",
+              "duration": "6 ժամ",
+              "steps": {
+                "0": "Bomerano",
+                "1": "Sentiero degli Dei"
+              }
+            },
+            "boat": {
+              "title": "Boat day",
+              "description": "Private boat cruise։",
+              "duration": "5 ժամ",
+              "steps": {
+                "0": "Amalfi harbor",
+                "1": "Sunset aperitivo"
+              }
+            },
+            "ravello": {
+              "title": "Ravello gardens",
+              "description": "Villa Rufolo gardens։",
+              "duration": "4 ժամ",
+              "steps": {
+                "0": "Drive to Ravello",
+                "1": "Coastal terrace views"
+              }
+            }
           }
         }
+      }
+    },
+    "analytics": {
+      "title": "Անութիկան անալիտիկա",
+      "subtitle": "Գրաֆիկներ սագրման նավիգացիային և այլ ապրիկաական անդամենականը։",
+      "exportData": "Արտահանել տվյալները",
+      "empty": "Այս ամսաթվերի միջակայքում իրադարձություններ չկան։ Օգտագործեք հավելվածը կամ ընդլայնեք միջակայքը։",
+      "kpis": {
+        "totalVisitors": "Ընդամենը այցելուներ",
+        "totalPageViews": "Էջի դիտումներ",
+        "activeUsers": "Ակտիվ օգտատերեր",
+        "engagementRate": "Ներգվածություն",
+        "steady": "Կայուն"
+      },
+      "charts": {
+        "pageViewTrends": {
+          "title": "Դիտումների միտումներ",
+          "subtitle": "Ընթացիկ vs նախորդ ժամանակահատված",
+          "currentPeriod": "Ընթացիկ ժամանակահատված",
+          "previousPeriod": "Նախորդ ժամանակահատված"
+        },
+        "menuPageTraffic": {
+          "title": "Մենյուի էջերի տրաֆիկ"
+        },
+        "eventBreakdown": {
+          "title": "Անդամենակների բաժանում",
+          "total": "Ընդամենը",
+          "pageView": "Դիտումներ",
+          "search": "Փնտրումներ",
+          "destinationView": "Ուղղությունների դիտումներ",
+          "custom": "Այլ իրադարձություններ"
+        },
+        "topPages": {
+          "title": "Հանրագույն էջեր",
+          "subtitle": "Ամենաշատ այցելվող երթուղիները",
+          "live": "Live",
+          "other": "Այլ էջեր"
+        },
+        "recentEvents": {
+          "title": "Վերջին իրադարձություններ",
+          "viewAll": "Բոլոր իրադարձությունները",
+          "minutesAgo": "{{count}} րոպե արաջ",
+          "eventTypes": {
+            "pageView": "Դիտում",
+            "search": "Փնտրում",
+            "destinationView": "Ուղղություն",
+            "custom": "Իրադարձություն"
+          }
+        },
+        "topDestinations": {
+          "title": "Լավագույն ուղղություններ",
+          "subtitle": "Հotelների դիտումներից և որոնումներից"
+        },
+        "deviceTypes": {
+          "title": "Սարքերի տեսակներ",
+          "subtitle": "Եզակի այցելուներ ըստ սարքի",
+          "mobile": "Բջջային",
+          "tablet": "Պլանշետ",
+          "desktop": "Համակարգիչ"
+        },
+        "reports": {
+          "booking": {
+            "title": "Ամրագրման հաշվետվություններ",
+            "subtitle": "Ձեր ամրագրումները ընտրված ժամանակահատվածում",
+            "total": "Ընդամենը ամրագրումներ",
+            "confirmed": "Հաստատված",
+            "upcoming": "Առաջիկա",
+            "cancelled": "Չեղարկված",
+            "loginRequired": "Մուտք գործեք՝ ամրագրման հաշվետվությունները տեսնելու համար։"
+          },
+          "revenue": {
+            "title": "Եկամտի հաշվետվություններ",
+            "subtitle": "Ամրագրումների եկամուտը ընտրված ժամանակահատվածում",
+            "total": "Ընդհանուր եկամուտ",
+            "confirmed": "Հաստատված եկամուտ",
+            "average": "Միջին ամրագրման արժեք",
+            "loginRequired": "Մուտք գործեք՝ եկամտի հաշվետվությունները տեսնելու համար։"
+          },
+          "user": {
+            "title": "Օգտատերերի հաշվետվություններ",
+            "subtitle": "Հավելվածի օգտագործումը ըստ իրադարձությունների",
+            "visitors": "Ընդամենը այցելուներ",
+            "activeUsers": "Ակտիվ օգտատերեր",
+            "profileViews": "Պրոֆիլի դիտումներ",
+            "bookingsViews": "Ամրագրումների էջի դիտումներ"
+          }
+        }
+      },
+      "events": {
+        "dateChange": "Ամսաթվերի միջակայքը փոխվել է",
+        "dateChangeDetail": "{{start}} — {{end}}",
+        "export": "Տվյալները արտահանվել են",
+        "exportDetail": "{{start}} — {{end}}"
+      }
+    },
+    "users": {
+      "title": "Օգտատերեր",
+      "addUser": "Ավելացնել օգտատեր",
+      "loadError": "Չհաջողվեց բեռնել օգտատերերին։ Խնդրում ենք կրկին փորձել։",
+      "empty": "Օգտատերեր չեն գտնվել։",
+      "table": {
+        "avatar": "Ավатар",
+        "fullName": "Անուն",
+        "email": "Էլ. փոստ",
+        "role": "Դեր",
+        "actions": "Գործողություններ",
+        "edit": "Խմբագրել օգտատեր",
+        "delete": "Ջնջել օգտատեր"
+      },
+      "roles": {
+        "admin": "Ադմին",
+        "user": "Օգտատեր"
+      },
+      "form": {
+        "fullName": "Անուն",
+        "fullNamePlaceholder": "Մուտքագրեք անունը",
+        "email": "Էլ. փոստ",
+        "emailPlaceholder": "you@example.com",
+        "avatarUrl": "Ավатар URL",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg"
+      },
+      "modals": {
+        "addTitle": "Ավելացնել օգտատեր",
+        "editTitle": "Խմբագրել օգտատեր",
+        "deleteTitle": "Ջնջել օգտատեր",
+        "deleteConfirm": "Վստա՞հ եք, որ ցանկանում եք ջնջել {{userName}} օգտատեր"
+      },
+      "actions": {
+        "create": "Ստեղծել",
+        "save": "Պահպանել",
+        "cancel": "Չեղարկել",
+        "delete": "Ջնջել"
+      },
+      "validation": {
+        "fullNameRequired": "Անունը պարտադիր է",
+        "fullNameMin": "Անունը պետք է լինի առնվազն 2 նիշ",
+        "emailRequired": "Էլ. փոստը պարտադիր է",
+        "emailInvalid": "Մուտքագրեք վավեր էլ. փոստ"
+      },
+      "messages": {
+        "createSuccess": "Օգտատերը հաջողությամբ ստեղծվել է",
+        "updateSuccess": "Օգտատերը հաջողությամբ թարմացվել է",
+        "deleteSuccess": "Օգտատերը հաջողությամբ ջնջվել է",
+        "genericError": "Ինչ-որ բան սխալ գնաց։ Խնդրում ենք կրկին փորձել։"
       }
     },
     "bookings": {
@@ -271,6 +543,7 @@
       },
       "card": {
         "dates": "Ամսաթվեր",
+        "defaultRoomType": "Ստանդարտ սենյակ",
         "guestsRoom": "{{count}} հյուր • {{room}}",
         "getDirections": "Ուղղություններ",
         "viewDetails": "Դիտել մանրամասները",
@@ -282,16 +555,25 @@
         }
       },
       "empty": "Այս կատեգորիայում ամրագրումներ չկան։",
+      "loadError": "Չհաջողվեց բեռնել ձեր ամրագրումները։ Խնդրում ենք փորձել ավելի ուշ։",
       "cta": {
         "title": "Օգնության կարիք ունե՞ք ձեր հաջորդ ճանապարհորդության համար",
         "description": "Թող մեր ԱԲ կուրատորը ստեղծի անհատական երթուղի ձեր ոճին համապատասխան։",
         "button": "Գնալ ԱԲ Պլանավորող"
       },
       "items": {
-        "grandPalazzo": { "roomType": "Սյուիտ" },
-        "tealWaters": { "roomType": "Ջրի վրայի վիլլա" },
-        "azureHorizon": { "roomType": "Դելյուքս սենյակ" },
-        "sageEnclave": { "roomType": "Այգիի տեսարան" }
+        "grandPalazzo": {
+          "roomType": "Սյուիտ"
+        },
+        "tealWaters": {
+          "roomType": "Ջրի վրայի վիլլա"
+        },
+        "azureHorizon": {
+          "roomType": "Դելյուքս սենյակ"
+        },
+        "sageEnclave": {
+          "roomType": "Այգիի տեսարան"
+        }
       }
     },
     "profile": {

@@ -1,5 +1,6 @@
 import { Button, DatePicker, Form, Input, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { trackSearch } from '@/services/analytics'
 import { GUEST_OPTIONS, SEARCH_I18N } from './const'
 import styles from './styles.module.css'
 import type { HomeSearchBarProps, HomeSearchBarValues } from './types'
@@ -11,6 +12,9 @@ export const HomeSearchBar = ({ onSearch }: HomeSearchBarProps) => {
   const [form] = Form.useForm<HomeSearchBarValues>()
 
   const handleFinish = (values: HomeSearchBarValues) => {
+    if (values.destination?.trim()) {
+      trackSearch(values.destination.trim())
+    }
     onSearch?.(values)
   }
 
@@ -28,7 +32,7 @@ export const HomeSearchBar = ({ onSearch }: HomeSearchBarProps) => {
           <Input
             className={styles.input}
             placeholder={t(SEARCH_I18N.destinationPlaceholder)}
-            bordered={false}
+            variant={'borderless'}
             aria-label={t(SEARCH_I18N.destination)}
           />
         </Form.Item>
