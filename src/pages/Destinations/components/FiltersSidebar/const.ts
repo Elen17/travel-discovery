@@ -13,5 +13,5 @@ export const HOTEL_TYPE_OPTIONS: { value: HotelType; labelKey: string }[] = [
   { value: 'GUEST_HOUSE', labelKey: 'pages.destinations.filters.typeGuestHouse' },
   { value: 'HOSTEL', labelKey: 'pages.destinations.filters.typeHostel' },
   { value: 'MOTEL', labelKey: 'pages.destinations.filters.typeMotel' },
-  { value: 'CHALET', labelKey: 'pages.destinations.filters.typeChalet' },
+  { value: 'OTHER', labelKey: 'pages.destinations.filters.typeOther' },
 ]

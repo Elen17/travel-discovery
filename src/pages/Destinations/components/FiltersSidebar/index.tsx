@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { StarFilled } from '@ant-design/icons'
 import { Button, Checkbox, InputNumber, Select, Slider } from 'antd'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCitiesByCountry } from '@/hooks/useLocations'
+import type { HotelType } from '@/types/hotel'
 import type { SidebarFiltersState, StarRatingFilter } from '@/pages/Destinations/types'
 import { FILTER_I18N, FILTER_PRICE_RANGE, FILTER_STAR_RATINGS, HOTEL_TYPE_OPTIONS } from './const'
+import { buildCityOptions, buildCountryOptions } from './utils'
 import type { FiltersSidebarProps } from './types'
 import styles from './styles.module.css'
 
@@ -15,8 +18,6 @@ export const FiltersSidebar = ({
   starRating,
   hotelType,
   countryOptions,
-  cityOptions,
-  citiesLoading,
   onApply,
 }: FiltersSidebarProps) => {
   const { t } = useTranslation()
@@ -29,6 +30,10 @@ export const FiltersSidebar = ({
     starRating,
     hotelType,
   })
+
+  const { data: citiesData, isLoading: citiesLoading } = useCitiesByCountry(draft.countryId)
+
+  const cityOptions = citiesData?.map((c) => c.name) ?? []
 
   const handlePriceInput = (index: 0 | 1, value: number | null) => {
     if (value === null) return
@@ -50,15 +55,8 @@ export const FiltersSidebar = ({
     }))
   }
 
-  const countrySelectOptions = [
-    { value: '', label: t(FILTER_I18N.allCountries) },
-    ...countryOptions.map((c) => ({ value: c.name, label: c.name })),
-  ]
-
-  const citySelectOptions = [
-    { value: '', label: t(FILTER_I18N.selectCity) },
-    ...cityOptions.map((c) => ({ value: c, label: c })),
-  ]
+  const countrySelectOptions = buildCountryOptions(countryOptions, t(FILTER_I18N.allCountries))
+  const citySelectOptions = buildCityOptions(cityOptions, t(FILTER_I18N.selectCity))
 
   return (
     <aside className={styles.sidebar}>
@@ -80,7 +78,7 @@ export const FiltersSidebar = ({
             value={draft.city ?? ''}
             options={citySelectOptions}
             loading={citiesLoading}
-            disabled={!draft.countryId || citiesLoading}
+            disabled={!draft.countryId}
             placeholder={citiesLoading ? t('common.loading') : t(FILTER_I18N.selectCity)}
             onChange={(value) =>
               setDraft((prev) => ({ ...prev, city: value === '' ? null : value }))
@@ -88,7 +86,6 @@ export const FiltersSidebar = ({
           />
         </div>
       </div>
-
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.priceRange)}</span>
         <div className={styles.priceInputs}>
@@ -128,7 +125,6 @@ export const FiltersSidebar = ({
           }
         />
       </div>
-
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.hotelType)}</span>
         <div className={styles.checkboxList}>
@@ -140,7 +136,7 @@ export const FiltersSidebar = ({
               onChange={(e) =>
                 setDraft((prev) => ({
                   ...prev,
-                  hotelType: e.target.checked ? value : null,
+                  hotelType: e.target.checked ? (value as HotelType) : null,
                 }))
               }
             >
@@ -149,7 +145,6 @@ export const FiltersSidebar = ({
           ))}
         </div>
       </div>
-
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.starRating)}</span>
         <div className={styles.checkboxList}>

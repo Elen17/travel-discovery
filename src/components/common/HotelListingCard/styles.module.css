@@ -5,7 +5,9 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(26, 26, 46, 0.06);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .card:hover {
@@ -135,7 +137,7 @@
 .bookBtn {
   height: 40px !important;
   padding-inline: 20px !important;
-  border-radius: 8px !important;
+  border-radius: 999px !important;
   font-size: 0.6875rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.06em;

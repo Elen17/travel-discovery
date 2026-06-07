@@ -7,7 +7,5 @@ export type CountryOption = {
 
 export type FiltersSidebarProps = SidebarFiltersState & {
   countryOptions: CountryOption[]
-  cityOptions: string[]
-  citiesLoading: boolean
   onApply: (filters: SidebarFiltersState) => void
 }

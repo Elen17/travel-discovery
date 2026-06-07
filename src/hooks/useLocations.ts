@@ -16,5 +16,5 @@ export const useCitiesByCountry = (countryId: string | null) =>
     queryKey: [CITIES_QUERY_KEY, countryId],
     queryFn: () => getCitiesByCountry(countryId!),
     enabled: !!countryId,
-    staleTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 60,
   })

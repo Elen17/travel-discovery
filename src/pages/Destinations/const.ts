@@ -1,4 +1,4 @@
-import type { DestinationListing, PropertyTypeFilter, StarRatingFilter } from './types'
+import type { DestinationListing, StarRatingFilter } from './types'
 
 export const DESTINATIONS_I18N = {
   heroTitle: 'pages.destinations.heroTitle',
@@ -28,32 +28,11 @@ export const DESTINATIONS_I18N = {
   },
 } as const
 
-export const PROPERTY_TYPE_FILTERS: PropertyTypeFilter[] = [
-  'hotel',
-  'resort',
-  'guesthouse',
-  'hostel',
-  'apartment',
-  'villa',
-]
-
 export const STAR_RATING_FILTERS: StarRatingFilter[] = [5, 4, 3, 2, 1]
-
-export const PROPERTY_TYPE_I18N: Record<PropertyTypeFilter, string> = {
-  hotel: DESTINATIONS_I18N.filters.propertyHotel,
-  resort: DESTINATIONS_I18N.filters.propertyResort,
-  guesthouse: DESTINATIONS_I18N.filters.propertyGuesthouse,
-  hostel: DESTINATIONS_I18N.filters.propertyHostel,
-  apartment: DESTINATIONS_I18N.filters.propertyApartment,
-  villa: DESTINATIONS_I18N.filters.propertyVilla,
-}
-
-export const DEFAULT_PROPERTY_TYPES: PropertyTypeFilter[] = []
-export const DEFAULT_STAR_RATINGS: StarRatingFilter[] = []
 
 export const PRICE_RANGE = { min: 0, max: 2000 } as const
 
-export const PAGE_SIZE = 9
+export const PAGE_SIZE = 12
 
 export const MOCK_LISTINGS: DestinationListing[] = [
   {

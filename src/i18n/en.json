@@ -71,7 +71,7 @@
     "destinations": {
       "title": "Destinations",
       "heroTitle": "Find Your Sanctuary",
-      "heroSubtitle": "Discover curated stays across the world's most breathtaking landscapes.",
+      "heroSubtitle": "Discover extraordinary stays in the world’s most stunning locations.",
       "empty": "No stays match your filters. Try adjusting your search.",
       "resultsCount": "Showing {{count}} Results",
       "filters": {
@@ -91,7 +91,7 @@
         "typeGuestHouse": "Guest House",
         "typeHostel": "Hostel",
         "typeMotel": "Motel",
-        "typeChalet": "Chalet",
+        "typeOther": "Other",
         "infinityPool": "Infinity Pool",
         "privateBeach": "Private Beach"
       },

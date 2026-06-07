@@ -5,6 +5,7 @@ import { formatCurrency } from '@/utils/currency'
 import { PAGE_SIZE } from '@/pages/Destinations/const'
 import { DESTINATION_LIST_I18N } from './const'
 import type { DestinationListProps } from './types'
+import { formatHotelLocation } from './utils'
 import styles from './styles.module.css'
 
 export const DestinationList = ({
@@ -20,7 +21,7 @@ export const DestinationList = ({
       <section className={styles.listSection}>
         <Skeleton active paragraph={{ rows: 1 }} className={styles.skeletonCount} />
         <div className={styles.grid}>
-          {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+          {Array.from({ length: PAGE_SIZE }, (_, i) => (
             <Skeleton key={i} active className={styles.skeletonCard} />
           ))}
         </div>
@@ -43,7 +44,7 @@ export const DestinationList = ({
               key={hotel.id}
               id={String(hotel.id)}
               name={hotel.name}
-              location={`${hotel.city}, ${hotel.country}`}
+              location={formatHotelLocation(hotel.city, hotel.country)}
               priceLabel={formatCurrency(hotel.pricePerNight, 'USD', i18n.language)}
               perNightLabel={t(DESTINATION_LIST_I18N.perNight)}
               guestRating={hotel.averageRating}
