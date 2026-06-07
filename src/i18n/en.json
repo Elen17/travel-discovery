@@ -94,6 +94,7 @@
       "reviewsSummary": "Based on {{count}} reviews",
       "reviewsExceptional": "Exceptional",
       "notFound": "This property could not be found.",
+      "loadError": "We couldn't load this property. Please try again later.",
       "booking": {
         "perNight": "/ per night",
         "checkIn": "Check-in",
@@ -109,6 +110,7 @@
         "total": "Total",
         "bookNow": "Book Now",
         "notCharged": "You won't be charged yet",
+        "createError": "We couldn't complete your booking. Please try again.",
         "safeBooking": "Safe Booking",
         "freeCancellation": "Free Cancellation"
       },
@@ -119,7 +121,13 @@
         "infinityPool": "Infinity Pool",
         "oceanSpa": "Ocean Spa",
         "michelinDining": "Michelin Dining",
-        "yogaStudio": "Yoga Studio"
+        "yogaStudio": "Yoga Studio",
+        "wifi": "Wi-Fi",
+        "gym": "Fitness Center",
+        "parking": "Parking",
+        "restaurant": "Restaurant",
+        "petFriendly": "Pet Friendly",
+        "kidsActivities": "Kids Activities"
       },
       "descriptions": {
         "coastal": {
@@ -129,15 +137,16 @@
         },
         "default": {
           "title": "An Unforgettable Stay",
-          "p1": "Discover a refined retreat where thoughtful design, warm hospitality, and breathtaking surroundings come together. This property offers an intimate escape tailored to discerning travelers.",
-          "p2": "Whether you are unwinding by the water, exploring local culture, or indulging in world-class amenities, every detail has been considered for a seamless stay."
+          "paragraphs": "Discover a refined retreat where thoughtful design, warm hospitality, and breathtaking surroundings come together. This property is designed for travelers who appreciate comfort, elegance, and attention to detail in every aspect of their stay. From the moment you arrive, you are welcomed into a calm and relaxing atmosphere that helps you disconnect from everyday stress. Spacious rooms, modern amenities, and carefully crafted interiors ensure a smooth and enjoyable experience throughout your visit. The hotel is located in a prime area, offering easy access to nearby attractions and natural beauty. Guests can enjoy a wide range of services that are designed to enhance both relaxation and convenience. Whether you are exploring the surroundings or simply unwinding, every moment feels balanced and peaceful. Every detail is carefully considered to ensure a memorable and truly enjoyable stay."
         }
       },
       "gallery": {
         "bedroom": "Minimalist suite bedroom",
-        "cocktail": "Craft cocktail at the bar"
+        "cocktail": "Craft cocktail at the bar",
+        "photo": "{{name}} photo"
       },
       "reviews": {
+        "guest": "Guest #{{id}}",
         "eh": {
           "author": "Elena Hartwell",
           "date": "October 2024",
@@ -305,6 +314,9 @@
     "loading": "Loading…",
     "search": "Search",
     "language": "Language",
-    "saveDestination": "Save destination"
+    "saveDestination": "Save destination",
+    "errors": {
+      "forbidden": "You need to be logged in to perform this action."
+    }
   }
 }

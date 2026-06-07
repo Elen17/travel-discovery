@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
       { path: 'planner', element: withSuspense(<PlannerPage />) },
       { path: 'bookings', element: withSuspense(<BookingsPage />) },
       { path: 'profile', element: withSuspense(<ProfilePage />) },
+      { path: 'login', element: <Navigate to="/auth/login" replace /> },
       { path: 'auth/login', element: withSuspense(<AuthPage />) },
       { path: '404', element: withSuspense(<NotFoundPage />) },
       { path: '*', element: <Navigate to="/404" replace /> },

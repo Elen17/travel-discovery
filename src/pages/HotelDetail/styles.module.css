@@ -1,6 +1,6 @@
 .page {
   width: 100%;
-  padding-bottom: 32px;
+  padding-bottom: 48px;
 }
 
 .notFound {
@@ -10,34 +10,74 @@
   color: rgba(26, 26, 46, 0.55);
 }
 
-.layout {
+.introRow {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 40px;
-  align-items: start;
+  grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
+  align-items: stretch;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(26, 26, 46, 0.06);
+  margin-bottom: 56px;
+  overflow: hidden;
 }
 
-.main {
+.descriptionSection {
   min-width: 0;
+  padding: 40px 48px;
+}
+
+.descriptionSection .sectionTitle {
+  margin: 0 0 28px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 2.5vw, 2.125rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.descriptionSection .description p {
+  margin: 0 0 20px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(26, 26, 46, 0.62);
+}
+
+.descriptionSection .description p:last-child {
+  margin-bottom: 0;
+}
+
+.bookingAside {
+  min-width: 0;
+  padding: 40px 40px 40px 48px;
+  border-left: 1px solid rgba(26, 26, 46, 0.1);
+}
+
+.content {
+  width: 100%;
 }
 
 .section {
-  margin-bottom: 40px;
+  margin-bottom: 48px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
 }
 
 .sectionTitle {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--color-primary);
+  line-height: 1.25;
 }
 
 .description p {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(26, 26, 46, 0.72);
+  line-height: 1.75;
+  color: rgba(26, 26, 46, 0.68);
 }
 
 .description p:last-child {
@@ -53,62 +93,67 @@
 .amenityCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px 12px;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
   background: #fff;
+  border: 1px solid rgba(26, 26, 46, 0.08);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(26, 26, 46, 0.05);
-  text-align: center;
+  box-shadow: 0 1px 4px rgba(26, 26, 46, 0.04);
+  text-align: left;
 }
 
 .amenityIcon {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(13, 110, 110, 0.08);
+  justify-content: flex-start;
   color: var(--color-primary);
   font-size: 1.25rem;
 }
 
 .amenityLabel {
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--color-text-dark);
+  line-height: 1.4;
 }
 
 .galleryHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.galleryHeader .sectionTitle {
+  margin-bottom: 0;
 }
 
 .galleryLink {
+  flex-shrink: 0;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-primary);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .galleryLink:hover {
-  text-decoration: underline;
+  opacity: 0.85;
 }
 
 .galleryGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
 .galleryImage {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 12px;
   display: block;
 }
 
@@ -117,69 +162,103 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
+}
+
+.reviewsHeader .sectionTitle {
+  margin-bottom: 0;
 }
 
 .reviewsSummary {
   text-align: right;
 }
 
+.reviewsScoreRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .reviewsScore {
-  display: block;
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: 700;
   color: var(--color-primary);
+  line-height: 1;
 }
 
 .reviewsLabel {
-  display: block;
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent-dark);
+  color: var(--color-primary);
 }
 
 .reviewsCount {
   display: block;
+  margin-top: 4px;
   font-size: 0.8125rem;
-  color: rgba(26, 26, 46, 0.55);
+  color: rgba(26, 26, 46, 0.5);
 }
 
 .reviewsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
-.sidebar {
-  min-width: 0;
-}
-
 @media (max-width: 992px) {
-  .layout {
+  .introRow {
     grid-template-columns: 1fr;
-    gap: 32px;
+    margin-bottom: 40px;
   }
 
-  .sidebar {
+  .descriptionSection {
+    padding: 32px 24px;
+  }
+
+  .bookingAside {
     order: -1;
+    padding: 32px 24px;
+    border-left: none;
+    border-bottom: 1px solid rgba(26, 26, 46, 0.1);
   }
 
   .amenityGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .galleryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 576px) {
-  .galleryGrid,
-  .reviewsGrid {
+  .descriptionSection {
+    padding: 24px 20px;
+  }
+
+  .bookingAside {
+    padding: 24px 20px;
+  }
+
+  .descriptionSection .sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .galleryGrid {
     grid-template-columns: 1fr;
   }
 
   .amenityGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
   }
 }

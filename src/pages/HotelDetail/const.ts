@@ -1,11 +1,11 @@
 import {
+  AppstoreOutlined,
   CoffeeOutlined,
   FireOutlined,
   SkinOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons'
-import { MOCK_LISTINGS } from '@/pages/Destinations/const'
-import type { HotelDetailData } from './types'
+import type { HotelAmenityItem } from './types'
 
 export const HOTEL_DETAIL_I18N = {
   reviewsCount: 'pages.hotelDetail.reviewsCount',
@@ -17,6 +17,7 @@ export const HOTEL_DETAIL_I18N = {
   reviewsSummary: 'pages.hotelDetail.reviewsSummary',
   reviewsExceptional: 'pages.hotelDetail.reviewsExceptional',
   notFound: 'pages.hotelDetail.notFound',
+  loadError: 'pages.hotelDetail.loadError',
   booking: {
     perNight: 'pages.hotelDetail.booking.perNight',
     checkIn: 'pages.hotelDetail.booking.checkIn',
@@ -29,6 +30,7 @@ export const HOTEL_DETAIL_I18N = {
     total: 'pages.hotelDetail.booking.total',
     bookNow: 'pages.hotelDetail.booking.bookNow',
     notCharged: 'pages.hotelDetail.booking.notCharged',
+    createError: 'pages.hotelDetail.booking.createError',
     safeBooking: 'pages.hotelDetail.booking.safeBooking',
     freeCancellation: 'pages.hotelDetail.booking.freeCancellation',
   },
@@ -40,6 +42,18 @@ export const HOTEL_DETAIL_I18N = {
     oceanSpa: 'pages.hotelDetail.amenities.oceanSpa',
     michelinDining: 'pages.hotelDetail.amenities.michelinDining',
     yogaStudio: 'pages.hotelDetail.amenities.yogaStudio',
+    wifi: 'pages.hotelDetail.amenities.wifi',
+    gym: 'pages.hotelDetail.amenities.gym',
+    parking: 'pages.hotelDetail.amenities.parking',
+    restaurant: 'pages.hotelDetail.amenities.restaurant',
+    petFriendly: 'pages.hotelDetail.amenities.petFriendly',
+    kidsActivities: 'pages.hotelDetail.amenities.kidsActivities',
+  },
+  gallery: {
+    photo: 'pages.hotelDetail.gallery.photo',
+  },
+  reviews: {
+    guest: 'pages.hotelDetail.reviews.guest',
   },
 } as const
 
@@ -49,91 +63,46 @@ export const GUEST_OPTIONS = [
   { value: '1-0', labelKey: 'pages.hotelDetail.booking.guestOption1Adult' },
 ] as const
 
-const DEFAULT_AMENITIES: HotelDetailData['amenities'] = [
-  { id: 'pool', labelKey: HOTEL_DETAIL_I18N.amenities.infinityPool, icon: ThunderboltOutlined },
-  { id: 'spa', labelKey: HOTEL_DETAIL_I18N.amenities.oceanSpa, icon: SkinOutlined },
-  { id: 'dining', labelKey: HOTEL_DETAIL_I18N.amenities.michelinDining, icon: CoffeeOutlined },
-  { id: 'yoga', labelKey: HOTEL_DETAIL_I18N.amenities.yogaStudio, icon: FireOutlined },
-]
+export const DESCRIPTION_TITLE_KEY = 'pages.hotelDetail.descriptions.default.title'
 
-const buildDetailFromListing = (
-  listing: (typeof MOCK_LISTINGS)[number],
-  overrides: Partial<HotelDetailData> = {},
-): HotelDetailData => ({
-  id: listing.id,
-  name: listing.name,
-  city: listing.city,
-  country: listing.country,
-  heroImageUrl: listing.imageUrl,
-  guestRating: listing.guestRating,
-  reviewCount: 428,
-  pricePerNight: listing.pricePerNight,
-  weatherTemp: 18,
-  weatherConditionKey: HOTEL_DETAIL_I18N.weather.sunny,
-  descriptionTitleKey: 'pages.hotelDetail.descriptions.default.title',
-  descriptionParagraphKeys: [
-    'pages.hotelDetail.descriptions.default.p1',
-    'pages.hotelDetail.descriptions.default.p2',
-  ],
-  amenities: DEFAULT_AMENITIES,
-  gallery: [
-    {
-      id: '1',
-      url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80',
-      altKey: 'pages.hotelDetail.gallery.bedroom',
-    },
-    {
-      id: '2',
-      url: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
-      altKey: 'pages.hotelDetail.gallery.cocktail',
-    },
-  ],
-  galleryTotalPhotos: 42,
-  reviews: [
-    {
-      id: '1',
-      initials: 'EH',
-      authorKey: 'pages.hotelDetail.reviews.eh.author',
-      dateKey: 'pages.hotelDetail.reviews.eh.date',
-      rating: 5,
-      commentKey: 'pages.hotelDetail.reviews.eh.comment',
-    },
-    {
-      id: '2',
-      initials: 'JM',
-      authorKey: 'pages.hotelDetail.reviews.jm.author',
-      dateKey: 'pages.hotelDetail.reviews.jm.date',
-      rating: 5,
-      commentKey: 'pages.hotelDetail.reviews.jm.comment',
-    },
-  ],
+export const HOTEL_DETAIL_BOOKING_DEFAULTS = {
   serviceFee: 120,
   occupancyTaxRate: 0.12,
   defaultNights: 6,
-  ...overrides,
-})
+} as const
 
-export const MOCK_HOTEL_DETAILS: Record<string, HotelDetailData> = Object.fromEntries(
-  MOCK_LISTINGS.map((listing) => {
-    if (listing.id === 'azure-horizon-villa') {
-      return [
-        listing.id,
-        buildDetailFromListing(listing, {
-          name: 'Azure Sands Boutique Resort',
-          city: 'Amalfi Coast',
-          country: 'Italy',
-          heroImageUrl:
-            'https://images.unsplash.com/photo-1573843981267-be1999ffcd2b?auto=format&fit=crop&w=1400&q=80',
-          guestRating: 5.0,
-          pricePerNight: 850,
-          descriptionTitleKey: 'pages.hotelDetail.descriptions.coastal.title',
-          descriptionParagraphKeys: [
-            'pages.hotelDetail.descriptions.coastal.p1',
-            'pages.hotelDetail.descriptions.coastal.p2',
-          ],
-        }),
-      ]
-    }
-    return [listing.id, buildDetailFromListing(listing)]
-  }),
-)
+export const HOTEL_DETAIL_WEATHER_DEFAULTS = {
+  temp: 18,
+  conditionKey: HOTEL_DETAIL_I18N.weather.sunny,
+} as const
+
+const AMENITY_ICON_MAP: Record<
+  string,
+  Pick<HotelAmenityItem, 'icon' | 'labelKey'>
+> = {
+  POOL: { icon: ThunderboltOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.infinityPool },
+  INFINITY_POOL: { icon: ThunderboltOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.infinityPool },
+  SPA: { icon: SkinOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.oceanSpa },
+  OCEAN_SPA: { icon: SkinOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.oceanSpa },
+  RESTAURANT: { icon: CoffeeOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.michelinDining },
+  MICHELIN_DINING: { icon: CoffeeOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.michelinDining },
+  YOGA: { icon: FireOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.yogaStudio },
+  YOGA_STUDIO: { icon: FireOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.yogaStudio },
+  WIFI: { icon: AppstoreOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.wifi },
+  GYM: { icon: FireOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.gym },
+  PARKING: { icon: AppstoreOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.parking },
+  PET_FRIENDLY: { icon: AppstoreOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.petFriendly },
+  KIDS_ACTIVITIES: { icon: AppstoreOutlined, labelKey: HOTEL_DETAIL_I18N.amenities.kidsActivities },
+}
+
+export const normalizeAmenityKey = (amenity: string): string =>
+  amenity.trim().toUpperCase().replace(/[\s-]+/g, '_')
+
+export const mapAmenityToItem = (amenity: string): HotelAmenityItem => {
+  const key = normalizeAmenityKey(amenity)
+  const config = AMENITY_ICON_MAP[key]
+  if (config) {
+    return { id: key, icon: config.icon, labelKey: config.labelKey }
+  }
+  return { id: key, icon: AppstoreOutlined, label: amenity }
+}

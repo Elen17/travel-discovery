@@ -6,4 +6,6 @@ export type HotelDetailHeroProps = {
   reviewCountLabel: string
   weatherTemp: number
   weatherLabel: string
+  latitude: number
+  longitude: number
 }
