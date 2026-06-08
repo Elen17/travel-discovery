@@ -1,4 +1,4 @@
-import type { ExplorationContent, PlannerExploration } from '@/types/planner'
+import type { ExplorationContent, ExplorationId, PlannerExploration } from '@/types/planner'
 
 export const PLANNER_I18N = {
   title: 'pages.planner.title',
