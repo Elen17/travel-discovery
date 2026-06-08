@@ -28,7 +28,7 @@ export const useBookingHotels = (hotelIds: number[], enabled = true) =>
   useQueries({
     queries: hotelIds.map((id) => ({
       queryKey: bookingsQueryKeys.hotel(id),
-      queryFn: () => getHotelById(id),
+      queryFn: () => getHotelById(String(id)),
       enabled: enabled && id > 0,
     })),
   })
