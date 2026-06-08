@@ -228,7 +228,21 @@
         "emptyHint": "Ask a question or tap Generate Insights for curated day plans.",
         "offline": "Offline mode — using saved recommendations",
         "typing": "Assistant is typing…",
-        "loginPrompt": "Log in to sync your chat history across devices."
+        "loginPrompt": "Log in to sync your chat history across devices.",
+        "history": "History",
+        "historyTitle": "Saved chats & plans",
+        "historyEmpty": "No saved chats yet. Use Save to keep a plan from your conversation.",
+        "historyRestore": "Restore",
+        "historyDelete": "Delete",
+        "historyMessages": "messages",
+        "historyPlans": "plans",
+        "save": "Save",
+        "saveSuccess": "Chat and plan saved",
+        "saveEmptyHint": "Start a conversation before saving",
+        "saveModalTitle": "Save chat & plan",
+        "saveModalLabel": "Plan name",
+        "saveModalConfirm": "Save",
+        "saveModalCancel": "Cancel"
       },
       "applied": {
         "title": "Today's Plan",

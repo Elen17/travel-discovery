@@ -7,6 +7,7 @@ import type {
 } from '@/types/planner'
 
 export const PLANNER_STORAGE_KEY = 'planner_guest_session'
+export const PLANNER_SAVED_SESSIONS_KEY = 'planner_saved_sessions'
 
 export type PlannerState = {
   activeExplorationId: ExplorationId

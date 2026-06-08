@@ -1,0 +1,33 @@
+.drawerTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty {
+  margin-top: 48px;
+}
+
+.list {
+  margin: -8px 0;
+}
+
+.item {
+  align-items: flex-start !important;
+  padding: 12px 0 !important;
+}
+
+.sessionTitle {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8125rem;
+  color: rgba(26, 26, 46, 0.55);
+}

@@ -89,3 +89,15 @@ export type GuestPlannerSession = {
   appliedItineraries: AppliedItinerary[]
   dynamicSuggestions: PlannerSuggestion[] | null
 }
+
+export type SavedPlannerSession = {
+  id: string
+  title: string
+  explorationId: ExplorationId
+  sessionToken: string | null
+  messages: PlannerMessage[]
+  appliedItineraries: AppliedItinerary[]
+  dynamicSuggestions: PlannerSuggestion[] | null
+  savedAt: string
+  updatedAt: string
+}

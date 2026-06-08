@@ -10,5 +10,11 @@ export type PlannerChatProps = {
   emptyHint: string
   offlineLabel: string
   typingLabel: string
+  historyLabel: string
+  saveLabel: string
+  saveEmptyHint: string
+  canSave: boolean
   onSend: (message: string) => void
+  onOpenHistory: () => void
+  onOpenSave: () => void
 }
