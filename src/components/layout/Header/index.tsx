@@ -68,9 +68,9 @@ export const Header = () => {
         {isAuthenticated ? (
           <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" trigger={['click']}>
             <Button
-              type={isProfileActive ? 'text' : 'default'}
+              type="primary"
               icon={<UserOutlined />}
-              className={isProfileActive ? styles.profileLinkActive : styles.profileBtn}
+              className={styles.profileBtn}
               loading={isLoggingOut}
             >
               {user?.fullName ?? t('nav.profile')}
@@ -83,7 +83,7 @@ export const Header = () => {
             className={styles.profileBtn}
             onClick={() => navigate('/auth/login')}
           >
-            {t('nav.login')}
+            {t('nav.profile')}
           </Button>
         )}
       </div>

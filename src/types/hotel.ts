@@ -23,7 +23,7 @@ export type Hotel = {
   isFeatured: boolean
   amenities: HotelAmenity[]
   imageUrls: string[]
-  averageRating: number
+  averageRating?: number
   reviewCount: number
 }
 
@@ -38,8 +38,8 @@ export type HotelLiveSearchParams = {
 
 /** Catalog listing with filters — paginated. */
 export type HotelCatalogParams = {
-  country: string
-  city: string
+  country?: string
+  city?: string
   starRating?: number
   page?: number
   size?: number

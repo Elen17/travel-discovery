@@ -1,11 +1,13 @@
 import type { Dayjs } from 'dayjs'
 
 export type HomeSearchBarProps = {
-  onSearch?: (values: HomeSearchBarValues) => void
+  onSearch?: (values: HomeSearchBarValues) => void | Promise<void>
+  loading?: boolean
 }
 
 export type HomeSearchBarValues = {
-  destination: string
+  country: string | null
+  city: string | null
   dates: [Dayjs, Dayjs] | null
   guests: number | null
 }

@@ -37,20 +37,28 @@
     "home": {
       "heroTitle": "Where do you want to go?",
       "search": {
-        "destination": "Destination",
-        "destinationPlaceholder": "Search places...",
+        "country": "Country",
+        "countryPlaceholder": "Select country",
+        "city": "City",
+        "cityPlaceholder": "Select city",
         "dates": "Dates",
-        "datesPlaceholder": "Add dates",
+        "startDatesPlaceholder": "Start",
+        "endDatesPlaceholder": "End",
         "guests": "Guests",
         "guestsPlaceholder": "Add guests",
-        "submit": "Search"
+        "submit": "Search",
+        "errors": {
+          "countryRequired": "Please select a country.",
+          "cityRequired": "Please select a city.",
+          "generic": "Search failed. Please try again."
+        }
       },
       "categories": {
         "eyebrow": "Curated",
         "title": "Explore by Category",
         "beaches": "Beaches",
         "adventure": "Adventure",
-        "luxuryTour": "Luxury Tour",
+        "europeTour": "Europe Tour",
         "cabinStays": "Cabin Stays",
         "foodWine": "Food & Wine"
       },
@@ -60,11 +68,28 @@
         "avgPrice": "Avg. {{price}} / night",
         "prev": "Previous destinations",
         "next": "Next destinations",
+        "cardAlt": "{{city}}, {{country}}",
+        "savedDestination": "Saved {{city}} to favourites",
+        "loadError": "Could not load trending destinations. Please try again later.",
         "destinations": {
           "ubud": { "city": "Ubud, Bali", "country": "Indonesia" },
           "kyoto": { "city": "Kyoto", "country": "Japan" },
           "paris": { "city": "Paris", "country": "France" },
           "venice": { "city": "Venice", "country": "Italy" }
+        }
+      },
+      "newsletter": {
+        "title": "The Travel Discovery Journal",
+        "description": "Curated travel insights, hidden destinations, and exclusive membership offers delivered once a month.",
+        "emailPlaceholder": "Enter your email",
+        "submit": "Subscribe",
+        "disclaimerPrefix": "By subscribing, you agree to our",
+        "disclaimerAnd": "and",
+        "success": "You're subscribed! Check your inbox for upcoming events and travel insights.",
+        "errors": {
+          "emailRequired": "Please enter your email address.",
+          "emailInvalid": "Please enter a valid email address.",
+          "generic": "Something went wrong. Please try again later."
         }
       }
     },
@@ -572,8 +597,19 @@
         "planWithAi": "Plan with AI",
         "removeSaved": "Remove from saved places"
       },
+      "avatar": {
+        "change": "Change photo",
+        "uploading": "Uploading photo…",
+        "success": "Profile photo updated.",
+        "errors": {
+          "invalidType": "Please choose a JPEG, PNG, WebP, or GIF image.",
+          "tooLarge": "Image must be 5 MB or smaller.",
+          "generic": "Could not update your profile photo. Please try again."
+        }
+      },
       "savedPlaces": {
         "empty": "You haven't saved any places yet. Explore destinations and tap the heart to save your favorites.",
+        "loadError": "Could not load your saved places. Please try again later.",
         "villaMargherita": {
           "country": "Italy",
           "description": "A sun-drenched villa perched above the Amalfi cliffs with private terraces and sea views."
@@ -644,5 +680,25 @@
     "search": "Search",
     "language": "Language",
     "saveDestination": "Save destination"
+  },
+  "authModals": {
+    "loginRequired": {
+      "title": "Sign in required",
+      "message": "You are not logged in. Please sign in to save destinations to your favourites.",
+      "login": "Go to login",
+      "cancel": "Cancel"
+    },
+    "sessionExpired": {
+      "title": "Session expired",
+      "message": "Your session has expired. Please authenticate again to continue.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in again",
+      "cancel": "Cancel",
+      "errors": {
+        "passwordRequired": "Please enter your password.",
+        "generic": "Authentication failed. Please try again."
+      }
+    }
   }
 }

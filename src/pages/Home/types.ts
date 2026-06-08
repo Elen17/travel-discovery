@@ -7,19 +7,3 @@ export type HomeCategory = {
   labelKey: string
   icon: ComponentType<{ className?: string }>
 }
-
-export type TrendingDestination = {
-  id: string
-  cityKey: string
-  countryKey: string
-  imageUrl: string
-  avgPrice: number
-  cityQuery: string
-}
-
-export type HomeSearchValues = {
-  destination?: string
-  checkIn?: string
-  checkOut?: string
-  guests?: number
-}
