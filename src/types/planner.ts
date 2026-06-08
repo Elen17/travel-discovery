@@ -1,4 +1,4 @@
-export type ExplorationId = 'iceland' | 'tuscany' | 'kyoto' | 'amalfi'
+export type ExplorationId = string
 
 export type ItineraryCategory = 'nature' | 'wellness' | 'adventure'
 
@@ -25,10 +25,22 @@ export type AppliedItinerary = {
   id: string
   titleKey: string
   title?: string
+  description?: string
   durationKey: string
   duration?: string
   category: ItineraryCategory
   appliedAt: string
+}
+
+export type PlannerAppliedItineraryItem = {
+  title: string
+  description?: string
+}
+
+export type PlannerAppliedItinerary = {
+  id: number
+  title: string
+  description?: string
 }
 
 export type PlannerExploration = {
@@ -72,29 +84,56 @@ export type PlannerSuggestion = {
 
 export type PlannerChatPayload = {
   message: string
-  sessionToken?: string
+  planId?: string
   explorationId?: ExplorationId
+  role?: PlannerMessage['role']
 }
 
 export type PlannerChatResponse = {
   reply: string
-  sessionToken: string
+  planId: string
   suggestions?: PlannerSuggestion[]
 }
 
-export type GuestPlannerSession = {
-  sessionToken: string
+export type PlannerStoredSession = {
+  planId: string | null
   explorationId: ExplorationId
   messages: PlannerMessage[]
   appliedItineraries: AppliedItinerary[]
   dynamicSuggestions: PlannerSuggestion[] | null
 }
 
+export type PlannerPlanPayload = {
+  title?: string
+  description?: string
+  explorationId?: string
+  duration?: number
+  type?: string
+  travelersCount?: number
+  imageUrl?: string
+  messages?: PlannerMessage[]
+  appliedItineraries?: PlannerAppliedItineraryItem[]
+}
+
+export type PlannerPlan = {
+  id: string
+  title: string
+  description?: string
+  explorationId: string
+  duration?: number
+  type?: string
+  travelersCount?: number
+  imageUrl?: string
+  createdAt: string
+  updatedAt: string
+  messages: PlannerMessage[]
+  appliedItineraries: PlannerAppliedItinerary[]
+}
+
 export type SavedPlannerSession = {
   id: string
   title: string
   explorationId: ExplorationId
-  sessionToken: string | null
   messages: PlannerMessage[]
   appliedItineraries: AppliedItinerary[]
   dynamicSuggestions: PlannerSuggestion[] | null

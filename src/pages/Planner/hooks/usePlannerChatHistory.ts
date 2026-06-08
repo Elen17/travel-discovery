@@ -1,23 +1,48 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { restoreSession, setDynamicItineraries } from '@/store/plannerSlice'
 import type { SavedPlannerSession } from '@/types/planner'
-import { RECENT_EXPLORATIONS, PLANNER_I18N } from '../const'
-import { suggestionsToItineraries } from '../utils'
+import { PLANNER_I18N, RECENT_EXPLORATIONS } from '../const'
+import { plannerPlanToSavedSession, suggestionsToItineraries } from '../utils'
 import { deleteSavedSession, loadSavedSessions } from '../utils/sessionStorage'
+import { usePlannerPlans } from './usePlannerApi'
 
 export const usePlannerChatHistory = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const [historyOpen, setHistoryOpen] = useState(false)
-  const [savedSessions, setSavedSessions] = useState<SavedPlannerSession[]>([])
+  const [localSessions, setLocalSessions] = useState<SavedPlannerSession[]>([])
 
-  const refreshHistory = useCallback(() => {
+  const { data: backendPlans = [], refetch: refetchPlans } = usePlannerPlans({
+    enabled: isAuthenticated,
+  })
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setLocalSessions(loadSavedSessions())
+    }
+  }, [isAuthenticated])
+
+  const savedSessions = useMemo(
+    () =>
+      isAuthenticated
+        ? backendPlans.map(plannerPlanToSavedSession)
+        : localSessions,
+    [backendPlans, isAuthenticated, localSessions],
+  )
+
+  const refreshHistory = useCallback(async () => {
+    if (isAuthenticated) {
+      const { data } = await refetchPlans()
+      return (data ?? []).map(plannerPlanToSavedSession)
+    }
+
     const sessions = loadSavedSessions()
-    setSavedSessions(sessions)
+    setLocalSessions(sessions)
     return sessions
-  }, [])
+  }, [isAuthenticated, refetchPlans])
 
   const openHistory = useCallback(() => {
     refreshHistory()
@@ -47,9 +72,12 @@ export const usePlannerChatHistory = () => {
 
   const removeSavedSession = useCallback(
     (id: string) => {
-      setSavedSessions(deleteSavedSession(id))
+      if (isAuthenticated) {
+        return
+      }
+      setLocalSessions(deleteSavedSession(id))
     },
-    [],
+    [isAuthenticated],
   )
 
   const getExplorationTitle = useCallback(
@@ -60,24 +88,22 @@ export const usePlannerChatHistory = () => {
     [t],
   )
 
-  const formatDate = useCallback(
-    (isoDate: string) => {
-      try {
-        return new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'medium',
-          timeStyle: 'short',
-        }).format(new Date(isoDate))
-      } catch {
-        return isoDate
-      }
-    },
-    [],
-  )
+  const formatDate = useCallback((isoDate: string) => {
+    try {
+      return new Intl.DateTimeFormat(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }).format(new Date(isoDate))
+    } catch {
+      return isoDate
+    }
+  }, [])
 
   return {
     historyOpen,
     openHistory,
     closeHistory,
+    refreshHistory,
     savedSessions,
     restoreSavedSession,
     removeSavedSession,

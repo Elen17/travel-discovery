@@ -36,7 +36,10 @@ export const AppliedItinerariesSection = () => {
           >
             <List.Item.Meta
               title={item.title ?? t(item.titleKey)}
-              description={`${t(CATEGORY_I18N_KEYS[item.category])} · ${item.duration ?? t(item.durationKey)}`}
+              description={
+                item.description ??
+                `${t(CATEGORY_I18N_KEYS[item.category])} · ${item.duration ?? t(item.durationKey)}`
+              }
             />
           </List.Item>
         )}

@@ -206,6 +206,8 @@
       "title": "Պլանավորող",
       "comingSoon": "{{feature}} — շուտով",
       "newChat": "Նոր զրույց",
+      "dailyPlans": "Օրական պլաններ",
+      "dailyPlansEmpty": "Պահված օրական պլաններ դեռ չկան",
       "recentExplorations": "Վերջին ուսումնասիրություններ",
       "trip": {
         "eyebrow": "Ընտրված էքսպեդիցիա",

@@ -2,13 +2,19 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type {
   AppliedItinerary,
   ExplorationId,
-  GuestPlannerSession,
   PlannerMessage,
+  PlannerStoredSession,
   PlannerSuggestion,
   SavedPlannerSession,
   SuggestedItinerary,
 } from '@/types/planner'
-import { PLANNER_STORAGE_KEY, type PlannerState } from './planner/types'
+import { normalizePlanId } from '@/utils/plannerPlanId'
+import { DEFAULT_EXPLORATION_ID } from '@/utils/exploration'
+import {
+  PLANNER_LEGACY_STORAGE_KEY,
+  PLANNER_STORAGE_KEY,
+  type PlannerState,
+} from './planner/types'
 
 export {
   PLANNER_SAVED_SESSIONS_KEY,
@@ -16,15 +22,25 @@ export {
   type PlannerState,
 } from './planner/types'
 
+type StoredPlannerSession = PlannerStoredSession & { sessionToken?: string; planId?: string | null }
+
 const loadStoredSession = (): Partial<PlannerState> => {
   try {
-    const raw = localStorage.getItem(PLANNER_STORAGE_KEY)
+    const raw =
+      localStorage.getItem(PLANNER_STORAGE_KEY) ??
+      localStorage.getItem(PLANNER_LEGACY_STORAGE_KEY)
     if (!raw) {
       return {}
     }
-    const parsed = JSON.parse(raw) as GuestPlannerSession
+    const parsed = JSON.parse(raw) as StoredPlannerSession
+    const planId = normalizePlanId(parsed.planId ?? parsed.sessionToken ?? null)
+
+    if (localStorage.getItem(PLANNER_LEGACY_STORAGE_KEY) && !localStorage.getItem(PLANNER_STORAGE_KEY)) {
+      localStorage.removeItem(PLANNER_LEGACY_STORAGE_KEY)
+    }
+
     return {
-      sessionToken: parsed.sessionToken,
+      planId,
       activeExplorationId: parsed.explorationId,
       messages: parsed.messages,
       appliedItineraries: parsed.appliedItineraries,
@@ -38,8 +54,8 @@ const loadStoredSession = (): Partial<PlannerState> => {
 const stored = loadStoredSession()
 
 const initialState: PlannerState = {
-  activeExplorationId: stored.activeExplorationId ?? 'iceland',
-  sessionToken: stored.sessionToken ?? null,
+  activeExplorationId: stored.activeExplorationId ?? DEFAULT_EXPLORATION_ID,
+  planId: stored.planId ?? null,
   messages: stored.messages ?? [],
   appliedItineraries: stored.appliedItineraries ?? [],
   dynamicSuggestions: stored.dynamicSuggestions ?? null,
@@ -48,15 +64,27 @@ const initialState: PlannerState = {
   isHydrated: false,
 }
 
-const persistGuestSession = (state: PlannerState): void => {
-  const session: GuestPlannerSession = {
-    sessionToken: state.sessionToken ?? `guest_${Date.now()}`,
+const persistPlannerSession = (state: PlannerState): void => {
+  const hasContent =
+    state.messages.length > 0 ||
+    state.appliedItineraries.length > 0 ||
+    state.dynamicSuggestions !== null
+
+  if (!hasContent && !state.planId) {
+    localStorage.removeItem(PLANNER_STORAGE_KEY)
+    localStorage.removeItem(PLANNER_LEGACY_STORAGE_KEY)
+    return
+  }
+
+  const session: PlannerStoredSession = {
+    planId: state.planId,
     explorationId: state.activeExplorationId,
     messages: state.messages,
     appliedItineraries: state.appliedItineraries,
     dynamicSuggestions: state.dynamicSuggestions,
   }
   localStorage.setItem(PLANNER_STORAGE_KEY, JSON.stringify(session))
+  localStorage.removeItem(PLANNER_LEGACY_STORAGE_KEY)
 }
 
 const plannerSlice = createSlice({
@@ -71,40 +99,41 @@ const plannerSlice = createSlice({
         return
       }
       state.activeExplorationId = action.payload
+      state.planId = null
       state.messages = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
       state.isOfflineMode = false
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
-    setSessionToken: (state, action: PayloadAction<string | null>) => {
-      state.sessionToken = action.payload
-      persistGuestSession(state)
+    setPlanId: (state, action: PayloadAction<string | null>) => {
+      state.planId = normalizePlanId(action.payload)
+      persistPlannerSession(state)
     },
     setMessages: (state, action: PayloadAction<PlannerMessage[]>) => {
       state.messages = action.payload
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
     appendMessages: (state, action: PayloadAction<PlannerMessage[]>) => {
       state.messages.push(...action.payload)
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
     applyItinerary: (state, action: PayloadAction<AppliedItinerary>) => {
       const exists = state.appliedItineraries.some((item) => item.id === action.payload.id)
       if (!exists) {
         state.appliedItineraries.push(action.payload)
-        persistGuestSession(state)
+        persistPlannerSession(state)
       }
     },
     removeAppliedItinerary: (state, action: PayloadAction<string>) => {
       state.appliedItineraries = state.appliedItineraries.filter(
         (item) => item.id !== action.payload,
       )
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
     setDynamicSuggestions: (state, action: PayloadAction<PlannerSuggestion[] | null>) => {
       state.dynamicSuggestions = action.payload
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
     setDynamicItineraries: (state, action: PayloadAction<SuggestedItinerary[] | null>) => {
       state.dynamicItineraries = action.payload
@@ -113,35 +142,54 @@ const plannerSlice = createSlice({
       state.isOfflineMode = action.payload
     },
     startNewChat: (state) => {
-      state.sessionToken = null
+      state.planId = null
       state.messages = []
       state.appliedItineraries = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
       localStorage.removeItem(PLANNER_STORAGE_KEY)
+      localStorage.removeItem(PLANNER_LEGACY_STORAGE_KEY)
     },
     hydrateFromUrl: (
       state,
-      action: PayloadAction<{ explorationId?: ExplorationId; sessionToken?: string }>,
+      action: PayloadAction<{ explorationId?: ExplorationId; planId?: string }>,
     ) => {
       if (action.payload.explorationId) {
         state.activeExplorationId = action.payload.explorationId
       }
-      if (action.payload.sessionToken) {
-        state.sessionToken = action.payload.sessionToken
+      if (action.payload.planId) {
+        state.planId = normalizePlanId(action.payload.planId)
       }
-      persistGuestSession(state)
+      persistPlannerSession(state)
     },
     restoreSession: (state, action: PayloadAction<SavedPlannerSession>) => {
       const session = action.payload
       state.activeExplorationId = session.explorationId
-      state.sessionToken = session.sessionToken
+      state.planId = normalizePlanId(session.id)
       state.messages = session.messages
       state.appliedItineraries = session.appliedItineraries
       state.dynamicSuggestions = session.dynamicSuggestions
       state.dynamicItineraries = null
       state.isOfflineMode = false
-      persistGuestSession(state)
+      persistPlannerSession(state)
+    },
+    loadPlan: (
+      state,
+      action: PayloadAction<{
+        planId: string
+        explorationId: ExplorationId
+        messages: PlannerMessage[]
+        appliedItineraries: AppliedItinerary[]
+      }>,
+    ) => {
+      state.planId = normalizePlanId(action.payload.planId)
+      state.activeExplorationId = action.payload.explorationId
+      state.messages = action.payload.messages
+      state.appliedItineraries = action.payload.appliedItineraries
+      state.dynamicSuggestions = null
+      state.dynamicItineraries = null
+      state.isOfflineMode = false
+      persistPlannerSession(state)
     },
   },
 })
@@ -149,7 +197,7 @@ const plannerSlice = createSlice({
 export const {
   setHydrated,
   setActiveExploration,
-  setSessionToken,
+  setPlanId,
   setMessages,
   appendMessages,
   applyItinerary,
@@ -160,6 +208,7 @@ export const {
   startNewChat,
   hydrateFromUrl,
   restoreSession,
+  loadPlan,
 } = plannerSlice.actions
 
 export default plannerSlice.reducer

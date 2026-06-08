@@ -194,6 +194,8 @@
       "title": "Planner",
       "comingSoon": "{{feature}} — coming soon",
       "newChat": "New Chat",
+      "dailyPlans": "Daily Plans",
+      "dailyPlansEmpty": "No saved daily plans yet",
       "recentExplorations": "Recent Explorations",
       "trip": {
         "eyebrow": "Curated Expedition",

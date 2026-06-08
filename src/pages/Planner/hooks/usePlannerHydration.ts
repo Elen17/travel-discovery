@@ -1,19 +1,23 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { hydrateFromUrl, setHydrated, setMessages } from '@/store/plannerSlice'
-import { usePlannerHistory } from './usePlannerApi'
+import { isBackendPlanId } from '@/utils/plannerPlanId'
+import { usePlannerHistory, usePlannerPlans } from './usePlannerApi'
 import { parsePlannerSearchParams, resolveExplorationFromParams } from '../utils'
 
 export const usePlannerHydration = () => {
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
-  const { sessionToken } = useAppSelector((state) => state.planner)
+  const { planId } = useAppSelector((state) => state.planner)
+  const loadedHistoryPlanIdRef = useRef<string | null>(null)
+
+  usePlannerPlans({ enabled: isAuthenticated })
 
   const { data: historyMessages } = usePlannerHistory({
-    sessionToken,
-    enabled: isAuthenticated && Boolean(sessionToken),
+    planId,
+    enabled: isAuthenticated && isBackendPlanId(planId),
   })
 
   useEffect(() => {
@@ -22,15 +26,21 @@ export const usePlannerHydration = () => {
     dispatch(
       hydrateFromUrl({
         explorationId,
-        sessionToken: parsed.session,
+        planId: parsed.session,
       }),
     )
     dispatch(setHydrated(true))
+    loadedHistoryPlanIdRef.current = null
   }, [dispatch, searchParams])
 
   useEffect(() => {
-    if (historyMessages && historyMessages.length > 0) {
-      dispatch(setMessages(historyMessages))
+    if (!isBackendPlanId(planId) || !historyMessages || historyMessages.length === 0) {
+      return
     }
-  }, [dispatch, historyMessages])
+    if (loadedHistoryPlanIdRef.current === planId) {
+      return
+    }
+    loadedHistoryPlanIdRef.current = planId
+    dispatch(setMessages(historyMessages))
+  }, [dispatch, historyMessages, planId])
 }

@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setSessionToken } from '@/store/plannerSlice'
+import { useAppSelector } from '@/store/hooks'
 import { EXPLORATION_CONTENT, PLANNER_I18N } from '../const'
-import { buildShareUrl, getExplorationContent } from '../utils'
+import { buildShareUrl, getExplorationContent, isBackendPlanId } from '../utils'
 
 export const usePlannerShare = () => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const { activeExplorationId, sessionToken } = useAppSelector((state) => state.planner)
+  const { activeExplorationId, planId } = useAppSelector((state) => state.planner)
   const exploration = getExplorationContent(activeExplorationId, EXPLORATION_CONTENT)
   const [shareMessage, setShareMessage] = useState<string | null>(null)
 
@@ -21,11 +19,12 @@ export const usePlannerShare = () => {
   }, [shareMessage])
 
   const handleShare = useCallback(async () => {
-    const token = sessionToken ?? `share_${activeExplorationId}_${Date.now()}`
-    if (!sessionToken) {
-      dispatch(setSessionToken(token))
+    if (!isBackendPlanId(planId)) {
+      setShareMessage(t(PLANNER_I18N.share.failed))
+      return
     }
-    const url = buildShareUrl(token, activeExplorationId)
+
+    const url = buildShareUrl(planId, activeExplorationId)
 
     if (navigator.share) {
       try {
@@ -45,7 +44,7 @@ export const usePlannerShare = () => {
     } catch {
       setShareMessage(t(PLANNER_I18N.share.failed))
     }
-  }, [activeExplorationId, dispatch, exploration.trip.titleKey, sessionToken, t])
+  }, [activeExplorationId, exploration.trip.titleKey, planId, t])
 
   return { shareMessage, setShareMessage, handleShare }
 }

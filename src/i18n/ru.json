@@ -192,6 +192,8 @@
       "title": "Планировщик",
       "comingSoon": "{{feature}} — скоро",
       "newChat": "Новый чат",
+      "dailyPlans": "Дневные планы",
+      "dailyPlansEmpty": "Сохранённых дневных планов пока нет",
       "recentExplorations": "Недавние исследования",
       "trip": {
         "eyebrow": "Кураторская экспедиция",
