@@ -6,6 +6,7 @@
 }
 
 .resultsCount {
+  font-family: var(--font-body);
   margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
@@ -14,26 +15,15 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px 28px;
+  justify-items: center;
 }
 
 .empty {
+  font-family: var(--font-body);
+  font-size: 1rem;
   padding: 48px 24px;
   text-align: center;
-  color: rgba(26, 26, 46, 0.55);
-  font-size: 1rem;
-}
-
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+  color: var(--color-text-muted);
 }

@@ -84,6 +84,7 @@
         "hotelType": "Тип жилья",
         "starRating": "Звёздность",
         "apply": "Применить фильтры",
+        "open": "Фильтры",
         "typeHotel": "Отель",
         "typeApartment": "Апартаменты",
         "typeResort": "Курорт",

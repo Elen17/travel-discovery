@@ -14,6 +14,7 @@ export const DESTINATIONS_I18N = {
     hotelType: 'pages.destinations.filters.hotelType',
     starRating: 'pages.destinations.filters.starRating',
     apply: 'pages.destinations.filters.apply',
+    open: 'pages.destinations.filters.open',
     propertyHotel: 'pages.destinations.filters.propertyHotel',
     propertyResort: 'pages.destinations.filters.propertyResort',
     propertyGuesthouse: 'pages.destinations.filters.propertyGuesthouse',

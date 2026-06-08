@@ -1,10 +1,10 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
   padding: 28px 24px 32px;
-  background: #ebe8f2;
-  border-radius: 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
 }
 
 .section {
@@ -14,41 +14,47 @@
 }
 
 .label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-primary);
+  font-family: var(--font-body);
 }
 
 .selectGroup {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .select {
   width: 100%;
-}
-
-.select :global(.ant-select-selector) {
-  min-height: 44px !important;
-  padding-inline: 14px !important;
-  border-radius: 10px !important;
-  border-color: rgba(26, 26, 46, 0.1) !important;
-  background: #fff !important;
-  box-shadow: none !important;
-}
-
-.select :global(.ant-select-selection-item),
-.select :global(.ant-select-selection-placeholder) {
-  line-height: 42px !important;
+  min-height: 48px;
+  background: var(--color-on-surface);
+  border-radius: var(--radius-lg);
   color: var(--color-text-dark);
-  font-size: 0.9375rem;
+  font-family: var(--font-body);
 }
 
-.select :global(.ant-select-arrow) {
-  color: rgba(26, 26, 46, 0.45);
+.customDropdown {
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
+  padding: 4px;
+}
+
+.customDropdown :global(.ant-select-item) {
+  height: 48px;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  transition: all 0.2s var(--transition-ease);
+}
+
+.customDropdown :global(.ant-select-item-option-selected) {
+  background-color: var(--color-surface) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600;
 }
 
 .priceInputs {
@@ -64,45 +70,33 @@
 }
 
 .priceFieldLabel {
+  font-family: var(--font-body);
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(26, 26, 46, 0.45);
+  color: var(--color-text-muted);
 }
 
 .priceInput {
   width: 100%;
-}
-
-.priceInput :global(.ant-input-number) {
-  width: 100%;
+  color: var(--color-text-muted);
   min-height: 48px;
-  border-radius: 10px;
-  border-color: rgba(26, 26, 46, 0.1);
-  background: #fff;
-}
-
-.priceInput :global(.ant-input-number-input) {
-  min-height: 46px;
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-dark);
 }
 
 .priceInput :global(.ant-input-number-prefix) {
   margin-inline-end: 2px;
   color: var(--color-text-dark);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .slider {
-  margin: 8px 4px 0;
-}
-
-.slider :global(.ant-slider-rail) {
-  height: 3px;
-  background: rgba(26, 26, 46, 0.12);
+  margin: 8px 4px 0 !important;
 }
 
 .slider :global(.ant-slider-track) {
@@ -132,21 +126,6 @@
   font-size: 0.9375rem;
 }
 
-.checkbox :global(.ant-checkbox-inner),
-.starCheckbox :global(.ant-checkbox-inner) {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  border-color: rgba(13, 110, 110, 0.45);
-  background: #fff;
-}
-
-.checkbox :global(.ant-checkbox-checked .ant-checkbox-inner),
-.starCheckbox :global(.ant-checkbox-checked .ant-checkbox-inner) {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
 .starCheckbox :global(.ant-checkbox + span) {
   padding-inline-start: 10px;
 }
@@ -159,26 +138,31 @@
 
 .starIcon {
   font-size: 0.875rem;
-  color: #f5a623;
+  color: var(--color-rating);
 }
 
 .applyBtn {
   width: 100%;
-  height: 50px !important;
+  height: 48px;
   margin-top: 4px;
-  border-radius: 12px !important;
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
-  box-shadow: 0 6px 16px rgba(13, 110, 110, 0.28);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .applyBtn:hover {
-  background: #0a5c5c !important;
-  border-color: #0a5c5c !important;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    border-radius: 0;
+  }
 }
 
 @media (max-width: 576px) {

@@ -22,7 +22,7 @@
   max-width: 640px;
   font-size: 1rem;
   line-height: 1.6;
-  color: rgba(26, 26, 46, 0.55);
+  color: var(--color-text-dark);
 }
 
 .layout {
@@ -30,11 +30,12 @@
   grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
   gap: 40px;
   align-items: start;
+  padding-top: 36px;
 }
 
 .sidebar {
   position: sticky;
-  top: 24px;
+  top: 36px;
 }
 
 .main {
@@ -42,6 +43,21 @@
   flex-direction: column;
   gap: 36px;
   min-width: 0;
+}
+
+.mobileFiltersBtn {
+  display: none;
+  align-self: flex-start;
+  height: 46px;
+  padding-inline: 20px;
+  border-radius: var(--radius-lg);
+  border-color: var(--color-border-light);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.mobileFiltersBtn:hover {
+  border-color: var(--color-primary);
 }
 
 .pagination {
@@ -54,7 +70,7 @@
   height: 40px;
   line-height: 38px;
   border-radius: 50%;
-  border-color: rgba(26, 26, 46, 0.12);
+  border-color: var(--color-border-light);
 }
 
 .pagination :global(.ant-pagination-prev .ant-pagination-item-link),
@@ -73,17 +89,20 @@
 }
 
 .pagination :global(.ant-pagination-item-active a) {
-  color: #fff;
+  color: var(--color-on-surface);
 }
 
-@media (max-width: 992px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 28px;
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
   }
 
-  .sidebar {
-    position: static;
+  .mobileFiltersBtn {
+    display: inline-flex;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
   }
 }
 

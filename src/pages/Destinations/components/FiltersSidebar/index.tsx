@@ -65,6 +65,7 @@ export const FiltersSidebar = ({
         <div className={styles.selectGroup}>
           <Select
             className={styles.select}
+            classNames={{ popup: { root: styles.customDropdown } }}
             value={draft.country ?? ''}
             options={countrySelectOptions}
             onChange={handleCountryChange}
@@ -75,6 +76,7 @@ export const FiltersSidebar = ({
           />
           <Select
             className={styles.select}
+            classNames={{ popup: { root: styles.customDropdown } }}
             value={draft.city ?? ''}
             options={citySelectOptions}
             loading={citiesLoading}
@@ -86,6 +88,7 @@ export const FiltersSidebar = ({
           />
         </div>
       </div>
+
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.priceRange)}</span>
         <div className={styles.priceInputs}>
@@ -125,6 +128,7 @@ export const FiltersSidebar = ({
           }
         />
       </div>
+
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.hotelType)}</span>
         <div className={styles.checkboxList}>
@@ -145,6 +149,7 @@ export const FiltersSidebar = ({
           ))}
         </div>
       </div>
+
       <div className={styles.section}>
         <span className={styles.label}>{t(FILTER_I18N.starRating)}</span>
         <div className={styles.checkboxList}>

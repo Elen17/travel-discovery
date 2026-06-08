@@ -1,9 +1,11 @@
-import { Pagination } from 'antd'
-import { useCallback, useMemo } from 'react'
+import { FilterOutlined } from '@ant-design/icons'
+import { Button, Pagination } from 'antd'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useHotels } from '@/hooks/useHotels'
 import { useCountries } from '@/hooks/useLocations'
+import { BaseDrawer } from '@/components/common/BaseDrawer'
 import { DestinationList } from './components/DestinationList'
 import { HotelsMap } from './components/HotelsMap'
 import { FiltersSidebar } from './components/FiltersSidebar'
@@ -16,6 +18,7 @@ const DestinationsPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const [filtersDrawerOpen, setFiltersDrawerOpen] = useState(false)
 
   const { page, country, countryId, city, minPrice, maxPrice, starRating, hotelType } =
     parseFiltersFromParams(searchParams)
@@ -54,9 +57,16 @@ const DestinationsPage = () => {
     (applied: SidebarFiltersState) => {
       setSearchParams(buildSearchParams(applied, PRICE_RANGE), { replace: true })
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      setFiltersDrawerOpen(false)
     },
     [setSearchParams],
   )
+
+  const filtersSidebarProps = {
+    ...sidebarState,
+    countryOptions,
+    onApply: handleApplyFilters,
+  }
 
   const handlePageChange = useCallback(
     (newPage: number) => {
@@ -80,14 +90,18 @@ const DestinationsPage = () => {
 
       <div className={styles.layout}>
         <div className={styles.sidebar}>
-          <FiltersSidebar
-            {...sidebarState}
-            countryOptions={countryOptions}
-            onApply={handleApplyFilters}
-          />
+          <FiltersSidebar {...filtersSidebarProps} />
         </div>
 
         <div className={styles.main}>
+          <Button
+            type="default"
+            icon={<FilterOutlined />}
+            className={styles.mobileFiltersBtn}
+            onClick={() => setFiltersDrawerOpen(true)}
+          >
+            {t(DESTINATIONS_I18N.filters.open)}
+          </Button>
           {isError ? (
             <p className={styles.error}>{t('common.errorLoading')}</p>
           ) : (
@@ -112,6 +126,15 @@ const DestinationsPage = () => {
           )}
         </div>
       </div>
+
+      <BaseDrawer
+        open={filtersDrawerOpen}
+        onClose={() => setFiltersDrawerOpen(false)}
+        title={t(DESTINATIONS_I18N.filters.open)}
+        destroyOnClose={true}
+      >
+        <FiltersSidebar {...filtersSidebarProps} />
+      </BaseDrawer>
     </div>
   )
 }
