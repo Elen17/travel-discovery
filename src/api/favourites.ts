@@ -50,7 +50,7 @@ export const fetchFavouriteHotels = async (): Promise<Hotel[]> => {
   }
 
   const results = await Promise.allSettled(
-    favourites.map((favourite) => getHotelById(favourite.hotelId)),
+    favourites.map((favourite) => getHotelById(`${favourite.hotelId}`)),
   )
 
   return results

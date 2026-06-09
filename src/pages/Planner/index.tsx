@@ -2,7 +2,12 @@ import { useCallback, useMemo } from 'react'
 import { PlannerSidebar } from '@/components/layout/PlannerSidebar'
 import type { PlannerSidebarPlan } from '@/components/layout/PlannerSidebar/types'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { loadPlan, startNewChat } from '@/store/plannerSlice'
+import {
+  loadPlan,
+  restoreSession,
+  setDynamicItineraries,
+  startNewChat,
+} from '@/store/plannerSlice'
 import type { PlannerPlan } from '@/types/planner'
 import { AppliedItinerariesSection } from './components/AppliedItinerariesSection'
 import { ItinerariesSection } from './components/ItinerariesSection'
@@ -18,8 +23,10 @@ import {
   usePlannerShare,
   usePlannerUsePlan,
 } from './hooks'
+import { EXPLORATION_CONTENT } from './const'
 import styles from './styles.module.css'
-import { apiAppliedToUi } from './utils'
+import { apiAppliedToUi, getExplorationContent, suggestionsToItineraries } from './utils'
+import { loadSavedSessions } from './utils/sessionStorage'
 
 const formatPlanMeta = (plan: PlannerPlan): string => {
   const parts = [plan.explorationId]
@@ -39,19 +46,26 @@ const PlannerPage = () => {
   const dispatch = useAppDispatch()
   usePlannerHydration()
 
-  const { activeExplorationId, dynamicItineraries, isHydrated, planId } = useAppSelector(
-    (state) => state.planner,
-  )
+  const { activeExplorationId, dynamicItineraries, dynamicSuggestions, isHydrated, planId } =
+    useAppSelector((state) => state.planner)
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-  const { data: dailyPlans = [] } = usePlannerPlans({ enabled: isAuthenticated })
+  const { data: dailyPlans = [] } = usePlannerPlans()
 
   const sidebarPlans = useMemo(
     () => dailyPlans.map(mapPlanToSidebarItem),
     [dailyPlans],
   )
 
-  const hourlyPlans = useMemo(() => dynamicItineraries ?? [], [dynamicItineraries])
+  const hourlyPlans = useMemo(() => {
+    if (dynamicItineraries && dynamicItineraries.length > 0) {
+      return dynamicItineraries
+    }
+    if (dynamicSuggestions && dynamicSuggestions.length > 0) {
+      return suggestionsToItineraries(dynamicSuggestions, activeExplorationId)
+    }
+    return getExplorationContent(activeExplorationId, EXPLORATION_CONTENT).suggestedItineraries
+  }, [activeExplorationId, dynamicItineraries, dynamicSuggestions])
 
   const { shareMessage, setShareMessage, handleShare } = usePlannerShare()
   const handleExportPdf = usePlannerExportPdf(hourlyPlans)
@@ -63,18 +77,32 @@ const PlannerPage = () => {
   const handleSelectPlan = useCallback(
     (id: string) => {
       const selected = dailyPlans.find((plan) => plan.id === id)
-      if (!selected) {
+      if (selected) {
+        dispatch(
+          loadPlan({
+            planId: selected.id,
+            explorationId: selected.explorationId,
+            messages: selected.messages,
+            appliedItineraries: selected.appliedItineraries.map(apiAppliedToUi),
+          }),
+        )
         return
       }
 
-      dispatch(
-        loadPlan({
-          planId: selected.id,
-          explorationId: selected.explorationId,
-          messages: selected.messages,
-          appliedItineraries: selected.appliedItineraries.map(apiAppliedToUi),
-        }),
-      )
+      const savedSession = loadSavedSessions().find((session) => session.id === id)
+      if (savedSession) {
+        dispatch(restoreSession(savedSession))
+        if (savedSession.dynamicSuggestions?.length) {
+          dispatch(
+            setDynamicItineraries(
+              suggestionsToItineraries(
+                savedSession.dynamicSuggestions,
+                savedSession.explorationId,
+              ),
+            ),
+          )
+        }
+      }
     },
     [dailyPlans, dispatch],
   )

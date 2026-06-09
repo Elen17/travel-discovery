@@ -1,7 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { sendPlannerMessage, sendPlannerMessageHybrid } from '@/api/planner'
+import {
+  sendPlannerMessage,
+  sendPlannerMessageGuest,
+  sendPlannerMessageHybrid,
+} from '@/api/planner'
+import { isPlannerMockFallbackEnabled } from '@/configs/features'
 import { store } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -12,7 +17,7 @@ import {
   setPlanId,
 } from '@/store/plannerSlice'
 import { isGeminiConfigured, sendPlannerGeminiMessage } from '@/services/gemini'
-import type { ExplorationId } from '@/types/planner'
+import type { ExplorationId, PlannerSuggestion } from '@/types/planner'
 import { toApiPlanId } from '@/utils/plannerPlanId'
 import {
   buildGenerateInsightsPrompt,
@@ -50,6 +55,18 @@ const syncChatToBackend = async (
   return userResponse.planId
 }
 
+const applySuggestions = (
+  dispatch: ReturnType<typeof useAppDispatch>,
+  suggestions: PlannerSuggestion[] | undefined,
+  explorationId: ExplorationId,
+): void => {
+  if (!suggestions || suggestions.length === 0) {
+    return
+  }
+  dispatch(setDynamicSuggestions(suggestions))
+  dispatch(setDynamicItineraries(suggestionsToItineraries(suggestions, explorationId)))
+}
+
 export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOptions) => {
   const dispatch = useAppDispatch()
   const queryClient = useQueryClient()
@@ -73,61 +90,52 @@ export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOp
 
       try {
         if (isGeminiConfigured()) {
-          const geminiResponse = await sendPlannerGeminiMessage(message, activeExplorationId)
+          try {
+            const geminiResponse = await sendPlannerGeminiMessage(message, activeExplorationId)
 
-          dispatch(appendMessages([{ role: 'assistant', content: geminiResponse.reply }]))
+            dispatch(appendMessages([{ role: 'assistant', content: geminiResponse.reply }]))
+            applySuggestions(dispatch, geminiResponse.suggestions, activeExplorationId)
 
-          if (geminiResponse.suggestions) {
-            dispatch(setDynamicSuggestions(geminiResponse.suggestions))
-            dispatch(
-              setDynamicItineraries(
-                suggestionsToItineraries(geminiResponse.suggestions, activeExplorationId),
-              ),
-            )
-          }
-
-          if (isAuthenticated) {
-            try {
-              const syncedPlanId = await syncChatToBackend(
-                message,
-                geminiResponse.reply,
-                planId,
-                activeExplorationId,
-              )
-              dispatch(setPlanId(syncedPlanId))
+            if (isAuthenticated) {
+              try {
+                const syncedPlanId = await syncChatToBackend(
+                  message,
+                  geminiResponse.reply,
+                  planId,
+                  activeExplorationId,
+                )
+                dispatch(setPlanId(syncedPlanId))
+                dispatch(setOfflineMode(false))
+                void queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
+              } catch {
+                dispatch(setOfflineMode(true))
+              }
+            } else {
               dispatch(setOfflineMode(false))
-              void queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
-            } catch {
-              dispatch(setOfflineMode(true))
             }
-          } else {
-            dispatch(setOfflineMode(false))
-          }
 
-          return
+            return
+          } catch {
+            if (!isPlannerMockFallbackEnabled()) {
+              throw new Error('Gemini request failed')
+            }
+          }
         }
 
-        const response = await sendPlannerMessageHybrid({
+        const chatPayload = {
           message,
           planId: toChatPlanId(planId),
           explorationId: activeExplorationId,
-          role: 'user',
-        })
+          role: 'user' as const,
+        }
+
+        const response = isAuthenticated
+          ? await sendPlannerMessageHybrid(chatPayload)
+          : await sendPlannerMessageGuest(chatPayload)
 
         dispatch(setPlanId(response.planId))
         dispatch(appendMessages([{ role: 'assistant', content: response.reply }]))
-
-        if (response.suggestions) {
-          dispatch(setDynamicSuggestions(response.suggestions))
-          dispatch(
-            setDynamicItineraries(
-              suggestionsToItineraries(response.suggestions, activeExplorationId),
-            ),
-          )
-        } else {
-          dispatch(setDynamicSuggestions(null))
-          dispatch(setDynamicItineraries(null))
-        }
+        applySuggestions(dispatch, response.suggestions, activeExplorationId)
 
         dispatch(setOfflineMode(response.fromMock))
         if (!response.fromMock) {

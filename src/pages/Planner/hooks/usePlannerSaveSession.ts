@@ -69,10 +69,6 @@ export const usePlannerSaveSession = () => {
       const existing = findSavedSessionByPlanId(plannerState.planId)
       const resolvedPlanId = isBackendPlanId(plannerState.planId) ? plannerState.planId : null
 
-      if (!resolvedPlanId && !isAuthenticated) {
-        return null
-      }
-
       const session: SavedPlannerSession = {
         id: existing?.id ?? resolvedPlanId ?? `saved_${Date.now()}`,
         title: trimmedTitle,
@@ -102,9 +98,7 @@ export const usePlannerSaveSession = () => {
         })
       } else {
         setSavedSessions(upsertSavedSession(session))
-        if (resolvedPlanId) {
-          dispatch(setPlanId(resolvedPlanId))
-        }
+        dispatch(setPlanId(session.id))
       }
 
       setSaveModalOpen(false)

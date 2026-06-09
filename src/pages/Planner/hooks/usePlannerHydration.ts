@@ -9,15 +9,14 @@ import { parsePlannerSearchParams, resolveExplorationFromParams } from '../utils
 export const usePlannerHydration = () => {
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const { planId } = useAppSelector((state) => state.planner)
   const loadedHistoryPlanIdRef = useRef<string | null>(null)
 
-  usePlannerPlans({ enabled: isAuthenticated })
+  usePlannerPlans()
 
   const { data: historyMessages } = usePlannerHistory({
     planId,
-    enabled: isAuthenticated && isBackendPlanId(planId),
+    enabled: Boolean(planId) && isBackendPlanId(planId),
   })
 
   useEffect(() => {

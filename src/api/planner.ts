@@ -1,4 +1,5 @@
 import { apiClient } from '@/configs/axios'
+import { isPlannerMockFallbackEnabled } from '@/configs/features'
 import {
   mockCreatePlannerPlan,
   mockGetPlannerHistory,
@@ -14,6 +15,7 @@ import type {
   PlannerSuggestion,
   ItineraryCategory,
 } from '@/types/planner'
+import { parseSuggestionsFromText } from '@/utils/plannerSuggestions'
 import { toApiPlanId } from '@/utils/plannerPlanId'
 
 const VALID_CATEGORIES = new Set<ItineraryCategory>(['nature', 'wellness', 'adventure'])
@@ -57,11 +59,15 @@ const toApiChatPayload = (payload: PlannerChatPayload): PlannerChatApiPayload =>
   role: payload.role,
 })
 
-const fromApiChatResponse = (data: PlannerChatApiResponse): PlannerChatResponse => ({
-  reply: data.reply ?? '',
-  planId: data.sessionToken,
-  suggestions: normalizeSuggestions(data.suggestions),
-})
+const fromApiChatResponse = (data: PlannerChatApiResponse): PlannerChatResponse => {
+  const reply = data.reply ?? ''
+  return {
+    reply,
+    planId: data.sessionToken,
+    suggestions:
+      normalizeSuggestions(data.suggestions) ?? parseSuggestionsFromText(reply),
+  }
+}
 
 export const sendPlannerMessage = async (
   payload: PlannerChatPayload,
@@ -70,13 +76,24 @@ export const sendPlannerMessage = async (
   return fromApiChatResponse(data)
 }
 
+/** Guest chat — local mock only, no backend calls. */
+export const sendPlannerMessageGuest = async (
+  payload: PlannerChatPayload,
+): Promise<PlannerChatResult> => {
+  const mockData = await mockSendPlannerMessage(payload)
+  return { ...mockData, fromMock: true }
+}
+
 export const sendPlannerMessageHybrid = async (
   payload: PlannerChatPayload,
 ): Promise<PlannerChatResult> => {
   try {
     const data = await sendPlannerMessage(payload)
     return { ...data, fromMock: false }
-  } catch {
+  } catch (error) {
+    if (!isPlannerMockFallbackEnabled()) {
+      throw error
+    }
     const mockData = await mockSendPlannerMessage(payload)
     return { ...mockData, fromMock: true }
   }
@@ -88,7 +105,10 @@ export const getPlannerHistory = async (planId: string): Promise<PlannerMessage[
       params: { sessionToken: planId },
     })
     return data
-  } catch {
+  } catch (error) {
+    if (!isPlannerMockFallbackEnabled()) {
+      throw error
+    }
     return mockGetPlannerHistory(planId)
   }
 }
@@ -97,7 +117,10 @@ export const getPlannerPlans = async (): Promise<PlannerPlan[]> => {
   try {
     const { data } = await apiClient.get<PlannerPlan[]>('/planner/plans')
     return data
-  } catch {
+  } catch (error) {
+    if (!isPlannerMockFallbackEnabled()) {
+      throw error
+    }
     return mockGetPlannerPlans()
   }
 }
@@ -106,7 +129,10 @@ export const createPlannerPlan = async (payload: PlannerPlanPayload): Promise<Pl
   try {
     const { data } = await apiClient.post<PlannerPlan>('/planner/plans', payload)
     return data
-  } catch {
+  } catch (error) {
+    if (!isPlannerMockFallbackEnabled()) {
+      throw error
+    }
     return mockCreatePlannerPlan(payload)
   }
 }

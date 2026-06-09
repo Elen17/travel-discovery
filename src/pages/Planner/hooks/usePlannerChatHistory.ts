@@ -15,9 +15,7 @@ export const usePlannerChatHistory = () => {
   const [historyOpen, setHistoryOpen] = useState(false)
   const [localSessions, setLocalSessions] = useState<SavedPlannerSession[]>([])
 
-  const { data: backendPlans = [], refetch: refetchPlans } = usePlannerPlans({
-    enabled: isAuthenticated,
-  })
+  const { data: backendPlans = [], refetch: refetchPlans } = usePlannerPlans()
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -25,24 +23,24 @@ export const usePlannerChatHistory = () => {
     }
   }, [isAuthenticated])
 
-  const savedSessions = useMemo(
-    () =>
-      isAuthenticated
-        ? backendPlans.map(plannerPlanToSavedSession)
-        : localSessions,
-    [backendPlans, isAuthenticated, localSessions],
-  )
+  const savedSessions = useMemo(() => {
+    if (backendPlans.length > 0) {
+      return backendPlans.map(plannerPlanToSavedSession)
+    }
+    return localSessions
+  }, [backendPlans, localSessions])
 
   const refreshHistory = useCallback(async () => {
-    if (isAuthenticated) {
-      const { data } = await refetchPlans()
-      return (data ?? []).map(plannerPlanToSavedSession)
+    const { data } = await refetchPlans()
+    const plans = data ?? []
+    if (plans.length > 0) {
+      return plans.map(plannerPlanToSavedSession)
     }
 
     const sessions = loadSavedSessions()
     setLocalSessions(sessions)
     return sessions
-  }, [isAuthenticated, refetchPlans])
+  }, [refetchPlans])
 
   const openHistory = useCallback(() => {
     refreshHistory()

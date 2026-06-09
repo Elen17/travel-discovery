@@ -220,9 +220,12 @@ export const mockSendPlannerMessage = async (
     payload.explorationId ??
     getExplorationFromMessage(payload.message, DEFAULT_EXPLORATION_ID)
   const planId = payload.planId ?? generatePlanId()
+  const lowerMessage = payload.message.toLowerCase()
   const isGenerateInsights =
-    payload.message.toLowerCase().includes('generate insights') ||
-    payload.message.toLowerCase().includes('suggest')
+    lowerMessage.includes('generate insights') ||
+    lowerMessage.includes('suggest') ||
+    lowerMessage.includes('itinerar') ||
+    lowerMessage.includes('day plan')
 
   const existing = planStore.get(planId) ?? []
   const userMessage: PlannerMessage = { role: 'user', content: payload.message }
