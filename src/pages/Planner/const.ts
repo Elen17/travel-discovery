@@ -4,6 +4,8 @@ export const PLANNER_I18N = {
   title: 'pages.planner.title',
   comingSoon: 'pages.planner.comingSoon',
   newChat: 'pages.planner.newChat',
+  dailyPlans: 'pages.planner.dailyPlans',
+  dailyPlansEmpty: 'pages.planner.dailyPlansEmpty',
   recentExplorations: 'pages.planner.recentExplorations',
   trip: {
     eyebrow: 'pages.planner.trip.eyebrow',
@@ -39,6 +41,20 @@ export const PLANNER_I18N = {
     offline: 'pages.planner.chat.offline',
     typing: 'pages.planner.chat.typing',
     loginPrompt: 'pages.planner.chat.loginPrompt',
+    history: 'pages.planner.chat.history',
+    historyTitle: 'pages.planner.chat.historyTitle',
+    historyEmpty: 'pages.planner.chat.historyEmpty',
+    historyRestore: 'pages.planner.chat.historyRestore',
+    historyDelete: 'pages.planner.chat.historyDelete',
+    historyMessages: 'pages.planner.chat.historyMessages',
+    historyPlans: 'pages.planner.chat.historyPlans',
+    save: 'pages.planner.chat.save',
+    saveSuccess: 'pages.planner.chat.saveSuccess',
+    saveEmptyHint: 'pages.planner.chat.saveEmptyHint',
+    saveModalTitle: 'pages.planner.chat.saveModalTitle',
+    saveModalLabel: 'pages.planner.chat.saveModalLabel',
+    saveModalConfirm: 'pages.planner.chat.saveModalConfirm',
+    saveModalCancel: 'pages.planner.chat.saveModalCancel',
   },
   applied: {
     title: 'pages.planner.applied.title',
@@ -89,7 +105,7 @@ export const RECENT_EXPLORATIONS: PlannerExploration[] = [
   },
 ]
 
-export const EXPLORATION_CONTENT: Record<ExplorationId, ExplorationContent> = {
+export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   iceland: {
     id: 'iceland',
     heroImage:

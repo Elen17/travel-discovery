@@ -1,5 +1,5 @@
-import { SendOutlined } from '@ant-design/icons'
-import { Button, Input } from 'antd'
+import { HistoryOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons'
+import { Button, Input, Tooltip } from 'antd'
 import { useState } from 'react'
 import styles from './styles.module.css'
 import type { PlannerChatProps } from './types'
@@ -14,7 +14,13 @@ export const PlannerChat = ({
   emptyHint,
   offlineLabel,
   typingLabel,
+  historyLabel,
+  saveLabel,
+  saveEmptyHint,
+  canSave,
   onSend,
+  onOpenHistory,
+  onOpenSave,
 }: PlannerChatProps) => {
   const [input, setInput] = useState('')
 
@@ -29,6 +35,32 @@ export const PlannerChat = ({
 
   return (
     <section className={styles.plannerChat} aria-label={emptyLabel}>
+      <div className={styles.toolbar}>
+        <Tooltip title={historyLabel}>
+          <Button
+            type="text"
+            size="small"
+            icon={<HistoryOutlined />}
+            onClick={onOpenHistory}
+            aria-label={historyLabel}
+          >
+            {historyLabel}
+          </Button>
+        </Tooltip>
+        <Tooltip title={canSave ? saveLabel : saveEmptyHint}>
+          <Button
+            type="text"
+            size="small"
+            icon={<SaveOutlined />}
+            onClick={onOpenSave}
+            disabled={!canSave}
+            aria-label={saveLabel}
+          >
+            {saveLabel}
+          </Button>
+        </Tooltip>
+      </div>
+
       {isOfflineMode && (
         <div className={styles.offlineBanner} role="status">
           {offlineLabel}

@@ -8,9 +8,12 @@ export const BookingsPlannerCta = ({
   description,
   buttonLabel,
   onClick,
+  className,
 }: BookingsPlannerCtaProps) => {
+  const bannerClass = className ? `${styles.banner} ${className}` : styles.banner
+
   return (
-    <section className={styles.banner} aria-label={title}>
+    <section className={bannerClass} aria-label={title}>
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.description}>{description}</p>

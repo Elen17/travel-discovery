@@ -1,72 +1,169 @@
-import { Tabs } from 'antd'
-import { useMemo, useState } from 'react'
+import { Alert, Spin, Tabs } from 'antd'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import {
+  FAVOURITE_HOTELS_QUERY_KEY,
+  FAVOURITES_QUERY_KEY,
+  fetchFavouriteHotels,
+  removeFavourite,
+} from '@/api/favourites'
+import { updateProfile, uploadAvatarTemp } from '@/api/users'
 import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
 import { ProfileHeaderCard } from '@/components/common/ProfileHeaderCard'
 import { SavedPlaceCard } from '@/components/common/SavedPlaceCard'
-import { useAppSelector } from '@/store/hooks'
-import { MOCK_PROFILE_USER, MOCK_SAVED_PLACES, PROFILE_I18N } from './const'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { setUser } from '@/store/authSlice'
+import { hasValidSession } from '@/utils/session'
+import { MOCK_PROFILE_USER, PROFILE_I18N } from './const'
 import styles from './styles.module.css'
-import type { ProfileTab, SavedPlace } from './types'
+import type { ProfileTab } from './types'
+import { validateAvatarFile } from './utils'
 
 const ProfilePage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const authUser = useAppSelector((state) => state.auth.user)
+  const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
+  const { isAuthenticated, user: authUser } = useAppSelector((state) => state.auth)
   const [activeTab, setActiveTab] = useState<ProfileTab>('savedPlaces')
-  const [savedPlaces, setSavedPlaces] = useState<SavedPlace[]>(MOCK_SAVED_PLACES)
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null)
+  const [avatarMessage, setAvatarMessage] = useState<string | null>(null)
+  const [avatarError, setAvatarError] = useState<string | null>(null)
+
+  const sessionIsValid = isAuthenticated && hasValidSession()
+
+  const { data: savedHotels = [], isLoading, isError } = useQuery({
+    queryKey: FAVOURITE_HOTELS_QUERY_KEY,
+    queryFn: fetchFavouriteHotels,
+    enabled: sessionIsValid,
+  })
+
+  const removeMutation = useMutation({
+    mutationFn: removeFavourite,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })
+      void queryClient.invalidateQueries({ queryKey: FAVOURITE_HOTELS_QUERY_KEY })
+    },
+  })
+
+  const avatarMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const upload = await uploadAvatarTemp(file)
+      return updateProfile({ avatarTempId: upload.tempId })
+    },
+    onSuccess: (updatedUser) => {
+      dispatch(setUser(updatedUser))
+      setAvatarPreviewUrl(null)
+      setAvatarError(null)
+      setAvatarMessage(t(PROFILE_I18N.avatar.success))
+    },
+    onError: () => {
+      setAvatarPreviewUrl(null)
+      setAvatarMessage(null)
+      setAvatarError(t(PROFILE_I18N.avatar.errors.generic))
+    },
+  })
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreviewUrl?.startsWith('blob:')) {
+        URL.revokeObjectURL(avatarPreviewUrl)
+      }
+    }
+  }, [avatarPreviewUrl])
 
   const displayUser = useMemo(() => {
     if (authUser) {
       return {
         fullName: authUser.fullName,
-        avatarUrl: authUser.avatarUrl ?? MOCK_PROFILE_USER.avatarUrl,
+        avatarUrl: avatarPreviewUrl ?? authUser.avatarUrl ?? MOCK_PROFILE_USER.avatarUrl,
       }
     }
     return MOCK_PROFILE_USER
-  }, [authUser])
+  }, [authUser, avatarPreviewUrl])
 
-  const handleRemove = (id: string) => {
-    setSavedPlaces((prev) => prev.filter((place) => place.id !== id))
+  const handleAvatarChange = (file: File) => {
+    setAvatarMessage(null)
+    setAvatarError(null)
+
+    const validationError = validateAvatarFile(file)
+    if (validationError === 'invalidType') {
+      setAvatarError(t(PROFILE_I18N.avatar.errors.invalidType))
+      return
+    }
+
+    if (validationError === 'tooLarge') {
+      setAvatarError(t(PROFILE_I18N.avatar.errors.tooLarge))
+      return
+    }
+
+    if (avatarPreviewUrl?.startsWith('blob:')) {
+      URL.revokeObjectURL(avatarPreviewUrl)
+    }
+
+    setAvatarPreviewUrl(URL.createObjectURL(file))
+    avatarMutation.mutate(file)
   }
+
+  const handleRemove = (hotelId: number) => {
+    removeMutation.mutate(hotelId)
+  }
+
+  const savedPlacesContent = (() => {
+    if (isLoading) {
+      return (
+        <div className={styles.loading}>
+          <Spin aria-label={t('common.loading')} />
+        </div>
+      )
+    }
+
+    if (isError) {
+      return <p className={styles.empty}>{t(PROFILE_I18N.savedPlaces.loadError)}</p>
+    }
+
+    if (savedHotels.length === 0) {
+      return <p className={styles.empty}>{t(PROFILE_I18N.savedPlaces.empty)}</p>
+    }
+
+    return (
+      <div className={styles.grid}>
+        {savedHotels.map((hotel) => (
+          <SavedPlaceCard
+            key={hotel.id}
+            name={hotel.name}
+            country={hotel.country}
+            description={hotel.description}
+            guestRating={hotel.averageRating ?? hotel.starRating}
+            imageUrl={hotel.mainImageUrl}
+            bookNowLabel={t(PROFILE_I18N.actions.bookNow)}
+            planWithAiLabel={t(PROFILE_I18N.actions.planWithAi)}
+            removeLabel={t(PROFILE_I18N.actions.removeSaved)}
+            onBookNow={() => navigate(`/hotel/${hotel.id}`)}
+            onPlanWithAi={() =>
+              navigate(
+                buildPlannerUrl({
+                  exploration: resolveExplorationFromDestination(hotel.country),
+                  destination: hotel.country.toLowerCase(),
+                  hotelId: String(hotel.id),
+                  hotelName: hotel.name,
+                }),
+              )
+            }
+            onRemove={() => handleRemove(hotel.id)}
+          />
+        ))}
+      </div>
+    )
+  })()
 
   const tabItems = [
     {
       key: 'savedPlaces' as const,
       label: t(PROFILE_I18N.tabs.savedPlaces),
-      children:
-        savedPlaces.length === 0 ? (
-          <p className={styles.empty}>{t('pages.profile.savedPlaces.empty')}</p>
-        ) : (
-          <div className={styles.grid}>
-            {savedPlaces.map((place) => (
-              <SavedPlaceCard
-                key={place.id}
-                name={place.name}
-                country={t(place.countryKey)}
-                description={t(place.descriptionKey)}
-                guestRating={place.guestRating}
-                imageUrl={place.imageUrl}
-                bookNowLabel={t(PROFILE_I18N.actions.bookNow)}
-                planWithAiLabel={t(PROFILE_I18N.actions.planWithAi)}
-                removeLabel={t(PROFILE_I18N.actions.removeSaved)}
-                onBookNow={() => navigate(`/hotel/${place.hotelId}`)}
-                onPlanWithAi={() =>
-                  navigate(
-                    buildPlannerUrl({
-                      exploration: resolveExplorationFromDestination(place.country),
-                      destination: place.country.toLowerCase(),
-                      hotelId: place.hotelId,
-                      hotelName: place.name,
-                    }),
-                  )
-                }
-                onRemove={() => handleRemove(place.id)}
-              />
-            ))}
-          </div>
-        ),
+      children: savedPlacesContent,
     },
   ]
 
@@ -76,7 +173,19 @@ const ProfilePage = () => {
         fullName={displayUser.fullName}
         avatarUrl={displayUser.avatarUrl}
         verifiedLabel={t(PROFILE_I18N.verified)}
+        canEditAvatar={Boolean(authUser)}
+        changeAvatarLabel={t(PROFILE_I18N.avatar.change)}
+        isUploading={avatarMutation.isPending}
+        onAvatarChange={handleAvatarChange}
       />
+
+      {avatarError ? (
+        <Alert className={styles.avatarAlert} type="error" message={avatarError} showIcon />
+      ) : null}
+
+      {avatarMessage ? (
+        <Alert className={styles.avatarAlert} type="success" message={avatarMessage} showIcon />
+      ) : null}
 
       <Tabs
         activeKey={activeTab}

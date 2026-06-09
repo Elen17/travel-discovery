@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { clearSessionExpiry, setSessionExpiry } from '@/utils/session'
 
 const ACCESS_TOKEN_KEY = 'accessToken'
 const REFRESH_TOKEN_KEY = 'refreshToken'
@@ -20,11 +21,13 @@ export const getStoredRefreshToken = (): string | null => localStorage.getItem(R
 export const storeAuthTokens = (accessToken: string, refreshToken: string): void => {
   localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
   localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+  setSessionExpiry()
 }
 
 export const clearAuthTokens = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
+  clearSessionExpiry()
 }
 
 apiClient.interceptors.request.use((config) => {

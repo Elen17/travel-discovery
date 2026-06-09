@@ -19,7 +19,9 @@ export const usePlannerExportPdf = (displayedItineraries: SuggestedItinerary[]) 
       appliedSectionTitle: t(PLANNER_I18N.applied.title),
       appliedItems: appliedItineraries.map((item) => ({
         title: item.title ?? t(item.titleKey),
-        meta: `${t(CATEGORY_I18N_KEYS[item.category])} · ${item.duration ?? t(item.durationKey)}`,
+        meta:
+          item.description ??
+          `${t(CATEGORY_I18N_KEYS[item.category])} · ${item.duration ?? t(item.durationKey)}`,
       })),
       itinerariesSectionTitle: t(PLANNER_I18N.itineraries.title),
       itinerariesSubtitle: t(PLANNER_I18N.itineraries.subtitle),

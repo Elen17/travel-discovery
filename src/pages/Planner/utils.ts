@@ -1,17 +1,28 @@
 import { jsPDF } from 'jspdf'
 import type {
+  AppliedItinerary,
   ExplorationContent,
   ExplorationId,
+  PlannerAppliedItinerary,
+  PlannerAppliedItineraryItem,
+  PlannerMessage,
+  PlannerPlan,
+  PlannerPlanPayload,
   PlannerSearchParams,
   PlannerSuggestion,
+  SavedPlannerSession,
   SuggestedItinerary,
 } from '@/types/planner'
 import type { TripPlanPdfContent } from './types'
+import { DEFAULT_EXPLORATION_ID, isKnownExplorationId } from '@/utils/exploration'
 
-const EXPLORATION_IDS: ExplorationId[] = ['iceland', 'tuscany', 'kyoto', 'amalfi']
+export {
+  isBackendPlanId,
+  normalizePlanId,
+  toChatPlanId,
+} from '@/utils/plannerPlanId'
 
-export const isExplorationId = (value: string): value is ExplorationId =>
-  EXPLORATION_IDS.includes(value as ExplorationId)
+export { isKnownExplorationId, isExplorationId } from '@/utils/exploration'
 
 const COUNTRY_TO_EXPLORATION: Record<string, ExplorationId> = {
   iceland: 'iceland',
@@ -31,7 +42,7 @@ export const resolveExplorationFromDestination = (
     return undefined
   }
   const key = destination.toLowerCase().trim()
-  if (isExplorationId(key)) {
+  if (isKnownExplorationId(key)) {
     return key
   }
   return COUNTRY_TO_EXPLORATION[key]
@@ -39,21 +50,15 @@ export const resolveExplorationFromDestination = (
 
 export const parsePlannerSearchParams = (
   params: URLSearchParams,
-): PlannerSearchParams => {
-  const explorationParam = params.get('exploration') ?? undefined
-  const exploration =
-    explorationParam && isExplorationId(explorationParam) ? explorationParam : undefined
-
-  return {
-    exploration,
-    destination: params.get('destination') ?? undefined,
-    hotelId: params.get('hotelId') ?? undefined,
-    hotelName: params.get('hotelName') ?? undefined,
-    dates: params.get('dates') ?? undefined,
-    guests: params.get('guests') ?? undefined,
-    session: params.get('session') ?? undefined,
-  }
-}
+): PlannerSearchParams => ({
+  exploration: params.get('exploration') ?? undefined,
+  destination: params.get('destination') ?? undefined,
+  hotelId: params.get('hotelId') ?? undefined,
+  hotelName: params.get('hotelName') ?? undefined,
+  dates: params.get('dates') ?? undefined,
+  guests: params.get('guests') ?? undefined,
+  session: params.get('session') ?? undefined,
+})
 
 export const resolveExplorationFromParams = (
   params: PlannerSearchParams,
@@ -65,7 +70,7 @@ export const resolveExplorationFromParams = (
   if (fromDestination) {
     return fromDestination
   }
-  return 'iceland'
+  return DEFAULT_EXPLORATION_ID
 }
 
 export const buildPlannerUrl = (params: PlannerSearchParams): string => {
@@ -95,15 +100,15 @@ export const buildPlannerUrl = (params: PlannerSearchParams): string => {
   return query ? `/planner?${query}` : '/planner'
 }
 
-export const buildShareUrl = (sessionToken: string, explorationId: ExplorationId): string => {
+export const buildShareUrl = (planId: string, explorationId: ExplorationId): string => {
   const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  return `${origin}/planner?session=${encodeURIComponent(sessionToken)}&exploration=${explorationId}`
+  return `${origin}/planner?session=${encodeURIComponent(planId)}&exploration=${explorationId}`
 }
 
 export const getExplorationContent = (
-  id: ExplorationId,
-  contentMap: Record<ExplorationId, ExplorationContent>,
-): ExplorationContent => contentMap[id]
+  id: string,
+  contentMap: Record<string, ExplorationContent>,
+): ExplorationContent => contentMap[id] ?? contentMap[DEFAULT_EXPLORATION_ID]
 
 export const suggestionsToItineraries = (
   suggestions: PlannerSuggestion[],
@@ -126,7 +131,7 @@ const getDefaultImageForSuggestion = (
   explorationId: ExplorationId,
   category: SuggestedItinerary['category'],
 ): string => {
-  const images: Record<ExplorationId, Record<SuggestedItinerary['category'], string>> = {
+  const images: Record<string, Record<SuggestedItinerary['category'], string>> = {
     iceland: {
       nature:
         'https://images.unsplash.com/photo-1529963183137-3323fab7c7fb?auto=format&fit=crop&w=600&q=80',
@@ -160,8 +165,48 @@ const getDefaultImageForSuggestion = (
         'https://images.unsplash.com/photo-1516483638265-f4dbf994554a?auto=format&fit=crop&w=600&q=80',
     },
   }
-  return images[explorationId][category]
+  return images[explorationId]?.[category] ?? images[DEFAULT_EXPLORATION_ID][category]
 }
+
+export const apiAppliedToUi = (item: PlannerAppliedItinerary): AppliedItinerary => ({
+  id: String(item.id),
+  titleKey: '',
+  title: item.title,
+  description: item.description,
+  durationKey: '',
+  category: 'nature',
+  appliedAt: new Date().toISOString(),
+})
+
+export const uiAppliedToApi = (item: AppliedItinerary): PlannerAppliedItineraryItem => ({
+  title: item.title ?? item.id,
+  description: item.description ?? item.duration,
+})
+
+export const buildPlannerPlanPayload = (
+  title: string,
+  explorationId: ExplorationId,
+  messages: PlannerMessage[],
+  appliedItineraries: AppliedItinerary[],
+  exploration: ExplorationContent,
+): PlannerPlanPayload => ({
+  title,
+  explorationId,
+  imageUrl: exploration.heroImage,
+  messages,
+  appliedItineraries: appliedItineraries.map(uiAppliedToApi),
+})
+
+export const plannerPlanToSavedSession = (plan: PlannerPlan): SavedPlannerSession => ({
+  id: plan.id,
+  title: plan.title,
+  explorationId: plan.explorationId,
+  messages: plan.messages,
+  appliedItineraries: plan.appliedItineraries.map(apiAppliedToUi),
+  dynamicSuggestions: null,
+  savedAt: plan.createdAt,
+  updatedAt: plan.updatedAt,
+})
 
 export const buildGenerateInsightsPrompt = (explorationId: ExplorationId): string =>
   `Generate insights for my ${explorationId} trip based on my preferences and today's weather.`

@@ -56,6 +56,10 @@
   color: var(--color-accent-dark);
 }
 
+.removeBtnActive {
+  color: var(--color-accent-dark);
+}
+
 .body {
   display: flex;
   flex-direction: column;

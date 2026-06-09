@@ -10,6 +10,7 @@
   cursor: pointer;
   background: #ddd;
   text-align: left;
+  scroll-snap-align: start;
 }
 
 .image {
@@ -54,6 +55,15 @@
   background: #fff;
 }
 
+.saveBtnActive {
+  color: var(--color-accent-dark);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
 .content {
   position: absolute;
   left: 0;
@@ -87,10 +97,39 @@
   opacity: 0.9;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .card {
-    flex: 0 0 220px;
-    width: 220px;
+    flex: 0 0 min(240px, 72vw);
+    width: min(240px, 72vw);
     height: 300px;
+  }
+
+  .saveBtn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .content {
+    padding: 16px 14px;
+  }
+
+  .city {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 0 0 min(220px, 78vw);
+    width: min(220px, 78vw);
+    height: 280px;
+  }
+
+  .city {
+    font-size: 1.125rem;
+  }
+
+  .country {
+    font-size: 0.8125rem;
   }
 }

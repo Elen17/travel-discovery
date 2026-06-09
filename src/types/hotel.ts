@@ -38,7 +38,7 @@ export type Hotel = {
   isFeatured: boolean
   amenities: HotelAmenity[]
   imageUrls: string[]
-  averageRating: number
+  averageRating?: number
   reviewCount: number
 }
 

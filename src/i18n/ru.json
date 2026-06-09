@@ -37,20 +37,28 @@
     "home": {
       "heroTitle": "Куда вы хотите поехать?",
       "search": {
-        "destination": "Направление",
-        "destinationPlaceholder": "Искать места...",
+        "country": "Страна",
+        "countryPlaceholder": "Выберите страну",
+        "city": "Город",
+        "cityPlaceholder": "Выберите город",
         "dates": "Даты",
-        "datesPlaceholder": "Добавить даты",
+        "startDatesPlaceholder": "Начало",
+        "endDatesPlaceholder": "Конец",
         "guests": "Гости",
         "guestsPlaceholder": "Добавить гостей",
-        "submit": "Поиск"
+        "submit": "Поиск",
+        "errors": {
+          "countryRequired": "Пожалуйста, выберите страну.",
+          "cityRequired": "Пожалуйста, выберите город.",
+          "generic": "Поиск не удался. Попробуйте снова."
+        }
       },
       "categories": {
         "eyebrow": "Подборка",
         "title": "Обзор по категориям",
         "beaches": "Пляжи",
         "adventure": "Приключения",
-        "luxuryTour": "Люкс-тур",
+        "europeTour": "Тур по Европе",
         "cabinStays": "Домики",
         "foodWine": "Еда и вино"
       },
@@ -60,11 +68,28 @@
         "avgPrice": "Сред. {{price}} / ночь",
         "prev": "Предыдущие направления",
         "next": "Следующие направления",
+        "cardAlt": "{{city}}, {{country}}",
+        "savedDestination": "Сохранено {{city}} в избранном",
+        "loadError": "Не удалось загрузить популярные направления. Попробуйте позже.",
         "destinations": {
           "ubud": { "city": "Убуд, Бали", "country": "Индонезия" },
           "kyoto": { "city": "Киото", "country": "Япония" },
           "paris": { "city": "Париж", "country": "Франция" },
           "venice": { "city": "Венеция", "country": "Италия" }
+        }
+      },
+      "newsletter": {
+        "title": "The Travel Discovery Journal",
+        "description": "Подборка путешествий, скрытые направления и эксклюзивные предложения — раз в месяц.",
+        "emailPlaceholder": "Введите ваш email",
+        "submit": "Подписаться",
+        "disclaimerPrefix": "Подписываясь, вы соглашаетесь с нашей",
+        "disclaimerAnd": "и",
+        "success": "Вы подписаны! Проверьте почту для получения событий и новостей о путешествиях.",
+        "errors": {
+          "emailRequired": "Пожалуйста, введите ваш email.",
+          "emailInvalid": "Пожалуйста, введите корректный email.",
+          "generic": "Что-то пошло не так. Попробуйте позже."
         }
       }
     },
@@ -182,6 +207,8 @@
       "title": "Планировщик",
       "comingSoon": "{{feature}} — скоро",
       "newChat": "Новый чат",
+      "dailyPlans": "Дневные планы",
+      "dailyPlansEmpty": "Сохранённых дневных планов пока нет",
       "recentExplorations": "Недавние исследования",
       "trip": {
         "eyebrow": "Кураторская экспедиция",
@@ -216,7 +243,21 @@
         "emptyHint": "Задайте вопрос или нажмите «Создать рекомендации».",
         "offline": "Офлайн-режим — используются сохранённые рекомендации",
         "typing": "Ассистент печатает…",
-        "loginPrompt": "Войдите, чтобы синхронизировать историю чата между устройствами."
+        "loginPrompt": "Войдите, чтобы синхронизировать историю чата между устройствами.",
+        "history": "История",
+        "historyTitle": "Сохранённые чаты и планы",
+        "historyEmpty": "Сохранённых чатов пока нет. Нажмите «Сохранить», чтобы сохранить план из беседы.",
+        "historyRestore": "Восстановить",
+        "historyDelete": "Удалить",
+        "historyMessages": "сообщений",
+        "historyPlans": "планов",
+        "save": "Сохранить",
+        "saveSuccess": "Чат и план сохранены",
+        "saveEmptyHint": "Начните беседу, прежде чем сохранять",
+        "saveModalTitle": "Сохранить чат и план",
+        "saveModalLabel": "Название плана",
+        "saveModalConfirm": "Сохранить",
+        "saveModalCancel": "Отмена"
       },
       "applied": {
         "title": "План на сегодня",
@@ -468,8 +509,19 @@
         "planWithAi": "План с ИИ",
         "removeSaved": "Удалить из сохранённых"
       },
+      "avatar": {
+        "change": "Изменить фото",
+        "uploading": "Загрузка фото…",
+        "success": "Фото профиля обновлено.",
+        "errors": {
+          "invalidType": "Выберите изображение JPEG, PNG, WebP или GIF.",
+          "tooLarge": "Размер изображения не должен превышать 5 МБ.",
+          "generic": "Не удалось обновить фото профиля. Попробуйте снова."
+        }
+      },
       "savedPlaces": {
         "empty": "У вас пока нет сохранённых мест. Исследуйте направления и нажмите на сердечко.",
+        "loadError": "Не удалось загрузить сохранённые места. Попробуйте позже.",
         "villaMargherita": {
           "country": "Италия",
           "description": "Вилла на скалах Амальфи с террасами и видом на море."
@@ -540,5 +592,25 @@
     "search": "Поиск",
     "language": "Язык",
     "saveDestination": "Сохранить направление"
+  },
+  "authModals": {
+    "loginRequired": {
+      "title": "Требуется вход",
+      "message": "Вы не вошли в систему. Войдите, чтобы сохранять направления в избранное.",
+      "login": "Перейти к входу",
+      "cancel": "Отмена"
+    },
+    "sessionExpired": {
+      "title": "Сессия истекла",
+      "message": "Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить.",
+      "email": "Email",
+      "password": "Пароль",
+      "submit": "Войти снова",
+      "cancel": "Отмена",
+      "errors": {
+        "passwordRequired": "Введите пароль.",
+        "generic": "Ошибка аутентификации. Попробуйте снова."
+      }
+    }
   }
 }

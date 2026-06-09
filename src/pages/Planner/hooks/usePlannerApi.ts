@@ -1,22 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
-import { getPlannerHistory, sendPlannerMessage } from '@/api/planner'
-import type { ExplorationId, PlannerChatPayload } from '@/types/planner'
+import {
+  createPlannerPlan,
+  getPlannerHistory,
+  getPlannerPlans,
+  sendPlannerMessageHybrid,
+} from '@/api/planner'
+import type { ExplorationId, PlannerChatPayload, PlannerPlanPayload } from '@/types/planner'
 
 export const plannerQueryKeys = {
-  history: (sessionToken: string | null) => ['planner', 'history', sessionToken] as const,
+  history: (planId: string | null) => ['planner', 'history', planId] as const,
+  plans: ['planner', 'plans'] as const,
 }
 
 type UsePlannerHistoryOptions = {
-  sessionToken: string | null
+  planId: string | null
   enabled?: boolean
 }
 
-export const usePlannerHistory = ({ sessionToken, enabled = true }: UsePlannerHistoryOptions) =>
+export const usePlannerHistory = ({ planId, enabled = true }: UsePlannerHistoryOptions) =>
   useQuery({
-    queryKey: plannerQueryKeys.history(sessionToken),
-    queryFn: () => getPlannerHistory(sessionToken ?? undefined),
-    enabled: enabled && Boolean(sessionToken),
+    queryKey: plannerQueryKeys.history(planId),
+    queryFn: () => getPlannerHistory(planId as string),
+    enabled: enabled && Boolean(planId),
+    staleTime: 30_000,
+  })
+
+type UsePlannerPlansOptions = {
+  enabled?: boolean
+}
+
+export const usePlannerPlans = ({ enabled = true }: UsePlannerPlansOptions = {}) =>
+  useQuery({
+    queryKey: plannerQueryKeys.plans,
+    queryFn: getPlannerPlans,
+    enabled,
     staleTime: 30_000,
   })
 
@@ -30,12 +48,12 @@ export const usePlannerChat = (explorationId: ExplorationId) => {
   const mutation = useMutation({
     mutationFn: async (variables: SendMessageVariables) => {
       const { onReply: _onReply, ...payload } = variables
-      return sendPlannerMessage({ ...payload, explorationId })
+      return sendPlannerMessageHybrid({ ...payload, explorationId })
     },
     onSuccess: (data, variables) => {
-      if (variables.sessionToken ?? data.sessionToken) {
+      if (variables.planId ?? data.planId) {
         queryClient.invalidateQueries({
-          queryKey: plannerQueryKeys.history(data.sessionToken),
+          queryKey: plannerQueryKeys.history(data.planId),
         })
       }
       variables.onReply?.(data.reply)
@@ -52,5 +70,27 @@ export const usePlannerChat = (explorationId: ExplorationId) => {
     isSending: mutation.isPending,
     error: mutation.error,
     data: mutation.data,
+  }
+}
+
+export const useCreatePlannerPlan = () => {
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: (payload: PlannerPlanPayload) => createPlannerPlan(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
+    },
+  })
+
+  const createPlan = useCallback(
+    (payload: PlannerPlanPayload) => mutation.mutateAsync(payload),
+    [mutation],
+  )
+
+  return {
+    createPlan,
+    isCreating: mutation.isPending,
+    error: mutation.error,
   }
 }
