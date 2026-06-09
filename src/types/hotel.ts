@@ -1,3 +1,17 @@
+export type HotelType =
+  | 'HOTEL'
+  | 'APARTMENT'
+  | 'RESORT'
+  | 'VILLA'
+  | 'GUEST_HOUSE'
+  | 'HOLIDAY_HOME'
+  | 'HOSTEL'
+  | 'MOTEL'
+  | 'BED_AND_BREAKFAST'
+  | 'CHALET'
+  | 'APART_HOTEL'
+  | 'OTHER'
+
 export type HotelAmenity =
   | 'WIFI'
   | 'POOL'
@@ -19,6 +33,7 @@ export type Hotel = {
   longitude: number
   pricePerNight: number
   starRating: number
+  hotelType: HotelType
   mainImageUrl: string
   isFeatured: boolean
   amenities: HotelAmenity[]
@@ -38,9 +53,13 @@ export type HotelLiveSearchParams = {
 
 /** Catalog listing with filters — paginated. */
 export type HotelCatalogParams = {
-  country?: string
-  city?: string
-  starRating?: number
   page?: number
   size?: number
+  country?: string
+  city?: string
+  minPrice?: number
+  maxPrice?: number
+  starRating?: number
+  type?: HotelType
+  sortBy?: string
 }

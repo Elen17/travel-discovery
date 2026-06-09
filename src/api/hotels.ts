@@ -14,7 +14,7 @@ export const getHotels = async (params: HotelCatalogParams): Promise<PageRespons
   return data
 }
 
-export const getHotelById = async (id: number): Promise<Hotel> => {
+export const getHotelById = async (id: string): Promise<Hotel> => {
   const { data } = await apiClient.get<Hotel>(`/hotels/${id}`)
   return data
 }

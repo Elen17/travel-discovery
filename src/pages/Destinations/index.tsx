@@ -1,80 +1,84 @@
-import { Pagination } from 'antd'
-import { useMemo, useState } from 'react'
+import { FilterOutlined } from '@ant-design/icons'
+import { Button, Pagination } from 'antd'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { HotelListingCard } from '@/components/common/HotelListingCard'
-import { DestinationsFilterBar } from '@/components/forms/DestinationsFilterBar'
-import { formatCurrency } from '@/utils/currency'
-import {
-  DESTINATIONS_I18N,
-  MOCK_LISTINGS,
-  PAGE_SIZE,
-  PRICE_RANGE,
-} from './const'
+import { useHotels } from '@/hooks/useHotels'
+import { useCountries } from '@/hooks/useLocations'
+import { BaseDrawer } from '@/components/common/BaseDrawer'
+import { DestinationList } from './components/DestinationList'
+import { HotelsMap } from './components/HotelsMap'
+import { FiltersSidebar } from './components/FiltersSidebar'
+import { DESTINATIONS_I18N, PAGE_SIZE, PRICE_RANGE } from './const'
+import type { SidebarFiltersState } from './types'
+import { parseFiltersFromParams, buildSearchParams } from './utils'
 import styles from './styles.module.css'
-import type { DestinationAmenityFilter, DestinationFilters } from './types'
-import { filterListings, paginateListings } from './utils'
 
 const DestinationsPage = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const [filtersDrawerOpen, setFiltersDrawerOpen] = useState(false)
 
-  const cityQuery = searchParams.get('city') ?? undefined
-  const category = searchParams.get('category') ?? undefined
-  const pageParam = Number(searchParams.get('page') ?? '1')
-  const currentPage = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1
+  const { page, country, countryId, city, minPrice, maxPrice, starRating, hotelType } =
+    parseFiltersFromParams(searchParams)
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_RANGE.min, PRICE_RANGE.max])
-  const [selectedStarRating, setSelectedStarRating] = useState<number | null>(4)
-  const [selectedAmenities, setSelectedAmenities] = useState<DestinationAmenityFilter[]>([])
+  const { data, isLoading, isError } = useHotels({
+    page: page - 1,
+    size: PAGE_SIZE,
+    country,
+    city,
+    minPrice: minPrice !== PRICE_RANGE.min ? minPrice : undefined,
+    maxPrice: maxPrice !== PRICE_RANGE.max ? maxPrice : undefined,
+    starRating,
+    type: hotelType,
+  })
 
-  const filters: DestinationFilters = useMemo(
+  const { data: countriesData } = useCountries()
+
+  const countryOptions = useMemo(
+    () => countriesData?.map((c) => ({ id: c.id, name: c.name })) ?? [],
+    [countriesData],
+  )
+
+  const sidebarState: SidebarFiltersState = useMemo(
     () => ({
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
-      minStarRating: selectedStarRating,
-      amenityFilters: selectedAmenities,
+      priceRange: [minPrice, maxPrice],
+      country: country ?? null,
+      countryId,
+      city: city ?? null,
+      starRating: starRating ?? null,
+      hotelType: hotelType ?? null,
     }),
-    [priceRange, selectedStarRating, selectedAmenities],
+    [minPrice, maxPrice, country, countryId, city, starRating, hotelType],
   )
 
-  const filteredListings = useMemo(
-    () => filterListings(MOCK_LISTINGS, filters, cityQuery, category),
-    [filters, cityQuery, category],
+  const handleApplyFilters = useCallback(
+    (applied: SidebarFiltersState) => {
+      setSearchParams(buildSearchParams(applied, PRICE_RANGE), { replace: true })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setFiltersDrawerOpen(false)
+    },
+    [setSearchParams],
   )
 
-  const totalPages = Math.max(1, Math.ceil(filteredListings.length / PAGE_SIZE))
-  const safePage = Math.min(currentPage, totalPages)
+  const filtersSidebarProps = {
+    ...sidebarState,
+    countryOptions,
+    onApply: handleApplyFilters,
+  }
 
-  const pageListings = useMemo(
-    () => paginateListings(filteredListings, safePage, PAGE_SIZE),
-    [filteredListings, safePage],
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      const next = new URLSearchParams(searchParams)
+      next.set('page', String(newPage))
+      setSearchParams(next, { replace: true })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    [searchParams, setSearchParams],
   )
 
-  const handlePageChange = (page: number) => {
-    const next = new URLSearchParams(searchParams)
-    next.set('page', String(page))
-    setSearchParams(next, { replace: true })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleAmenityToggle = (amenity: DestinationAmenityFilter) => {
-    setSelectedAmenities((prev) =>
-      prev.includes(amenity) ? prev.filter((a) => a !== amenity) : [...prev, amenity],
-    )
-    handlePageChange(1)
-  }
-
-  const handlePriceChange = (range: [number, number]) => {
-    setPriceRange(range)
-    handlePageChange(1)
-  }
-
-  const handleStarRatingChange = (rating: number | null) => {
-    setSelectedStarRating(rating)
-    handlePageChange(1)
-  }
+  const handleBookNow = useCallback((hotelId: number) => navigate(`/hotel/${hotelId}`), [navigate])
 
   return (
     <div className={styles.page}>
@@ -82,53 +86,55 @@ const DestinationsPage = () => {
         <h1 className={styles.heroTitle}>{t(DESTINATIONS_I18N.heroTitle)}</h1>
         <p className={styles.heroSubtitle}>{t(DESTINATIONS_I18N.heroSubtitle)}</p>
       </header>
+      <HotelsMap hotels={data?.content ?? []} />
 
-      <div className={styles.filters}>
-        <DestinationsFilterBar
-          priceRange={priceRange}
-          selectedStarRating={selectedStarRating}
-          selectedAmenities={selectedAmenities}
-          onPriceChange={handlePriceChange}
-          onStarRatingChange={handleStarRatingChange}
-          onAmenityToggle={handleAmenityToggle}
-        />
+      <div className={styles.layout}>
+        <div className={styles.sidebar}>
+          <FiltersSidebar {...filtersSidebarProps} />
+        </div>
+
+        <div className={styles.main}>
+          <Button
+            type="default"
+            icon={<FilterOutlined />}
+            className={styles.mobileFiltersBtn}
+            onClick={() => setFiltersDrawerOpen(true)}
+          >
+            {t(DESTINATIONS_I18N.filters.open)}
+          </Button>
+          {isError ? (
+            <p className={styles.error}>{t('common.errorLoading')}</p>
+          ) : (
+            <DestinationList
+              hotels={data?.content ?? []}
+              totalResults={data?.totalElements ?? 0}
+              isLoading={isLoading}
+              onBookNow={handleBookNow}
+            />
+          )}
+
+          {data && data.totalElements > PAGE_SIZE && (
+            <div className={styles.pagination}>
+              <Pagination
+                current={page}
+                total={data.totalElements}
+                pageSize={PAGE_SIZE}
+                onChange={handlePageChange}
+                showSizeChanger={false}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
-      {pageListings.length === 0 ? (
-        <p className={styles.empty}>{t('pages.destinations.empty')}</p>
-      ) : (
-        <div className={styles.grid}>
-          {pageListings.map((listing) => (
-            <HotelListingCard
-              key={listing.id}
-              id={listing.id}
-              name={listing.name}
-              location={`${listing.city}, ${listing.country}`}
-              priceLabel={formatCurrency(listing.pricePerNight, 'USD', i18n.language)}
-              perNightLabel={t(DESTINATIONS_I18N.card.perNight)}
-              guestRating={listing.guestRating}
-              imageUrl={listing.imageUrl}
-              isFeatured={listing.isFeatured}
-              featuredLabel={t(DESTINATIONS_I18N.card.featured)}
-              bookNowLabel={t(DESTINATIONS_I18N.card.bookNow)}
-              saveLabel={t('common.saveDestination')}
-              onBookNow={() => navigate(`/hotel/${listing.id}`)}
-            />
-          ))}
-        </div>
-      )}
-
-      {filteredListings.length > PAGE_SIZE ? (
-        <div className={styles.pagination}>
-          <Pagination
-            current={safePage}
-            total={filteredListings.length}
-            pageSize={PAGE_SIZE}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-          />
-        </div>
-      ) : null}
+      <BaseDrawer
+        open={filtersDrawerOpen}
+        onClose={() => setFiltersDrawerOpen(false)}
+        title={t(DESTINATIONS_I18N.filters.open)}
+        destroyOnClose={true}
+      >
+        <FiltersSidebar {...filtersSidebarProps} />
+      </BaseDrawer>
     </div>
   )
 }
