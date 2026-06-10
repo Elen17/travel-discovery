@@ -157,6 +157,23 @@
         "safeBooking": "Safe Booking",
         "freeCancellation": "Free Cancellation"
       },
+      "payment": {
+        "title": "Secure payment",
+        "amount": "Total to pay",
+        "cardName": "Card number",
+        "cardHolder": "Cardholder name",
+        "cvv": "CVV",
+        "cardNameRequired": "Card number is required",
+        "cardNameInvalid": "Enter a valid card number (13–19 digits)",
+        "cardHolderRequired": "Cardholder name is required",
+        "cardHolderInvalid": "Enter the full name on the card",
+        "cvvRequired": "CVV is required",
+        "cvvInvalid": "Enter a valid 3 or 4 digit CVV",
+        "cancel": "Cancel",
+        "pay": "Pay & book",
+        "paymentError": "Payment failed. Please check your card details and try again.",
+        "bookingValidationError": "Booking could not be completed. Please review your stay dates and try again."
+      },
       "weather": {
         "sunny": "Sunny"
       },
@@ -605,6 +622,7 @@
         "guestsRoom": "{{count}} Guests • {{room}}",
         "getDirections": "Get Directions",
         "viewDetails": "View Details",
+        "cancel": "Cancel booking",
         "status": {
           "confirmed": "Confirmed",
           "pending": "Pending",
@@ -614,6 +632,14 @@
       },
       "empty": "No bookings in this category.",
       "loadError": "Could not load your bookings. Please try again later.",
+      "cancelSuccess": "Booking cancelled successfully.",
+      "cancelError": "Could not cancel this booking. Please try again.",
+      "cancelConfirm": {
+        "title": "Cancel booking?",
+        "message": "This action cannot be undone. Your reservation will be cancelled.",
+        "ok": "Yes, cancel",
+        "dismiss": "Keep booking"
+      },
       "cta": {
         "title": "Need help planning your next trip?",
         "description": "Let our AI curator craft a personalized itinerary based on your travel style and preferences.",

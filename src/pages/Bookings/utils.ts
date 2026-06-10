@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import type { Booking } from '@/types/booking'
-import type { Hotel } from '@/types/hotel'
+import type { HotelDetail } from '@/types/hotel'
 import { BOOKINGS_I18N } from './const'
 import type { BookingDisplay, BookingDisplayStatus, BookingTab } from './types'
 
@@ -20,7 +20,7 @@ export const resolveDisplayStatus = (booking: Booking): BookingDisplayStatus => 
   return 'PENDING'
 }
 
-export const mapBookingToDisplay = (booking: Booking, hotel?: Hotel): BookingDisplay => ({
+export const mapBookingToDisplay = (booking: Booking, hotel?: HotelDetail): BookingDisplay => ({
   id: String(booking.id),
   hotelId: String(booking.hotelId),
   hotelName: hotel?.name ?? `Hotel #${booking.hotelId}`,
@@ -37,7 +37,7 @@ export const mapBookingToDisplay = (booking: Booking, hotel?: Hotel): BookingDis
 
 export const mapBookingsToDisplay = (
   bookings: Booking[],
-  hotelsById: Map<number, Hotel>,
+  hotelsById: Map<number, HotelDetail>,
 ): BookingDisplay[] =>
   bookings.map((booking) => mapBookingToDisplay(booking, hotelsById.get(booking.hotelId)))
 

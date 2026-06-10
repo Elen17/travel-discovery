@@ -73,13 +73,34 @@ export const calculateNights = (
   return nights > 0 ? nights : fallback
 }
 
-export const calculateBookingSummary = (hotel: HotelDetailData, nights: number): BookingSummary => {
-  const subtotal = hotel.pricePerNight * nights
+export const calculateGuestNightlyRate = (
+  pricePerNight: number,
+  guestCount: number,
+): number => {
+  const { baseGuestsIncluded, singleGuestRateRatio, extraGuestNightlyRateRatio } =
+    HOTEL_DETAIL_BOOKING_DEFAULTS
+
+  if (guestCount < baseGuestsIncluded) {
+    return Math.round(pricePerNight * singleGuestRateRatio)
+  }
+
+  const extraGuests = guestCount - baseGuestsIncluded
+  const extraGuestNightlyFee = Math.round(pricePerNight * extraGuestNightlyRateRatio)
+  return pricePerNight + extraGuests * extraGuestNightlyFee
+}
+
+export const calculateBookingSummary = (
+  hotel: HotelDetailData,
+  nights: number,
+  guestCount: number = HOTEL_DETAIL_BOOKING_DEFAULTS.baseGuestsIncluded,
+): BookingSummary => {
+  const nightlyRate = calculateGuestNightlyRate(hotel.pricePerNight, guestCount)
+  const subtotal = nightlyRate * nights
   const serviceFee = hotel.serviceFee
   const taxes = Math.round(subtotal * hotel.occupancyTaxRate)
   const total = subtotal + serviceFee + taxes
 
-  return { nights, subtotal, serviceFee, taxes, total }
+  return { nights, nightlyRate, subtotal, serviceFee, taxes, total }
 }
 
 export const getDefaultDates = (nights: number): { checkIn: Dayjs; checkOut: Dayjs } => {

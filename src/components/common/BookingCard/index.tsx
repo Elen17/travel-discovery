@@ -21,8 +21,11 @@ export const BookingCard = ({
   imageUrl,
   getDirectionsLabel,
   viewDetailsLabel,
+  cancelLabel,
+  isCancelling = false,
   onGetDirections,
   onViewDetails,
+  onCancel,
 }: BookingCardProps) => {
   return (
     <article className={styles.card}>
@@ -52,6 +55,16 @@ export const BookingCard = ({
           <button type="button" className={styles.directionsLink} onClick={onGetDirections}>
             {getDirectionsLabel}
           </button>
+          {onCancel && cancelLabel ? (
+            <Button
+              className={styles.cancelBtn}
+              onClick={onCancel}
+              loading={isCancelling}
+              disabled={isCancelling}
+            >
+              {cancelLabel}
+            </Button>
+          ) : null}
           <Button className={styles.detailsBtn} onClick={onViewDetails}>
             {viewDetailsLabel}
           </Button>

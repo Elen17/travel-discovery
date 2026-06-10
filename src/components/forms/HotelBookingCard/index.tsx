@@ -1,7 +1,5 @@
 import { LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons'
 import { Button, DatePicker, Select } from 'antd'
-import type { Dayjs } from 'dayjs'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BOOKING_GUEST_OPTIONS, BOOKING_I18N, parseGuestCount } from './const'
 import styles from './styles.module.css'
@@ -15,26 +13,16 @@ export const HotelBookingCard = ({
   formattedServiceFee,
   formattedTaxes,
   formattedTotal,
-  defaultCheckIn,
-  defaultCheckOut,
+  checkIn,
+  checkOut,
+  guestSelection,
+  onCheckInChange,
+  onCheckOutChange,
+  onGuestsChange,
   onBookNow,
-  onDatesChange,
   isSubmitting = false,
 }: HotelBookingCardProps) => {
   const { t } = useTranslation()
-  const [checkIn, setCheckIn] = useState<Dayjs | null>(defaultCheckIn)
-  const [checkOut, setCheckOut] = useState<Dayjs | null>(defaultCheckOut)
-  const [guests, setGuests] = useState<string>('2-1')
-
-  const handleCheckInChange = (date: Dayjs | null) => {
-    setCheckIn(date)
-    onDatesChange?.(date, checkOut)
-  }
-
-  const handleCheckOutChange = (date: Dayjs | null) => {
-    setCheckOut(date)
-    onDatesChange?.(checkIn, date)
-  }
 
   const handleBookNowClick = () => {
     if (!checkIn || !checkOut || isSubmitting) return
@@ -42,7 +30,7 @@ export const HotelBookingCard = ({
     void onBookNow?.({
       checkIn,
       checkOut,
-      guestCount: parseGuestCount(guests),
+      guestCount: parseGuestCount(guestSelection),
     })
   }
 
@@ -63,7 +51,7 @@ export const HotelBookingCard = ({
               <DatePicker
                 className={styles.picker}
                 value={checkIn}
-                onChange={handleCheckInChange}
+                onChange={onCheckInChange}
                 format="MMM D"
                 variant="borderless"
               />
@@ -73,7 +61,7 @@ export const HotelBookingCard = ({
               <DatePicker
                 className={styles.picker}
                 value={checkOut}
-                onChange={handleCheckOutChange}
+                onChange={onCheckOutChange}
                 format="MMM D"
                 variant="borderless"
                 disabledDate={(current) => (checkIn ? current.isBefore(checkIn, 'day') : false)}
@@ -84,8 +72,8 @@ export const HotelBookingCard = ({
             <span className={styles.label}>{t(BOOKING_I18N.guests)}</span>
             <Select
               className={styles.picker}
-              value={guests}
-              onChange={setGuests}
+              value={guestSelection}
+              onChange={onGuestsChange}
               options={BOOKING_GUEST_OPTIONS.map((opt) => ({
                 value: opt.value,
                 label: t(opt.labelKey),
