@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import type { PlannerChatResult } from '@/api/planner'
 import { store } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   appendMessages,
+  setAiSource,
   setDynamicItineraries,
   setDynamicSuggestions,
-  setOfflineMode,
   setSessionToken,
 } from '@/store/plannerSlice'
-import type { ExplorationId } from '@/types/planner'
+import { isGeminiConfigured, sendPlannerGeminiMessage } from '@/services/gemini'
+import type { ExplorationId, PlannerSuggestion } from '@/types/planner'
+import { PLANNER_I18N } from '../const'
 import {
   buildGenerateInsightsPrompt,
   buildHotelContextPrompt,
@@ -28,12 +31,26 @@ type UsePlannerChatSendOptions = {
   sendMessage: SendMessageFn
 }
 
+const applySuggestions = (
+  dispatch: ReturnType<typeof useAppDispatch>,
+  suggestions: PlannerSuggestion[] | undefined,
+  explorationId: ExplorationId,
+): void => {
+  if (!suggestions || suggestions.length === 0) {
+    return
+  }
+  dispatch(setDynamicSuggestions(suggestions))
+  dispatch(setDynamicItineraries(suggestionsToItineraries(suggestions, explorationId)))
+}
+
 export const usePlannerChatSend = ({
   activeExplorationId,
   sendMessage,
 }: UsePlannerChatSendOptions) => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
+  const [isSending, setIsSending] = useState(false)
   const hasSentContextRef = useRef(false)
   const { messages, isHydrated } = useAppSelector((state) => state.planner)
 
@@ -45,10 +62,24 @@ export const usePlannerChatSend = ({
     async (message: string) => {
       const userMessage = { role: 'user' as const, content: message }
       dispatch(appendMessages([userMessage]))
+      setIsSending(true)
 
       const { sessionToken } = store.getState().planner
 
       try {
+        if (isGeminiConfigured()) {
+          try {
+            const geminiResponse = await sendPlannerGeminiMessage(message, activeExplorationId)
+
+            dispatch(appendMessages([{ role: 'assistant', content: geminiResponse.reply }]))
+            applySuggestions(dispatch, geminiResponse.suggestions, activeExplorationId)
+            dispatch(setAiSource('gemini'))
+            return
+          } catch {
+            // Fall through to backend/mock via sendMessage
+          }
+        }
+
         const response = await sendMessage({
           message,
           sessionToken: sessionToken ?? undefined,
@@ -56,27 +87,31 @@ export const usePlannerChatSend = ({
 
         dispatch(setSessionToken(response.sessionToken))
         dispatch(appendMessages([{ role: 'assistant', content: response.reply }]))
-
-        if (response.suggestions) {
-          dispatch(setDynamicSuggestions(response.suggestions))
-          dispatch(
-            setDynamicItineraries(
-              suggestionsToItineraries(response.suggestions, activeExplorationId),
-            ),
-          )
-        }
-
-        dispatch(setOfflineMode(response.fromMock))
+        applySuggestions(dispatch, response.suggestions, activeExplorationId)
+        dispatch(setAiSource(response.fromMock ? 'demo' : 'backend'))
       } catch {
-        dispatch(setOfflineMode(true))
+        dispatch(setAiSource('demo'))
+        dispatch(
+          appendMessages([
+            {
+              role: 'assistant',
+              content: t(PLANNER_I18N.chat.errorGeneric),
+            },
+          ]),
+        )
+      } finally {
+        setIsSending(false)
       }
     },
-    [activeExplorationId, dispatch, sendMessage],
+    [activeExplorationId, dispatch, sendMessage, t],
   )
 
   const handleGenerateInsights = useCallback(() => {
+    if (isSending) {
+      return
+    }
     void handleChatSend(buildGenerateInsightsPrompt(activeExplorationId))
-  }, [activeExplorationId, handleChatSend])
+  }, [activeExplorationId, handleChatSend, isSending])
 
   useEffect(() => {
     if (hasSentContextRef.current || !isHydrated) {
@@ -89,5 +124,5 @@ export const usePlannerChatSend = ({
     }
   }, [handleChatSend, isHydrated, messages.length, searchParams])
 
-  return { handleChatSend, handleGenerateInsights }
+  return { handleChatSend, handleGenerateInsights, isSending }
 }

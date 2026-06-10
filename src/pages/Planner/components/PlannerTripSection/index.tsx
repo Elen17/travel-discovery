@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { PlannerAiBanner } from '@/components/common/PlannerAiBanner'
 import { PlannerTripHero } from '@/components/common/PlannerTripHero'
 import { useAppSelector } from '@/store/hooks'
+import type { PlannerAiSource } from '@/store/planner/types'
 import { EXPLORATION_CONTENT, PLANNER_I18N } from '../../const'
 import { getExplorationContent } from '../../utils'
 
@@ -9,15 +10,30 @@ type PlannerTripSectionProps = {
   onShare: () => void
   onExportPdf: () => void
   onGenerateInsights: () => void
+  isGenerating: boolean
+}
+
+const aiSourceBannerLabel = (
+  aiSource: PlannerAiSource,
+  t: (key: string) => string,
+): string | null => {
+  if (aiSource === 'gemini') {
+    return t(PLANNER_I18N.ai.sourceGemini)
+  }
+  if (aiSource === 'demo') {
+    return t(PLANNER_I18N.ai.sourceDemo)
+  }
+  return null
 }
 
 export const PlannerTripSection = ({
   onShare,
   onExportPdf,
   onGenerateInsights,
+  isGenerating,
 }: PlannerTripSectionProps) => {
   const { t } = useTranslation()
-  const { activeExplorationId } = useAppSelector((state) => state.planner)
+  const { activeExplorationId, aiSource } = useAppSelector((state) => state.planner)
   const exploration = getExplorationContent(activeExplorationId, EXPLORATION_CONTENT)
 
   return (
@@ -39,6 +55,9 @@ export const PlannerTripSection = ({
         title={t(PLANNER_I18N.ai.title)}
         description={t(PLANNER_I18N.ai.description)}
         buttonLabel={t(PLANNER_I18N.ai.generate)}
+        generatingLabel={t(PLANNER_I18N.ai.generating)}
+        sourceLabel={aiSourceBannerLabel(aiSource, t)}
+        isGenerating={isGenerating}
         onGenerate={onGenerateInsights}
       />
     </>

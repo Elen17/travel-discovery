@@ -35,11 +35,11 @@ const PlannerPage = () => {
     [dynamicItineraries, exploration.suggestedItineraries],
   )
 
-  const { sendMessage, isSending } = usePlannerChat(activeExplorationId)
+  const { sendMessage } = usePlannerChat(activeExplorationId)
   const { shareMessage, setShareMessage, handleShare } = usePlannerShare()
   const handleExportPdf = usePlannerExportPdf(displayedItineraries)
   const handleUsePlan = usePlannerUsePlan(setShareMessage)
-  const { handleChatSend, handleGenerateInsights } = usePlannerChatSend({
+  const { handleChatSend, handleGenerateInsights, isSending } = usePlannerChatSend({
     activeExplorationId,
     sendMessage,
   })
@@ -79,6 +79,7 @@ const PlannerPage = () => {
             onShare={() => void handleShare()}
             onExportPdf={handleExportPdf}
             onGenerateInsights={handleGenerateInsights}
+            isGenerating={isSending}
           />
 
           <PlannerChatSection

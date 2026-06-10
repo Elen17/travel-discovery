@@ -18,6 +18,28 @@
   border-bottom: 1px solid rgba(13, 110, 110, 0.12);
 }
 
+.sourceBanner {
+  padding: 8px 14px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(26, 26, 46, 0.06);
+}
+
+.sourceGemini {
+  color: #0d6e6e;
+  background: rgba(13, 110, 110, 0.1);
+}
+
+.sourceBackend {
+  color: #1d4ed8;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.sourceDemo {
+  color: #b45309;
+  background: rgba(180, 83, 9, 0.08);
+}
+
 .toolbar {
   display: flex;
   justify-content: flex-end;

@@ -78,6 +78,7 @@ export const usePlannerChatHistory = () => {
     historyOpen,
     openHistory,
     closeHistory,
+    refreshHistory,
     savedSessions,
     restoreSavedSession,
     removeSavedSession,

@@ -7,6 +7,9 @@ export const PlannerAiBanner = ({
   title,
   description,
   buttonLabel,
+  generatingLabel,
+  sourceLabel,
+  isGenerating = false,
   onGenerate,
 }: PlannerAiBannerProps) => {
   return (
@@ -16,9 +19,15 @@ export const PlannerAiBanner = ({
         <span className={styles.label}>{label}</span>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.description}>{description}</p>
+        {sourceLabel && <span className={styles.sourceBadge}>{sourceLabel}</span>}
       </div>
-      <Button className={styles.generateBtn} onClick={onGenerate}>
-        {buttonLabel}
+      <Button
+        className={styles.generateBtn}
+        onClick={onGenerate}
+        loading={isGenerating}
+        disabled={isGenerating}
+      >
+        {isGenerating ? generatingLabel : buttonLabel}
       </Button>
     </section>
   )

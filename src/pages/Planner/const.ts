@@ -18,6 +18,9 @@ export const PLANNER_I18N = {
     title: 'pages.planner.ai.title',
     description: 'pages.planner.ai.description',
     generate: 'pages.planner.ai.generate',
+    generating: 'pages.planner.ai.generating',
+    sourceGemini: 'pages.planner.ai.sourceGemini',
+    sourceDemo: 'pages.planner.ai.sourceDemo',
   },
   itineraries: {
     title: 'pages.planner.itineraries.title',
@@ -53,6 +56,10 @@ export const PLANNER_I18N = {
     saveModalLabel: 'pages.planner.chat.saveModalLabel',
     saveModalConfirm: 'pages.planner.chat.saveModalConfirm',
     saveModalCancel: 'pages.planner.chat.saveModalCancel',
+    sourceGemini: 'pages.planner.chat.sourceGemini',
+    sourceBackend: 'pages.planner.chat.sourceBackend',
+    sourceDemo: 'pages.planner.chat.sourceDemo',
+    errorGeneric: 'pages.planner.chat.errorGeneric',
   },
   applied: {
     title: 'pages.planner.applied.title',
