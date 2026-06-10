@@ -1,15 +1,16 @@
 .card {
-  padding: 20px;
+  padding: 24px;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(26, 26, 46, 0.06);
+  border: 1px solid rgba(26, 26, 46, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(26, 26, 46, 0.04);
 }
 
 .header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .avatar {
@@ -19,14 +20,16 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(13, 110, 110, 0.12);
+  background: rgba(13, 110, 110, 0.1);
   color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .meta {
   flex: 1;
+  min-width: 0;
 }
 
 .author {
@@ -40,17 +43,27 @@
   display: block;
   font-size: 0.75rem;
   color: rgba(26, 26, 46, 0.45);
+  margin-top: 2px;
 }
 
 .stars {
-  color: #f5a623;
+  color: var(--color-accent-dark);
   font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 .comment {
   margin: 0;
   font-size: 0.9375rem;
-  line-height: 1.6;
+  line-height: 1.65;
   font-style: italic;
   color: rgba(26, 26, 46, 0.72);
+}
+
+.comment::before {
+  content: '\201C';
+}
+
+.comment::after {
+  content: '\201D';
 }

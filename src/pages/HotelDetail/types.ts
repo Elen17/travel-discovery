@@ -1,10 +1,12 @@
 import type { ComponentType } from 'react'
+import type { Dayjs } from 'dayjs'
 
 export type HotelDetailPageProps = Record<string, never>
 
 export type HotelAmenityItem = {
   id: string
-  labelKey: string
+  labelKey?: string
+  label?: string
   icon: ComponentType<{ className?: string }>
 }
 
@@ -14,13 +16,13 @@ export type HotelGalleryImage = {
   altKey: string
 }
 
-export type HotelReview = {
+export type HotelDetailReview = {
   id: string
   initials: string
-  authorKey: string
-  dateKey: string
+  author: string
+  date: string
   rating: number
-  commentKey: string
+  comment: string
 }
 
 export type HotelDetailData = {
@@ -35,17 +37,16 @@ export type HotelDetailData = {
   weatherTemp: number
   weatherConditionKey: string
   descriptionTitleKey: string
-  descriptionParagraphKeys: string[]
+  descriptionParagraphs: string[]
   amenities: HotelAmenityItem[]
   gallery: HotelGalleryImage[]
   galleryTotalPhotos: number
-  reviews: HotelReview[]
   serviceFee: number
   occupancyTaxRate: number
   defaultNights: number
+  latitude: number
+  longitude: number
 }
-
-import type { Dayjs } from 'dayjs'
 
 export type BookingFormValues = {
   checkIn: Dayjs | null

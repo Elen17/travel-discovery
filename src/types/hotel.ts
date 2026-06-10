@@ -63,3 +63,44 @@ export type HotelCatalogParams = {
   type?: HotelType
   sortBy?: string
 }
+
+export type HotelDetail = {
+  id: number
+  name: string
+  description: string
+  country: string
+  city: string
+  address: string
+  latitude: number
+  longitude: number
+  pricePerNight: number
+  starRating: number
+  mainImageUrl: string
+  isFeatured: boolean
+  amenities: string[]
+  imageUrls: string[]
+  averageRating: number
+  reviewCount: number
+}
+
+export type HotelReview = {
+  id: number
+  userId: number
+  rating: number
+  comment: string
+  createdAt: string
+}
+
+export type HotelReviewsPage = {
+  content: HotelReview[]
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
+  last: boolean
+}
+
+export type CreateHotelReviewPayload = {
+  rating: number
+  comment: string
+}

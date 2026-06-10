@@ -10,6 +10,8 @@ export const HotelDetailHero = ({
   reviewCountLabel,
   weatherTemp,
   weatherLabel,
+  latitude,
+  longitude,
 }: HotelDetailHeroProps) => {
   return (
     <section className={styles.hero} aria-label={name}>
@@ -27,8 +29,15 @@ export const HotelDetailHero = ({
         </div>
         <h1 className={styles.title}>{name}</h1>
         <p className={styles.location}>
-          <EnvironmentOutlined />
-          {location}
+          <a
+            href={`https://www.google.com/maps?q=${latitude},${longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <EnvironmentOutlined />
+          </a>
+
+          <span>{location}</span>
         </p>
       </div>
 

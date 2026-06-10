@@ -1,6 +1,12 @@
 import { apiClient } from '@/configs/axios'
-import type { PageResponse } from '@/types/api'
-import type { Hotel, HotelCatalogParams, HotelLiveSearchParams } from '@/types/hotel'
+import type {
+  CreateHotelReviewPayload,
+  HotelDetail,
+  HotelListResponse,
+  HotelReview,
+  HotelReviewsPage,
+  HotelSearchParams,
+} from '@/types/hotel'
 
 /** Live search — triggers ingestion then returns DB-backed hotels (plain array). */
 export const searchHotelsLive = async (params: HotelLiveSearchParams): Promise<Hotel[]> => {
@@ -14,7 +20,26 @@ export const getHotels = async (params: HotelCatalogParams): Promise<PageRespons
   return data
 }
 
-export const getHotelById = async (id: string): Promise<Hotel> => {
-  const { data } = await apiClient.get<Hotel>(`/hotels/${id}`)
+export const getHotelById = async (id: string): Promise<HotelDetail> => {
+  const { data } = await apiClient.get<HotelDetail>(`/hotels/${id}`)
+  return data
+}
+
+export const getHotelReviews = async (
+  id: string,
+  page = 0,
+  size = 10,
+): Promise<HotelReviewsPage> => {
+  const { data } = await apiClient.get<HotelReviewsPage>(`/hotels/${id}/reviews`, {
+    params: { page, size },
+  })
+  return data
+}
+
+export const createHotelReview = async (
+  id: string,
+  payload: CreateHotelReviewPayload,
+): Promise<HotelReview> => {
+  const { data } = await apiClient.post<HotelReview>(`/hotels/${id}/reviews`, payload)
   return data
 }

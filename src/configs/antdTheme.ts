@@ -8,6 +8,7 @@ export const antdTheme: ThemeConfig = {
     colorText: '#1A1A2E',
     borderRadius: 12,
     fontFamily: "'DM Sans', system-ui, sans-serif",
+    fontFamilyCode: "'Poppins', system-ui, sans-serif",
     fontSize: 16,
     controlHeight: 44,
   },

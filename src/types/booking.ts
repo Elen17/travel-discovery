@@ -9,6 +9,7 @@ export type Booking = {
   totalPrice: number
   status: BookingStatus
   createdAt: string
+  hotelName?: string
 }
 
 export type CreateBookingPayload = {
@@ -17,4 +18,5 @@ export type CreateBookingPayload = {
   checkOut: string
   guestCount: number
   specialRequests?: string
+  totalPrice: number
 }

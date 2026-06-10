@@ -57,6 +57,7 @@ export const router = createBrowserRouter([
         path: 'profile',
         element: <ProtectedRoute>{withSuspense(<ProfilePage />)}</ProtectedRoute>,
       },
+      { path: 'login', element: <Navigate to="/auth/login" replace /> },
       { path: 'auth/login', element: withSuspense(<AuthPage />) },
       { path: '404', element: withSuspense(<NotFoundPage />) },
       { path: '*', element: <Navigate to="/404" replace /> },

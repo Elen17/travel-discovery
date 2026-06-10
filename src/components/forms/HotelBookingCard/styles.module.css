@@ -1,110 +1,161 @@
 .wrapper {
-  position: sticky;
-  top: 88px;
+  width: 100%;
 }
 
 .card {
-  padding: 24px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(26, 26, 46, 0.1);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .priceRow {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .price {
-  font-size: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: var(--color-primary);
+  line-height: 1.1;
 }
 
 .perNight {
+  font-family: var(--font-body);
   font-size: 0.9375rem;
   font-weight: 400;
-  color: rgba(26, 26, 46, 0.55);
+  color: rgba(26, 26, 46, 0.5);
 }
 
-.dateRow {
+.pickerBox {
+  border: 1px solid rgba(26, 26, 46, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.pickerRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
 }
 
-.field {
-  margin-bottom: 12px;
+.pickerCell {
+  padding: 14px 16px;
+}
+
+.pickerCellBordered {
+  border-right: 1px solid rgba(26, 26, 46, 0.12);
+}
+
+.pickerCellFull {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(26, 26, 46, 0.12);
 }
 
 .label {
   display: block;
   margin-bottom: 6px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(26, 26, 46, 0.55);
+  color: rgba(26, 26, 46, 0.45);
 }
 
 .picker {
   width: 100%;
 }
 
+.picker :global(.ant-picker),
+.picker :global(.ant-select-selector) {
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  height: auto !important;
+  min-height: 28px;
+}
+
+.picker :global(.ant-picker-input > input),
+.picker :global(.ant-select-selection-item) {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
 .breakdown {
-  margin: 20px 0;
-  padding-top: 16px;
-  border-top: 1px solid rgba(26, 26, 46, 0.08);
+  margin: 0 0 24px;
+  padding-top: 0;
+  border-top: none;
 }
 
 .line {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 12px;
   font-size: 0.875rem;
-  color: rgba(26, 26, 46, 0.72);
+  color: rgba(26, 26, 46, 0.6);
+}
+
+.line:last-of-type {
+  margin-bottom: 0;
 }
 
 .totalLine {
   display: flex;
   justify-content: space-between;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(26, 26, 46, 0.08);
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(26, 26, 46, 0.1);
   font-size: 1rem;
+  font-weight: 400;
+  color: rgba(26, 26, 46, 0.72);
+}
+
+.totalLine span:first-child {
+  font-weight: 500;
+}
+
+.totalLine span:last-child {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: var(--color-primary);
 }
 
 .bookBtn {
   width: 100%;
-  height: 48px !important;
-  margin-top: 8px;
-  border-radius: 12px !important;
-  font-weight: 600;
+  height: 52px !important;
+  margin-top: 4px;
+  border-radius: 999px !important;
+  font-weight: 700;
   font-size: 1rem;
-  background: var(--color-accent-dark) !important;
-  border-color: var(--color-accent-dark) !important;
+  background: #b23a2b !important;
+  border-color: #b23a2b !important;
 }
 
 .bookBtn:hover {
-  background: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
+  background: #963222 !important;
+  border-color: #963222 !important;
 }
 
 .notCharged {
   display: block;
-  margin-top: 12px;
+  margin-top: 14px;
   text-align: center;
   font-size: 0.8125rem;
-  color: rgba(26, 26, 46, 0.45);
+  color: rgba(26, 26, 46, 0.42);
 }
 
 .trust {
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 20px;
+  margin-top: 24px;
   flex-wrap: wrap;
 }
 
@@ -113,15 +164,20 @@
   align-items: center;
   gap: 6px;
   font-size: 0.75rem;
-  color: rgba(26, 26, 46, 0.55);
+  color: rgba(26, 26, 46, 0.5);
 }
 
 .trustIcon {
   color: var(--color-primary);
 }
 
-@media (max-width: 992px) {
-  .wrapper {
-    position: static;
+@media (max-width: 576px) {
+  .price {
+    font-size: 1.75rem;
+  }
+
+  .pickerCell,
+  .pickerCellFull {
+    padding: 12px 14px;
   }
 }

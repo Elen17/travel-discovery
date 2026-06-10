@@ -1,5 +1,11 @@
 import type { Dayjs } from 'dayjs'
 
+export type HotelBookingFormData = {
+  checkIn: Dayjs
+  checkOut: Dayjs
+  guestCount: number
+}
+
 export type HotelBookingCardProps = {
   pricePerNight: number
   priceLabel: string
@@ -14,7 +20,8 @@ export type HotelBookingCardProps = {
   formattedTaxes: string
   formattedTotal: string
   nightsLineLabel: string
-  onBookNow?: () => void
+  onBookNow?: (formData: HotelBookingFormData) => void | Promise<void>
+  isSubmitting?: boolean
   defaultCheckIn: Dayjs
   defaultCheckOut: Dayjs
   onDatesChange?: (checkIn: Dayjs | null, checkOut: Dayjs | null) => void

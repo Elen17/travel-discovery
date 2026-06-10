@@ -7,6 +7,7 @@ import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
 import { useLogout } from '@/hooks/useLogout'
 import { useAppSelector } from '@/store/hooks'
 import { NAV_ITEMS } from './const'
+import Logo from '../../../../public/logo.png'
 import styles from './styles.module.css'
 
 const { Header: AntHeader } = Layout
@@ -50,7 +51,7 @@ export const Header = () => {
   return (
     <AntHeader className={styles.header}>
       <Link to="/" className={styles.brand}>
-        {t('app.name')}
+        <img src={Logo} />
       </Link>
 
       <Menu

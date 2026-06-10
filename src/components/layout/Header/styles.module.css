@@ -10,6 +10,8 @@
 }
 
 .brand {
+  width: 180px;
+  height: 80%;
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -19,6 +21,10 @@
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
+}
+.brand .img {
+  width: 100%;
+  height: 100%;
 }
 
 .brand:hover {

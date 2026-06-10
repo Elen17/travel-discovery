@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 :root {
   /* --- Colors --- */
   --color-primary: #0d6e6e;
@@ -75,13 +76,19 @@ img {
   height: auto;
 }
 
-button {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  appearance: none;
-  outline: none;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.ant-typography,
+.ant-typography-title,
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6 {
+  font-family: 'Poppins', system-ui, sans-serif !important;
 }
