@@ -10,8 +10,11 @@
     "events": "Events",
     "planner": "Planner",
     "bookings": "Bookings",
+    "analytics": "Analytics",
+    "users": "Users",
     "login": "Log in",
-    "profile": "Profile"
+    "profile": "Profile",
+    "logout": "Log out"
   },
   "footer": {
     "contactUs": "Contact Us",
@@ -34,20 +37,28 @@
     "home": {
       "heroTitle": "Where do you want to go?",
       "search": {
-        "destination": "Destination",
-        "destinationPlaceholder": "Search places...",
+        "country": "Country",
+        "countryPlaceholder": "Select country",
+        "city": "City",
+        "cityPlaceholder": "Select city",
         "dates": "Dates",
-        "datesPlaceholder": "Add dates",
+        "startDatesPlaceholder": "Start",
+        "endDatesPlaceholder": "End",
         "guests": "Guests",
         "guestsPlaceholder": "Add guests",
-        "submit": "Search"
+        "submit": "Search",
+        "errors": {
+          "countryRequired": "Please select a country.",
+          "cityRequired": "Please select a city.",
+          "generic": "Search failed. Please try again."
+        }
       },
       "categories": {
         "eyebrow": "Curated",
         "title": "Explore by Category",
         "beaches": "Beaches",
         "adventure": "Adventure",
-        "luxuryTour": "Luxury Tour",
+        "europeTour": "Europe Tour",
         "cabinStays": "Cabin Stays",
         "foodWine": "Food & Wine"
       },
@@ -57,24 +68,56 @@
         "avgPrice": "Avg. {{price}} / night",
         "prev": "Previous destinations",
         "next": "Next destinations",
+        "cardAlt": "{{city}}, {{country}}",
+        "savedDestination": "Saved {{city}} to favourites",
+        "loadError": "Could not load trending destinations. Please try again later.",
         "destinations": {
           "ubud": { "city": "Ubud, Bali", "country": "Indonesia" },
           "kyoto": { "city": "Kyoto", "country": "Japan" },
           "paris": { "city": "Paris", "country": "France" },
           "venice": { "city": "Venice", "country": "Italy" }
         }
+      },
+      "newsletter": {
+        "title": "The Travel Discovery Journal",
+        "description": "Curated travel insights, hidden destinations, and exclusive membership offers delivered once a month.",
+        "emailPlaceholder": "Enter your email",
+        "submit": "Subscribe",
+        "disclaimerPrefix": "By subscribing, you agree to our",
+        "disclaimerAnd": "and",
+        "success": "You're subscribed! Check your inbox for upcoming events and travel insights.",
+        "errors": {
+          "emailRequired": "Please enter your email address.",
+          "emailInvalid": "Please enter a valid email address.",
+          "generic": "Something went wrong. Please try again later."
+        }
       }
     },
     "destinations": {
       "title": "Destinations",
       "heroTitle": "Find Your Sanctuary",
-      "heroSubtitle": "Discover curated stays across the world's most breathtaking landscapes.",
+      "heroSubtitle": "Discover extraordinary stays in the world’s most stunning locations.",
       "empty": "No stays match your filters. Try adjusting your search.",
+      "resultsCount": "Showing {{count}} Results",
       "filters": {
+        "location": "Location",
+        "allCountries": "All Countries",
+        "selectCity": "Select City",
         "priceRange": "Price Range",
+        "min": "Min",
+        "max": "Max",
+        "hotelType": "Property Type",
         "starRating": "Star Rating",
-        "topFilters": "Top Filters",
-        "mapView": "Map View",
+        "apply": "Apply Filters",
+        "open": "Filters",
+        "typeHotel": "Hotel",
+        "typeApartment": "Apartment",
+        "typeResort": "Resort",
+        "typeVilla": "Villa",
+        "typeGuestHouse": "Guest House",
+        "typeHostel": "Hostel",
+        "typeMotel": "Motel",
+        "typeOther": "Other",
         "infinityPool": "Infinity Pool",
         "privateBeach": "Private Beach"
       },
@@ -175,6 +218,8 @@
       "title": "Planner",
       "comingSoon": "{{feature}} — coming soon",
       "newChat": "New Chat",
+      "dailyPlans": "Daily Plans",
+      "dailyPlansEmpty": "No saved daily plans yet",
       "recentExplorations": "Recent Explorations",
       "trip": {
         "eyebrow": "Curated Expedition",
@@ -187,7 +232,7 @@
       "ai": {
         "label": "Intelligent Travel Assistant",
         "title": "Let AI suggest your next activity",
-        "description": "Based on your preferences and the current weather in Vik, we've identified three unique experiences available today.",
+        "description": "Based on your preferences and current conditions, we've identified three unique experiences available today.",
         "generate": "Generate Insights"
       },
       "itineraries": {
@@ -195,46 +240,356 @@
         "subtitle": "Optimized for your current location and interests.",
         "viewAll": "View All",
         "usePlan": "Use This Plan",
+        "viewDetails": "View Details",
         "categories": {
           "nature": "Nature Focus",
           "wellness": "Wellness",
           "adventure": "Adventure"
-        },
-        "items": {
-          "waterfall": {
-            "title": "Seljalandsfoss & Gljúfrabúi",
-            "description": "Walk behind cascading waterfalls and explore hidden canyon grottos along the south coast.",
-            "duration": "6 Hours"
-          },
-          "lagoon": {
-            "title": "Blue Lagoon Retreat",
-            "description": "Unwind in geothermal waters surrounded by volcanic landscapes and premium spa rituals.",
-            "duration": "4 Hours"
-          },
-          "iceCave": {
-            "title": "Crystal Ice Cave Tour",
-            "description": "Venture inside a natural glacier cave with expert guides and dramatic blue ice formations.",
-            "duration": "5 Hours"
-          }
         }
+      },
+      "chat": {
+        "placeholder": "Ask about destinations, activities, or day plans…",
+        "send": "Send",
+        "empty": "Start planning your trip",
+        "emptyHint": "Ask a question or tap Generate Insights for curated day plans.",
+        "offline": "Demo mode — built-in assistant (no API charges)",
+        "typing": "Assistant is typing…",
+        "loginPrompt": "Log in to sync your chat history across devices.",
+        "history": "History",
+        "historyTitle": "Saved chats & plans",
+        "historyEmpty": "No saved chats yet. Use Save to keep a plan from your conversation.",
+        "historyRestore": "Restore",
+        "historyDelete": "Delete",
+        "historyMessages": "messages",
+        "historyPlans": "plans",
+        "save": "Save",
+        "saveSuccess": "Chat and plan saved",
+        "saveEmptyHint": "Start a conversation before saving",
+        "saveModalTitle": "Save chat & plan",
+        "saveModalLabel": "Plan name",
+        "saveModalConfirm": "Save",
+        "saveModalCancel": "Cancel"
+      },
+      "applied": {
+        "title": "Today's Plan",
+        "empty": "No activities added yet.",
+        "added": "Activity added to your plan",
+        "remove": "Remove"
+      },
+      "share": {
+        "copied": "Share link copied to clipboard",
+        "failed": "Could not copy link — try again"
+      },
+      "drawer": {
+        "title": "All Suggested Itineraries",
+        "steps": "Itinerary steps",
+        "close": "Close"
+      },
+      "print": {
+        "title": "Travel Plan"
       },
       "explorations": {
         "iceland": {
           "title": "Icelandic Northern Lights",
-          "meta": "7 days • Updated 2h ago"
+          "meta": "7 days • Updated 2h ago",
+          "trip": {
+            "eyebrow": "Curated Expedition",
+            "title": "Icelandic Ring Road",
+            "dates": "Oct 12 — Oct 24",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "waterfall": {
+              "title": "Seljalandsfoss & Gljúfrabúi",
+              "description": "Walk behind cascading waterfalls and explore hidden canyon grottos along the south coast.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Drive from Vik to Seljalandsfoss (30 min)",
+                "1": "Walk the path behind the waterfall",
+                "2": "Explore Gljúfrabúi hidden gorge"
+              }
+            },
+            "lagoon": {
+              "title": "Blue Lagoon Retreat",
+              "description": "Unwind in geothermal waters surrounded by volcanic landscapes and premium spa rituals.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Book timed entry slot in advance",
+                "1": "Silica mud mask and lagoon swim"
+              }
+            },
+            "iceCave": {
+              "title": "Crystal Ice Cave Tour",
+              "description": "Venture inside a natural glacier cave with expert guides and dramatic blue ice formations.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Meet guide at Jökulsárlón parking",
+                "1": "Guided ice cave walk with safety gear"
+              }
+            }
+          }
         },
         "tuscany": {
           "title": "Tuscany Vineyard Tour",
-          "meta": "5 days • Updated 1d ago"
+          "meta": "5 days • Updated 1d ago",
+          "trip": {
+            "eyebrow": "Wine Country Escape",
+            "title": "Chianti & Florence Highlights",
+            "dates": "Sep 5 — Sep 10",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "chianti": {
+              "title": "Chianti Wine Route",
+              "description": "Rolling hills, medieval villages, and cellar tastings across Chianti Classico.",
+              "duration": "7 Hours",
+              "steps": {
+                "0": "Morning departure from Florence",
+                "1": "Two winery visits with guided tastings"
+              }
+            },
+            "terme": {
+              "title": "Tuscan Thermal Springs",
+              "description": "Historic thermal baths in Saturnia with natural cascading pools.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Drive to Saturnia hot springs",
+                "1": "Relax in natural limestone pools"
+              }
+            },
+            "cycling": {
+              "title": "Hilltop Village Cycling",
+              "description": "E-bike tour through cypress-lined roads linking San Gimignano and Volterra.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "E-bike fitting and safety briefing",
+                "1": "Gelato stop in San Gimignano"
+              }
+            }
+          }
         },
         "kyoto": {
           "title": "Kyoto Temple Trail",
-          "meta": "4 days • Updated 3d ago"
+          "meta": "4 days • Updated 3d ago",
+          "trip": {
+            "eyebrow": "Cultural Immersion",
+            "title": "Kyoto Heritage Journey",
+            "dates": "Apr 2 — Apr 6",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "fushimi": {
+              "title": "Fushimi Inari & Bamboo Grove",
+              "description": "Iconic torii gates and serene bamboo paths in eastern Kyoto.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Early visit to Fushimi Inari shrine",
+                "1": "Arashiyama bamboo grove walk"
+              }
+            },
+            "onsen": {
+              "title": "Traditional Onsen Retreat",
+              "description": "Authentic ryokan soak and kaiseki-inspired wellness rituals.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Check in at partner ryokan",
+                "1": "Matcha and wagashi tea service"
+              }
+            },
+            "gion": {
+              "title": "Gion Evening Heritage Walk",
+              "description": "Guided evening walk through Gion with temple illuminations.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Meet guide at Yasaka Shrine",
+                "1": "Lantern-lit stroll through Gion"
+              }
+            }
+          }
         },
         "amalfi": {
           "title": "Amalfi Coastal Drive",
-          "meta": "6 days • Updated 1w ago"
+          "meta": "6 days • Updated 1w ago",
+          "trip": {
+            "eyebrow": "Mediterranean Escape",
+            "title": "Amalfi Coast Expedition",
+            "dates": "Jun 14 — Jun 20",
+            "travelers": "2 Travelers"
+          },
+          "itineraries": {
+            "path": {
+              "title": "Path of the Gods Hike",
+              "description": "Clifftop trail with sweeping views of the Tyrrhenian Sea.",
+              "duration": "6 Hours",
+              "steps": {
+                "0": "Bus to Bomerano starting point",
+                "1": "Hike Sentiero degli Dei"
+              }
+            },
+            "boat": {
+              "title": "Amalfi Coast Boat Day",
+              "description": "Private boat cruise with swimming coves and coastal relaxation.",
+              "duration": "5 Hours",
+              "steps": {
+                "0": "Depart from Amalfi harbor",
+                "1": "Aperitivo on deck at sunset"
+              }
+            },
+            "ravello": {
+              "title": "Ravello Villa Gardens",
+              "description": "Explore Villa Rufolo gardens and clifftop concert terraces.",
+              "duration": "4 Hours",
+              "steps": {
+                "0": "Scenic drive to Ravello",
+                "1": "Terrace views over the coastline"
+              }
+            }
+          }
         }
+      }
+    },
+    "analytics": {
+      "title": "App Analytics",
+      "subtitle": "Charts built from your navigation and in-app events across menu pages.",
+      "exportData": "Export Data",
+      "empty": "No events in this date range. Browse the app or widen the range.",
+      "events": {
+        "dateChange": "Date range changed",
+        "dateChangeDetail": "{{start}} — {{end}}",
+        "export": "Data exported",
+        "exportDetail": "{{start}} — {{end}}"
+      },
+      "kpis": {
+        "totalVisitors": "Total Visitors",
+        "totalPageViews": "Page Views",
+        "activeUsers": "Active Users",
+        "engagementRate": "Engagement Rate",
+        "steady": "Steady"
+      },
+      "charts": {
+        "pageViewTrends": {
+          "title": "Page View Trends",
+          "subtitle": "Current period vs previous period",
+          "currentPeriod": "Current Period",
+          "previousPeriod": "Previous Period"
+        },
+        "menuPageTraffic": {
+          "title": "Menu Page Traffic"
+        },
+        "eventBreakdown": {
+          "title": "Event Breakdown",
+          "total": "Total",
+          "pageView": "Page Views",
+          "search": "Searches",
+          "destinationView": "Destination Views",
+          "custom": "Custom Events"
+        },
+        "topDestinations": {
+          "title": "Top Destinations",
+          "subtitle": "From hotel views and destination searches"
+        },
+        "deviceTypes": {
+          "title": "Device Types",
+          "subtitle": "Unique visitors by device",
+          "mobile": "Mobile",
+          "tablet": "Tablet",
+          "desktop": "Desktop"
+        },
+        "reports": {
+          "booking": {
+            "title": "Booking Reports",
+            "subtitle": "Your bookings in the selected period",
+            "total": "Total bookings",
+            "confirmed": "Confirmed",
+            "upcoming": "Upcoming",
+            "cancelled": "Cancelled",
+            "loginRequired": "Log in to see booking reports."
+          },
+          "revenue": {
+            "title": "Revenue Reports",
+            "subtitle": "Booking revenue in the selected period",
+            "total": "Total revenue",
+            "confirmed": "Confirmed revenue",
+            "average": "Average booking value",
+            "loginRequired": "Log in to see revenue reports."
+          },
+          "user": {
+            "title": "User Reports",
+            "subtitle": "App usage from tracked events",
+            "visitors": "Total visitors",
+            "activeUsers": "Active users",
+            "profileViews": "Profile page views",
+            "bookingsViews": "Bookings page views"
+          }
+        },
+        "topPages": {
+          "title": "Top Pages",
+          "subtitle": "Most visited routes in the selected range",
+          "live": "Live",
+          "other": "Other Pages"
+        },
+        "recentEvents": {
+          "title": "Recent Events",
+          "viewAll": "View All Events",
+          "minutesAgo": "{{count}} mins ago",
+          "eventTypes": {
+            "pageView": "Page View",
+            "search": "Search",
+            "destinationView": "Destination View",
+            "custom": "Custom"
+          }
+        }
+      }
+    },
+    "users": {
+      "title": "Users",
+      "addUser": "Add User",
+      "loadError": "Could not load users. Please try again later.",
+      "empty": "No users found.",
+      "table": {
+        "avatar": "Avatar",
+        "fullName": "Full name",
+        "email": "Email",
+        "role": "Role",
+        "actions": "Actions",
+        "edit": "Edit user",
+        "delete": "Delete user"
+      },
+      "roles": {
+        "admin": "Admin",
+        "user": "User"
+      },
+      "form": {
+        "fullName": "Full name",
+        "fullNamePlaceholder": "Enter full name",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "avatarUrl": "Avatar URL",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg"
+      },
+      "modals": {
+        "addTitle": "Add User",
+        "editTitle": "Edit User",
+        "deleteTitle": "Delete User",
+        "deleteConfirm": "Are you sure you want to delete {{userName}} user?"
+      },
+      "actions": {
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "validation": {
+        "fullNameRequired": "Full name is required",
+        "fullNameMin": "Full name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address"
+      },
+      "messages": {
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "genericError": "Something went wrong. Please try again."
       }
     },
     "bookings": {
@@ -246,6 +601,7 @@
       },
       "card": {
         "dates": "Dates",
+        "defaultRoomType": "Standard Room",
         "guestsRoom": "{{count}} Guests • {{room}}",
         "getDirections": "Get Directions",
         "viewDetails": "View Details",
@@ -257,6 +613,7 @@
         }
       },
       "empty": "No bookings in this category.",
+      "loadError": "Could not load your bookings. Please try again later.",
       "cta": {
         "title": "Need help planning your next trip?",
         "description": "Let our AI curator craft a personalized itinerary based on your travel style and preferences.",
@@ -280,8 +637,19 @@
         "planWithAi": "Plan with AI",
         "removeSaved": "Remove from saved places"
       },
+      "avatar": {
+        "change": "Change photo",
+        "uploading": "Uploading photo…",
+        "success": "Profile photo updated.",
+        "errors": {
+          "invalidType": "Please choose a JPEG, PNG, WebP, or GIF image.",
+          "tooLarge": "Image must be 5 MB or smaller.",
+          "generic": "Could not update your profile photo. Please try again."
+        }
+      },
       "savedPlaces": {
         "empty": "You haven't saved any places yet. Explore destinations and tap the heart to save your favorites.",
+        "loadError": "Could not load your saved places. Please try again later.",
         "villaMargherita": {
           "country": "Italy",
           "description": "A sun-drenched villa perched above the Amalfi cliffs with private terraces and sea views."
@@ -302,7 +670,44 @@
     },
     "auth": {
       "title": "Log in",
-      "placeholder": "Authentication — implementation pending"
+      "brandWelcome": "Welcome back to Travel Discovery",
+      "login": {
+        "title": "Log in",
+        "subtitle": "Sign in to manage bookings, saved places, and your profile.",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "submit": "Log in",
+        "noAccount": "Don't have an account?",
+        "switchToRegister": "Create one"
+      },
+      "register": {
+        "title": "Create account",
+        "subtitle": "Join Travel Discovery to book stays and save your favourites.",
+        "fullName": "Full name",
+        "fullNamePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "At least 8 characters",
+        "submit": "Sign up",
+        "hasAccount": "Already have an account?",
+        "switchToLogin": "Log in"
+      },
+      "validation": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 8 characters",
+        "fullNameRequired": "Full name is required",
+        "fullNameMin": "Name must be at least 2 characters"
+      },
+      "errors": {
+        "generic": "Something went wrong. Please try again.",
+        "invalidCredentials": "Invalid email or password.",
+        "emailTaken": "This email is already registered."
+      }
     },
     "notFound": {
       "title": "Page not found",

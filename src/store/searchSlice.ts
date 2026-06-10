@@ -1,29 +1,49 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { HotelSearchParams } from '@/types/hotel'
+import type { Hotel, HotelCatalogParams, HotelLiveSearchParams } from '@/types/hotel'
 
+const DEFAULT_PAGE_SIZE = 10
 export type SearchState = {
-  params: HotelSearchParams
+  catalogParams: Partial<HotelCatalogParams>
+  liveSearchParams: Partial<HotelLiveSearchParams>
+  liveSearchResults: Hotel[]
 }
 
 const initialState: SearchState = {
-  params: {
+  catalogParams: {
     page: 0,
-    size: 9,
+    size: DEFAULT_PAGE_SIZE,
   },
+  liveSearchParams: {
+    adults: 1,
+  },
+  liveSearchResults: [],
 }
 
 const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    setSearchParams: (state, action: PayloadAction<HotelSearchParams>) => {
-      state.params = { ...state.params, ...action.payload }
+    setCatalogParams: (state, action: PayloadAction<Partial<HotelCatalogParams>>) => {
+      state.catalogParams = { ...state.catalogParams, ...action.payload }
+    },
+    setLiveSearchParams: (state, action: PayloadAction<Partial<HotelLiveSearchParams>>) => {
+      state.liveSearchParams = { ...state.liveSearchParams, ...action.payload }
+    },
+    setLiveSearchResults: (state, action: PayloadAction<Hotel[]>) => {
+      state.liveSearchResults = action.payload
     },
     resetSearchParams: (state) => {
-      state.params = initialState.params
+      state.catalogParams = initialState.catalogParams
+      state.liveSearchParams = initialState.liveSearchParams
+      state.liveSearchResults = initialState.liveSearchResults
     },
   },
 })
 
-export const { setSearchParams, resetSearchParams } = searchSlice.actions
+export const {
+  setCatalogParams,
+  setLiveSearchParams,
+  setLiveSearchResults,
+  resetSearchParams,
+} = searchSlice.actions
 export default searchSlice.reducer

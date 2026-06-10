@@ -1,7 +1,7 @@
 import { EnvironmentOutlined, HeartOutlined, StarFilled } from '@ant-design/icons'
 import { Button } from 'antd'
-import styles from './styles.module.css'
 import type { HotelListingCardProps } from './types'
+import styles from './styles.module.css'
 
 export const HotelListingCard = ({
   name,
@@ -20,14 +20,9 @@ export const HotelListingCard = ({
   return (
     <article className={styles.card}>
       <div className={styles.imageWrap}>
-        <img src={imageUrl} alt="" className={styles.image} loading="lazy" />
+        <img src={imageUrl} alt={`View of ${name}`} className={styles.image} loading="lazy" />
         {isFeatured ? <span className={styles.featuredBadge}>{featuredLabel}</span> : null}
-        <button
-          type="button"
-          className={styles.saveBtn}
-          onClick={onSave}
-          aria-label={saveLabel}
-        >
+        <button type="button" className={styles.saveBtn} onClick={onSave} aria-label={saveLabel}>
           <HeartOutlined />
         </button>
       </div>
@@ -46,7 +41,7 @@ export const HotelListingCard = ({
           {location}
         </p>
 
-        <div className={styles.footer}>
+        <div className={styles.cardFooter}>
           <span className={styles.price}>
             {priceLabel}
             <span className={styles.priceUnit}> {perNightLabel}</span>

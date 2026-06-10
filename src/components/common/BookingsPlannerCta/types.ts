@@ -3,4 +3,5 @@ export type BookingsPlannerCtaProps = {
   description: string
   buttonLabel: string
   onClick?: () => void
+  className?: string
 }

@@ -10,8 +10,11 @@
     "events": "События",
     "planner": "Планировщик",
     "bookings": "Бронирования",
+    "analytics": "Аналитика",
+    "users": "Пользователи",
     "login": "Войти",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "logout": "Выйти"
   },
   "footer": {
     "contactUs": "Связаться с нами",
@@ -34,20 +37,28 @@
     "home": {
       "heroTitle": "Куда вы хотите поехать?",
       "search": {
-        "destination": "Направление",
-        "destinationPlaceholder": "Искать места...",
+        "country": "Страна",
+        "countryPlaceholder": "Выберите страну",
+        "city": "Город",
+        "cityPlaceholder": "Выберите город",
         "dates": "Даты",
-        "datesPlaceholder": "Добавить даты",
+        "startDatesPlaceholder": "Начало",
+        "endDatesPlaceholder": "Конец",
         "guests": "Гости",
         "guestsPlaceholder": "Добавить гостей",
-        "submit": "Поиск"
+        "submit": "Поиск",
+        "errors": {
+          "countryRequired": "Пожалуйста, выберите страну.",
+          "cityRequired": "Пожалуйста, выберите город.",
+          "generic": "Поиск не удался. Попробуйте снова."
+        }
       },
       "categories": {
         "eyebrow": "Подборка",
         "title": "Обзор по категориям",
         "beaches": "Пляжи",
         "adventure": "Приключения",
-        "luxuryTour": "Люкс-тур",
+        "europeTour": "Тур по Европе",
         "cabinStays": "Домики",
         "foodWine": "Еда и вино"
       },
@@ -57,24 +68,56 @@
         "avgPrice": "Сред. {{price}} / ночь",
         "prev": "Предыдущие направления",
         "next": "Следующие направления",
+        "cardAlt": "{{city}}, {{country}}",
+        "savedDestination": "Сохранено {{city}} в избранном",
+        "loadError": "Не удалось загрузить популярные направления. Попробуйте позже.",
         "destinations": {
           "ubud": { "city": "Убуд, Бали", "country": "Индонезия" },
           "kyoto": { "city": "Киото", "country": "Япония" },
           "paris": { "city": "Париж", "country": "Франция" },
           "venice": { "city": "Венеция", "country": "Италия" }
         }
+      },
+      "newsletter": {
+        "title": "The Travel Discovery Journal",
+        "description": "Подборка путешествий, скрытые направления и эксклюзивные предложения — раз в месяц.",
+        "emailPlaceholder": "Введите ваш email",
+        "submit": "Подписаться",
+        "disclaimerPrefix": "Подписываясь, вы соглашаетесь с нашей",
+        "disclaimerAnd": "и",
+        "success": "Вы подписаны! Проверьте почту для получения событий и новостей о путешествиях.",
+        "errors": {
+          "emailRequired": "Пожалуйста, введите ваш email.",
+          "emailInvalid": "Пожалуйста, введите корректный email.",
+          "generic": "Что-то пошло не так. Попробуйте позже."
+        }
       }
     },
     "destinations": {
       "title": "Направления",
-      "heroTitle": "Найдите своё убежище",
-      "heroSubtitle": "Откройте для себя отборные места в самых захватывающих уголках мира.",
+      "heroTitle": "Твой идеальный отдых",
+      "heroSubtitle": "Откройте для себя незабываемые впечатления от отдыха в самых потрясающих местах мира.",
       "empty": "Нет вариантов по вашим фильтрам. Попробуйте изменить параметры поиска.",
+      "resultsCount": "Найдено: {{count}}",
       "filters": {
+        "location": "Локация",
+        "allCountries": "Все страны",
+        "selectCity": "Выберите город",
         "priceRange": "Диапазон цен",
-        "starRating": "Звёздный рейтинг",
-        "topFilters": "Популярные фильтры",
-        "mapView": "Карта",
+        "min": "Мин.",
+        "max": "Макс.",
+        "hotelType": "Тип жилья",
+        "starRating": "Звёздность",
+        "apply": "Применить фильтры",
+        "open": "Фильтры",
+        "typeHotel": "Отель",
+        "typeApartment": "Апартаменты",
+        "typeResort": "Курорт",
+        "typeVilla": "Вилла",
+        "typeGuestHouse": "Гостевой дом",
+        "typeHostel": "Хостел",
+        "typeMotel": "Мотель",
+        "typeOther": "Другой",
         "infinityPool": "Бассейн infinity",
         "privateBeach": "Частный пляж"
       },
@@ -173,6 +216,8 @@
       "title": "Планировщик",
       "comingSoon": "{{feature}} — скоро",
       "newChat": "Новый чат",
+      "dailyPlans": "Дневные планы",
+      "dailyPlansEmpty": "Сохранённых дневных планов пока нет",
       "recentExplorations": "Недавние исследования",
       "trip": {
         "eyebrow": "Кураторская экспедиция",
@@ -185,7 +230,7 @@
       "ai": {
         "label": "Умный travel-ассистент",
         "title": "Пусть ИИ предложит вашу следующую активность",
-        "description": "На основе ваших предпочтений и погоды в Вике мы нашли три уникальных впечатления на сегодня.",
+        "description": "На основе ваших предпочтений и текущих условий мы нашли три уникальных впечатления на сегодня.",
         "generate": "Создать рекомендации"
       },
       "itineraries": {
@@ -193,46 +238,239 @@
         "subtitle": "Оптимизировано для вашего местоположения и интересов.",
         "viewAll": "Смотреть все",
         "usePlan": "Использовать план",
+        "viewDetails": "Подробнее",
         "categories": {
           "nature": "Природа",
           "wellness": "Велнес",
           "adventure": "Приключения"
-        },
-        "items": {
-          "waterfall": {
-            "title": "Сельяландсфосс и Гльюврабуи",
-            "description": "Пройдите за водопадами и исследуйте скрытые каньоны южного побережья.",
-            "duration": "6 часов"
-          },
-          "lagoon": {
-            "title": "Голубая лагуна",
-            "description": "Отдохните в геотермальных водах среди вулканических пейзажей.",
-            "duration": "4 часа"
-          },
-          "iceCave": {
-            "title": "Ледяная пещера",
-            "description": "Отправьтесь в натуральную ледниковую пещеру с опытными гидами.",
-            "duration": "5 часов"
-          }
         }
+      },
+      "chat": {
+        "placeholder": "Спросите о направлениях, активностях или планах на день…",
+        "send": "Отправить",
+        "empty": "Начните планировать поездку",
+        "emptyHint": "Задайте вопрос или нажмите «Создать рекомендации».",
+        "offline": "Демо-режим — встроенный помощник (без оплаты API)",
+        "typing": "Ассистент печатает…",
+        "loginPrompt": "Войдите, чтобы синхронизировать историю чата между устройствами.",
+        "history": "История",
+        "historyTitle": "Сохранённые чаты и планы",
+        "historyEmpty": "Сохранённых чатов пока нет. Нажмите «Сохранить», чтобы сохранить план из беседы.",
+        "historyRestore": "Восстановить",
+        "historyDelete": "Удалить",
+        "historyMessages": "сообщений",
+        "historyPlans": "планов",
+        "save": "Сохранить",
+        "saveSuccess": "Чат и план сохранены",
+        "saveEmptyHint": "Начните беседу, прежде чем сохранять",
+        "saveModalTitle": "Сохранить чат и план",
+        "saveModalLabel": "Название плана",
+        "saveModalConfirm": "Сохранить",
+        "saveModalCancel": "Отмена"
+      },
+      "applied": {
+        "title": "План на сегодня",
+        "empty": "Активности пока не добавлены.",
+        "added": "Активность добавлена в план",
+        "remove": "Удалить"
+      },
+      "share": {
+        "copied": "Ссылка скопирована в буфер обмена",
+        "failed": "Не удалось скопировать ссылку"
+      },
+      "drawer": {
+        "title": "Все предложенные маршруты",
+        "steps": "Шаги маршрута",
+        "close": "Закрыть"
+      },
+      "print": {
+        "title": "План путешествия"
       },
       "explorations": {
         "iceland": {
           "title": "Северное сияние Исландии",
-          "meta": "7 дней • Обновлено 2 ч назад"
+          "meta": "7 дней • Обновлено 2 ч назад",
+          "trip": { "eyebrow": "Кураторская экспедиция", "title": "Кольцевая дорога Исландии", "dates": "12 окт — 24 окт", "travelers": "2 путешественника" },
+          "itineraries": {
+            "waterfall": { "title": "Сельяландсфосс и Гльюврабуи", "description": "Пройдите за водопадами южного побережья.", "duration": "6 часов", "steps": { "0": "Поездка из Вика", "1": "Тропа за водопадом", "2": "Ущелье Гльюврабуи" } },
+            "lagoon": { "title": "Голубая лагуна", "description": "Геотермальные воды и спа.", "duration": "4 часа", "steps": { "0": "Забронировать время", "1": "Купание в лагуне" } },
+            "iceCave": { "title": "Ледяная пещера", "description": "Натуральная ледниковая пещера с гидами.", "duration": "5 часов", "steps": { "0": "Встреча у Jökulsárlón", "1": "Экскурсия в пещеру" } }
+          }
         },
         "tuscany": {
           "title": "Тур по виноградникам Тосканы",
-          "meta": "5 дней • Обновлено 1 дн назад"
+          "meta": "5 дней • Обновлено 1 дн назад",
+          "trip": { "eyebrow": "Винный край", "title": "Кianti и Флоренция", "dates": "5 сен — 10 сен", "travelers": "2 путешественника" },
+          "itineraries": {
+            "chianti": { "title": "Винный маршрут Кianti", "description": "Холмы, деревни и дегустации.", "duration": "7 часов", "steps": { "0": "Утром из Флоренции", "1": "Две винодельни" } },
+            "terme": { "title": "Термальные источники", "description": "Природные бассейны Saturnia.", "duration": "5 часов", "steps": { "0": "Поездка в Saturnia", "1": "Отдых в бассейнах" } },
+            "cycling": { "title": "Велотур по холмам", "description": "E-bike между San Gimignano и Volterra.", "duration": "6 часов", "steps": { "0": "Инструктаж", "1": "Джелато в San Gimignano" } }
+          }
         },
         "kyoto": {
           "title": "Храмовый маршрут Киото",
-          "meta": "4 дня • Обновлено 3 дн назад"
+          "meta": "4 дня • Обновлено 3 дн назад",
+          "trip": { "eyebrow": "Культурное погружение", "title": "Наследие Киото", "dates": "2 апр — 6 апр", "travelers": "2 путешественника" },
+          "itineraries": {
+            "fushimi": { "title": "Fushimi Inari и бамбук", "description": "Тории и бамбуковая роща.", "duration": "6 часов", "steps": { "0": "Fushimi Inari", "1": "Arashiyama" } },
+            "onsen": { "title": "Onsen retreat", "description": "Рёкан и wellness.", "duration": "4 часа", "steps": { "0": "Check-in в рёкане", "1": "Чайная церемония" } },
+            "gion": { "title": "Вечерняя прогулка по Gion", "description": "Наследие с подсветкой храмов.", "duration": "5 часов", "steps": { "0": "Yasaka Shrine", "1": "Прогулка по Gion" } }
+          }
         },
         "amalfi": {
           "title": "Побережье Амальфи",
-          "meta": "6 дней • Обновлено 1 нед назад"
+          "meta": "6 дней • Обновлено 1 нед назад",
+          "trip": { "eyebrow": "Средиземноморье", "title": "Экспедиция по Амальфи", "dates": "14 июн — 20 июн", "travelers": "2 путешественника" },
+          "itineraries": {
+            "path": { "title": "Path of the Gods", "description": "Тропа с видом на море.", "duration": "6 часов", "steps": { "0": "Bomerano", "1": "Sentiero degli Dei" } },
+            "boat": { "title": "Морская прогулка", "description": "Частный катер и бухты.", "duration": "5 часов", "steps": { "0": "Порт Amalfi", "1": "Аперитив на закате" } },
+            "ravello": { "title": "Сады Ravello", "description": "Villa Rufolo и террасы.", "duration": "4 часа", "steps": { "0": "Дорога в Ravello", "1": "Вид на побережье" } }
+          }
         }
+      }
+    },
+    "analytics": {
+      "title": "Аналитика приложения",
+      "subtitle": "Графики на основе навигации и событий в приложении по страницам меню.",
+      "exportData": "Экспорт данных",
+      "empty": "Нет событий за выбранный период. Откройте разделы приложения или расширьте диапазон.",
+      "events": {
+        "dateChange": "Изменён период дат",
+        "dateChangeDetail": "{{start}} — {{end}}",
+        "export": "Данные экспортированы",
+        "exportDetail": "{{start}} — {{end}}"
+      },
+      "kpis": {
+        "totalVisitors": "Всего посетителей",
+        "totalPageViews": "Просмотры страниц",
+        "activeUsers": "Активные пользователи",
+        "engagementRate": "Вовлечённость",
+        "steady": "Стабильно"
+      },
+      "charts": {
+        "pageViewTrends": {
+          "title": "Тренды просмотров",
+          "subtitle": "Текущий период vs предыдущий",
+          "currentPeriod": "Текущий период",
+          "previousPeriod": "Предыдущий период"
+        },
+        "menuPageTraffic": {
+          "title": "Трафик по меню"
+        },
+        "eventBreakdown": {
+          "title": "Разбивка событий",
+          "total": "Всего",
+          "pageView": "Просмотры",
+          "search": "Поиск",
+          "destinationView": "Просмотры направлений",
+          "custom": "Пользовательские"
+        },
+        "topDestinations": {
+          "title": "Топ направлений",
+          "subtitle": "Из просмотров отелей и поисковых запросов"
+        },
+        "deviceTypes": {
+          "title": "Типы устройств",
+          "subtitle": "Уникальные посетители по устройствам",
+          "mobile": "Мобильные",
+          "tablet": "Планшеты",
+          "desktop": "Компьютеры"
+        },
+        "reports": {
+          "booking": {
+            "title": "Отчёты по бронированиям",
+            "subtitle": "Ваши бронирования за выбранный период",
+            "total": "Всего бронирований",
+            "confirmed": "Подтверждено",
+            "upcoming": "Предстоящие",
+            "cancelled": "Отменённые",
+            "loginRequired": "Войдите, чтобы увидеть отчёты по бронированиям."
+          },
+          "revenue": {
+            "title": "Отчёты по выручке",
+            "subtitle": "Выручка от бронирований за период",
+            "total": "Общая выручка",
+            "confirmed": "Подтверждённая выручка",
+            "average": "Средняя стоимость бронирования",
+            "loginRequired": "Войдите, чтобы увидеть отчёты по выручке."
+          },
+          "user": {
+            "title": "Отчёты по пользователям",
+            "subtitle": "Использование приложения по событиям",
+            "visitors": "Всего посетителей",
+            "activeUsers": "Активные пользователи",
+            "profileViews": "Просмотры профиля",
+            "bookingsViews": "Просмотры бронирований"
+          }
+        },
+        "topPages": {
+          "title": "Топ страниц",
+          "subtitle": "Самые посещаемые маршруты за период",
+          "live": "Онлайн",
+          "other": "Другие страницы"
+        },
+        "recentEvents": {
+          "title": "Недавние события",
+          "viewAll": "Все события",
+          "minutesAgo": "{{count}} мин. назад",
+          "eventTypes": {
+            "pageView": "Просмотр",
+            "search": "Поиск",
+            "destinationView": "Направление",
+            "custom": "Событие"
+          }
+        }
+      }
+    },
+    "users": {
+      "title": "Пользователи",
+      "addUser": "Добавить пользователя",
+      "loadError": "Не удалось загрузить пользователей. Попробуйте позже.",
+      "empty": "Пользователи не найдены.",
+      "table": {
+        "avatar": "Аватар",
+        "fullName": "Имя",
+        "email": "Email",
+        "role": "Роль",
+        "actions": "Действия",
+        "edit": "Редактировать пользователя",
+        "delete": "Удалить пользователя"
+      },
+      "roles": {
+        "admin": "Админ",
+        "user": "Пользователь"
+      },
+      "form": {
+        "fullName": "Имя",
+        "fullNamePlaceholder": "Введите имя",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "avatarUrl": "URL аватара",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg"
+      },
+      "modals": {
+        "addTitle": "Добавить пользователя",
+        "editTitle": "Редактировать пользователя",
+        "deleteTitle": "Удалить пользователя",
+        "deleteConfirm": "Вы уверены, что хотите удалить пользователя {{userName}}?"
+      },
+      "actions": {
+        "create": "Создать",
+        "save": "Сохранить",
+        "cancel": "Отмена",
+        "delete": "Удалить"
+      },
+      "validation": {
+        "fullNameRequired": "Имя обязательно",
+        "fullNameMin": "Имя должно содержать не менее 2 символов",
+        "emailRequired": "Email обязателен",
+        "emailInvalid": "Введите корректный email"
+      },
+      "messages": {
+        "createSuccess": "Пользователь успешно создан",
+        "updateSuccess": "Пользователь успешно обновлён",
+        "deleteSuccess": "Пользователь успешно удалён",
+        "genericError": "Что-то пошло не так. Попробуйте снова."
       }
     },
     "bookings": {
@@ -244,6 +482,7 @@
       },
       "card": {
         "dates": "Даты",
+        "defaultRoomType": "Стандартный номер",
         "guestsRoom": "{{count}} гостей • {{room}}",
         "getDirections": "Маршрут",
         "viewDetails": "Подробнее",
@@ -255,6 +494,7 @@
         }
       },
       "empty": "Нет бронирований в этой категории.",
+      "loadError": "Не удалось загрузить бронирования. Попробуйте позже.",
       "cta": {
         "title": "Нужна помощь с планированием поездки?",
         "description": "Наш ИИ-куратор составит персональный маршрут с учётом вашего стиля путешествий.",
@@ -278,8 +518,19 @@
         "planWithAi": "План с ИИ",
         "removeSaved": "Удалить из сохранённых"
       },
+      "avatar": {
+        "change": "Изменить фото",
+        "uploading": "Загрузка фото…",
+        "success": "Фото профиля обновлено.",
+        "errors": {
+          "invalidType": "Выберите изображение JPEG, PNG, WebP или GIF.",
+          "tooLarge": "Размер изображения не должен превышать 5 МБ.",
+          "generic": "Не удалось обновить фото профиля. Попробуйте снова."
+        }
+      },
       "savedPlaces": {
         "empty": "У вас пока нет сохранённых мест. Исследуйте направления и нажмите на сердечко.",
+        "loadError": "Не удалось загрузить сохранённые места. Попробуйте позже.",
         "villaMargherita": {
           "country": "Италия",
           "description": "Вилла на скалах Амальфи с террасами и видом на море."
@@ -300,7 +551,44 @@
     },
     "auth": {
       "title": "Вход",
-      "placeholder": "Авторизация — в разработке"
+      "brandWelcome": "С возвращением в Travel Discovery",
+      "login": {
+        "title": "Вход",
+        "subtitle": "Войдите, чтобы управлять бронированиями и сохранёнными местами.",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Пароль",
+        "passwordPlaceholder": "Введите пароль",
+        "submit": "Войти",
+        "noAccount": "Нет аккаунта?",
+        "switchToRegister": "Зарегистрироваться"
+      },
+      "register": {
+        "title": "Регистрация",
+        "subtitle": "Присоединяйтесь к Travel Discovery для бронирований и избранного.",
+        "fullName": "Имя",
+        "fullNamePlaceholder": "Ваше имя",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Пароль",
+        "passwordPlaceholder": "Минимум 8 символов",
+        "submit": "Зарегистрироваться",
+        "hasAccount": "Уже есть аккаунт?",
+        "switchToLogin": "Войти"
+      },
+      "validation": {
+        "emailRequired": "Укажите email",
+        "emailInvalid": "Введите корректный email",
+        "passwordRequired": "Укажите пароль",
+        "passwordMin": "Пароль должен быть не короче 8 символов",
+        "fullNameRequired": "Укажите имя",
+        "fullNameMin": "Имя должно быть не короче 2 символов"
+      },
+      "errors": {
+        "generic": "Что-то пошло не так. Попробуйте снова.",
+        "invalidCredentials": "Неверный email или пароль.",
+        "emailTaken": "Этот email уже зарегистрирован."
+      }
     },
     "notFound": {
       "title": "Страница не найдена",

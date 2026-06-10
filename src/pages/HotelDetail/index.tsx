@@ -2,6 +2,7 @@ import type { Dayjs } from 'dayjs'
 import { message, Spin } from 'antd'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { trackDestinationView } from '@/services/analytics'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { HotelDetailHero } from '@/pages/HotelDetail/components/HotelDetailHero'

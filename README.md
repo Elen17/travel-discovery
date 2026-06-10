@@ -19,28 +19,58 @@ Premium multilingual travel platform (React + Vite + Ant Design).
 
 ```bash
 pnpm install
-cp .env.example .env
 pnpm dev
 ```
+
+Create a `.env` file in the project root before running (see [Environment](#environment)).
 
 Open [http://localhost:5173](http://localhost:5173).
 
 ## Scripts
 
-| Command         | Description              |
-| --------------- | ------------------------ |
-| `pnpm dev`      | Start dev server         |
-| `pnpm build`    | Production build         |
-| `pnpm lint`     | ESLint                   |
-| `pnpm format`   | Prettier (src)           |
-| `pnpm preview`  | Preview production build |
+| Command        | Description              |
+|----------------|--------------------------|
+| `pnpm dev`     | Start dev server         |
+| `pnpm build`   | Production build         |
+| `pnpm lint`    | ESLint                   |
+| `pnpm format`  | Prettier (src)           |
+| `pnpm preview` | Preview production build |
 
 ## Environment
 
-| Variable               | Description                    |
-| ---------------------- | ------------------------------ |
-| `VITE_API_BASE_URL`    | Spring Boot API base URL       |
-| `VITE_GOOGLE_CLIENT_ID`| Google OAuth client ID         |
+Add a `.env` file in the project root with these variables:
+
+| Variable                 | Description                                                |
+|--------------------------|------------------------------------------------------------|
+| `VITE_API_BASE_URL`      | Backend API base URL (must include `/api/v1`)              |
+| `VITE_GOOGLE_CLIENT_ID`  | Google OAuth client ID                                     |
+| `VITE_PLANNER_USE_MOCK`  | `true` (default) = fall back to built-in demo planner when the backend is unavailable |
+| `VITE_GEMINI_API_KEY`    | Optional — client-side Gemini when configured              |
+| `VITE_GEMINI_MODEL`      | Optional model id (default: `gemini-2.5-flash`)            |
+| `VITE_GEMINI_API_URL`    | Optional base only (`…/v1beta/models`). Omit `:generateContent` |
+
+**Planner flow:** chat, plans, and history call the backend first. If the API is unreachable, the app falls back to local mock data in `src/api/planner.mock.ts`. Set `VITE_PLANNER_USE_MOCK=false` to disable that fallback and show errors instead.
+
+## Backend API
+
+Production: [https://travel-discovery-backend-production.up.railway.app](https://travel-discovery-backend-production.up.railway.app)
+
+- **Swagger UI:** `/swagger-ui/index.html`
+- **OpenAPI JSON:** `/v3/api-docs`
+- **Frontend guide:** see `API.md` in the project docs
+
+API modules live in `src/api/`:
+
+| Module       | Endpoints               |
+|--------------|-------------------------|
+| `auth`       | register, login, logout |
+| `users`      | profile, avatar upload  |
+| `hotels`     | search, catalog, detail |
+| `reviews`    | list, upsert, delete    |
+| `bookings`   | list, create, cancel    |
+| `favourites` | list, add, remove       |
+| `locations`  | countries, cities       |
+| `health`     | liveness probe          |
 
 ## Project structure
 
@@ -55,18 +85,18 @@ Each page lives in `src/pages/<PageName>/` with `index.tsx`, `types.ts`, `styles
 
 ## Routes
 
-| Route | Page |
-| ----- | ---- |
-| `/` | Home / Explore |
-| `/destinations` | Destinations |
-| `/hotel/:id` | Hotel Detail |
-| `/guides` | Travel Guides |
-| `/guides/:destination` | Guide Detail |
-| `/events` | Events |
-| `/planner` | AI Planner |
-| `/bookings` | My Bookings |
-| `/profile` | Profile |
-| `/auth/login` | Login / Register |
+| Route                  | Page             |
+|------------------------|------------------|
+| `/`                    | Home / Explore   |
+| `/destinations`        | Destinations     |
+| `/hotel/:id`           | Hotel Detail     |
+| `/guides`              | Travel Guides    |
+| `/guides/:destination` | Guide Detail     |
+| `/events`              | Events           |
+| `/planner`             | AI Planner       |
+| `/bookings`            | My Bookings      |
+| `/profile`             | Profile          |
+| `/auth/login`          | Login / Register |
 
 ## Design tokens
 

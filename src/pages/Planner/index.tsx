@@ -1,91 +1,155 @@
-import { message } from 'antd'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { ItineraryPlanCard } from '@/components/common/ItineraryPlanCard'
-import { PlannerAiBanner } from '@/components/common/PlannerAiBanner'
-import { PlannerTripHero } from '@/components/common/PlannerTripHero'
+import { useCallback, useMemo } from 'react'
 import { PlannerSidebar } from '@/components/layout/PlannerSidebar'
+import type { PlannerSidebarPlan } from '@/components/layout/PlannerSidebar/types'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
-  ACTIVE_EXPLORATION_ID,
-  CATEGORY_I18N_KEYS,
-  PLANNER_I18N,
-  RECENT_EXPLORATIONS,
-  SUGGESTED_ITINERARIES,
-  TRIP_HERO_IMAGE,
-} from './const'
+  loadPlan,
+  restoreSession,
+  setDynamicItineraries,
+  startNewChat,
+} from '@/store/plannerSlice'
+import type { PlannerPlan } from '@/types/planner'
+import { AppliedItinerariesSection } from './components/AppliedItinerariesSection'
+import { ItinerariesSection } from './components/ItinerariesSection'
+import { PlannerChatSection } from './components/PlannerChatSection'
+import { PlannerSkeleton } from './components/PlannerSkeleton'
+import { PlannerTripSection } from './components/PlannerTripSection'
+import { ShareAlert } from './components/ShareAlert'
+import {
+  usePlannerChatSend,
+  usePlannerExportPdf,
+  usePlannerHydration,
+  usePlannerPlans,
+  usePlannerShare,
+  usePlannerUsePlan,
+} from './hooks'
+import { EXPLORATION_CONTENT } from './const'
 import styles from './styles.module.css'
+import { apiAppliedToUi, getExplorationContent, suggestionsToItineraries } from './utils'
+import { loadSavedSessions } from './utils/sessionStorage'
+
+const formatPlanMeta = (plan: PlannerPlan): string => {
+  const parts = [plan.explorationId]
+  if (plan.duration) {
+    parts.push(`${plan.duration}d`)
+  }
+  return parts.join(' · ')
+}
+
+const mapPlanToSidebarItem = (plan: PlannerPlan): PlannerSidebarPlan => ({
+  id: plan.id,
+  title: plan.title,
+  meta: formatPlanMeta(plan),
+})
 
 const PlannerPage = () => {
-  const { t } = useTranslation()
-  const [activeExplorationId, setActiveExplorationId] = useState(ACTIVE_EXPLORATION_ID)
-  const [messageApi, contextHolder] = message.useMessage()
+  const dispatch = useAppDispatch()
+  usePlannerHydration()
 
-  const showComingSoon = (feature: string) => {
-    messageApi.info(t(PLANNER_I18N.comingSoon, { feature }))
+  const { activeExplorationId, dynamicItineraries, dynamicSuggestions, isHydrated, planId } =
+    useAppSelector((state) => state.planner)
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+
+  const { data: dailyPlans = [] } = usePlannerPlans()
+
+  const sidebarPlans = useMemo(
+    () => dailyPlans.map(mapPlanToSidebarItem),
+    [dailyPlans],
+  )
+
+  const hourlyPlans = useMemo(() => {
+    if (dynamicItineraries && dynamicItineraries.length > 0) {
+      return dynamicItineraries
+    }
+    if (dynamicSuggestions && dynamicSuggestions.length > 0) {
+      return suggestionsToItineraries(dynamicSuggestions, activeExplorationId)
+    }
+    return getExplorationContent(activeExplorationId, EXPLORATION_CONTENT).suggestedItineraries
+  }, [activeExplorationId, dynamicItineraries, dynamicSuggestions])
+
+  const { shareMessage, setShareMessage, handleShare } = usePlannerShare()
+  const handleExportPdf = usePlannerExportPdf(hourlyPlans)
+  const handleUsePlan = usePlannerUsePlan(setShareMessage)
+  const { handleChatSend, handleGenerateInsights, isSending } = usePlannerChatSend({
+    activeExplorationId,
+  })
+
+  const handleSelectPlan = useCallback(
+    (id: string) => {
+      const selected = dailyPlans.find((plan) => plan.id === id)
+      if (selected) {
+        dispatch(
+          loadPlan({
+            planId: selected.id,
+            explorationId: selected.explorationId,
+            messages: selected.messages,
+            appliedItineraries: selected.appliedItineraries.map(apiAppliedToUi),
+          }),
+        )
+        return
+      }
+
+      const savedSession = loadSavedSessions().find((session) => session.id === id)
+      if (savedSession) {
+        dispatch(restoreSession(savedSession))
+        if (savedSession.dynamicSuggestions?.length) {
+          dispatch(
+            setDynamicItineraries(
+              suggestionsToItineraries(
+                savedSession.dynamicSuggestions,
+                savedSession.explorationId,
+              ),
+            ),
+          )
+        }
+      }
+    },
+    [dailyPlans, dispatch],
+  )
+
+  const handleNewChat = useCallback(() => {
+    dispatch(startNewChat())
+  }, [dispatch])
+
+  if (!isHydrated) {
+    return <PlannerSkeleton />
   }
 
   return (
     <div className={styles.page}>
-      {contextHolder}
       <PlannerSidebar
-        explorations={RECENT_EXPLORATIONS}
-        activeId={activeExplorationId}
-        onSelect={setActiveExplorationId}
-        onNewChat={() => showComingSoon(t(PLANNER_I18N.newChat))}
+        plans={sidebarPlans}
+        activeId={planId}
+        onSelect={handleSelectPlan}
+        showNewChat={isAuthenticated}
+        onNewChat={handleNewChat}
       />
 
       <main className={styles.main}>
-        <PlannerTripHero
-          imageUrl={TRIP_HERO_IMAGE}
-          eyebrow={t(PLANNER_I18N.trip.eyebrow)}
-          title={t(PLANNER_I18N.trip.title)}
-          dates={t(PLANNER_I18N.trip.dates)}
-          travelers={t(PLANNER_I18N.trip.travelers)}
-          shareLabel={t(PLANNER_I18N.trip.share)}
-          exportPdfLabel={t(PLANNER_I18N.trip.exportPdf)}
-          onShare={() => showComingSoon(t(PLANNER_I18N.trip.share))}
-          onExportPdf={() => showComingSoon(t(PLANNER_I18N.trip.exportPdf))}
+        <ShareAlert
+          message={shareMessage}
+          onClose={() => setShareMessage(null)}
         />
 
-        <PlannerAiBanner
-          label={t(PLANNER_I18N.ai.label)}
-          title={t(PLANNER_I18N.ai.title)}
-          description={t(PLANNER_I18N.ai.description)}
-          buttonLabel={t(PLANNER_I18N.ai.generate)}
-          onGenerate={() => showComingSoon(t(PLANNER_I18N.ai.generate))}
-        />
+        <div className={styles.tripColumn}>
+          <PlannerTripSection
+            onShare={() => void handleShare()}
+            onExportPdf={handleExportPdf}
+            onGenerateInsights={handleGenerateInsights}
+          />
 
-        <section aria-labelledby="itineraries-heading">
-          <div className={styles.sectionHeader}>
-            <div>
-              <h2 id="itineraries-heading" className={styles.sectionTitle}>
-                {t(PLANNER_I18N.itineraries.title)}
-              </h2>
-              <p className={styles.sectionSubtitle}>{t(PLANNER_I18N.itineraries.subtitle)}</p>
-            </div>
-            <a href="#itineraries" className={styles.viewAll}>
-              {t(PLANNER_I18N.itineraries.viewAll)}
-            </a>
-          </div>
+          <PlannerChatSection
+            isSending={isSending}
+            onSend={(message) => void handleChatSend(message)}
+          />
 
-          <div id="itineraries" className={styles.grid}>
-            {SUGGESTED_ITINERARIES.map((item) => (
-              <ItineraryPlanCard
-                key={item.id}
-                title={t(item.titleKey)}
-                description={t(item.descriptionKey)}
-                imageUrl={item.imageUrl}
-                category={item.category}
-                categoryLabel={t(CATEGORY_I18N_KEYS[item.category])}
-                duration={t(item.durationKey)}
-                usePlanLabel={t(PLANNER_I18N.itineraries.usePlan)}
-                onUsePlan={() =>
-                  showComingSoon(t(PLANNER_I18N.itineraries.usePlan))
-                }
-              />
-            ))}
-          </div>
-        </section>
+          <AppliedItinerariesSection />
+
+          <ItinerariesSection
+            itineraries={hourlyPlans}
+            onUsePlan={handleUsePlan}
+          />
+        </div>
       </main>
     </div>
   )

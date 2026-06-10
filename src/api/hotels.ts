@@ -8,8 +8,15 @@ import type {
   HotelSearchParams,
 } from '@/types/hotel'
 
-export const searchHotels = async (params: HotelSearchParams): Promise<HotelListResponse> => {
-  const { data } = await apiClient.get<HotelListResponse>('/hotels', { params })
+/** Live search — triggers ingestion then returns DB-backed hotels (plain array). */
+export const searchHotelsLive = async (params: HotelLiveSearchParams): Promise<Hotel[]> => {
+  const { data } = await apiClient.get<Hotel[]>('/hotels/search', { params })
+  return data
+}
+
+/** Paginated catalog listing with optional star-rating filter. */
+export const getHotels = async (params: HotelCatalogParams): Promise<PageResponse<Hotel>> => {
+  const { data } = await apiClient.get<PageResponse<Hotel>>('/hotels', { params })
   return data
 }
 

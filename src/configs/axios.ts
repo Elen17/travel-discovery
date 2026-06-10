@@ -1,8 +1,11 @@
 import axios from 'axios'
+import { clearSessionExpiry, setSessionExpiry } from '@/utils/session'
 import { message } from 'antd'
 import i18n from '@/i18n'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const ACCESS_TOKEN_KEY = 'accessToken'
+const REFRESH_TOKEN_KEY = 'refreshToken'
 const LOGIN_PATH = '/login'
 
 let isHandling403 = false
@@ -40,8 +43,24 @@ export const apiClient = axios.create({
   withCredentials: true,
 })
 
+export const getStoredAccessToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY)
+
+export const getStoredRefreshToken = (): string | null => localStorage.getItem(REFRESH_TOKEN_KEY)
+
+export const storeAuthTokens = (accessToken: string, refreshToken: string): void => {
+  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
+  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+  setSessionExpiry()
+}
+
+export const clearAuthTokens = (): void => {
+  localStorage.removeItem(ACCESS_TOKEN_KEY)
+  localStorage.removeItem(REFRESH_TOKEN_KEY)
+  clearSessionExpiry()
+}
+
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
+  const token = getStoredAccessToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

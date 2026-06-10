@@ -76,27 +76,20 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  max-width: 200px;
   height: 44px !important;
   padding-inline: 20px !important;
   border-radius: 999px !important;
   font-weight: 500;
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #fff !important;
 }
 
-.profileLinkActive {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 44px !important;
-  padding-inline: 12px !important;
-  font-weight: 600;
-  color: var(--color-primary) !important;
-  border-bottom: 2px solid var(--color-primary);
-  border-radius: 0 !important;
-}
-
-.profileLinkActive:hover {
-  color: var(--color-primary) !important;
-  background: transparent !important;
+.profileBtn:hover {
+  background: #0a5c5c !important;
+  border-color: #0a5c5c !important;
+  color: #fff !important;
 }
 
 @media (max-width: 768px) {

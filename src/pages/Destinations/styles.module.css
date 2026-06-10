@@ -1,52 +1,85 @@
 .page {
   width: 100%;
-  padding-bottom: 24px;
 }
 
 .hero {
-  margin-bottom: 32px;
+  margin-bottom: 36px;
   text-align: left;
 }
 
 .heroTitle {
   margin: 0 0 12px;
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.12;
   color: var(--color-primary);
 }
 
 .heroSubtitle {
   margin: 0;
-  max-width: 560px;
+  max-width: 640px;
   font-size: 1rem;
   line-height: 1.6;
-  color: rgba(26, 26, 46, 0.55);
+  color: var(--color-text-dark);
 }
 
-.filters {
-  margin-bottom: 36px;
-}
-
-.grid {
+.layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 40px;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  padding-top: 36px;
 }
 
-.empty {
-  grid-column: 1 / -1;
-  padding: 48px 24px;
-  text-align: center;
-  color: rgba(26, 26, 46, 0.55);
-  font-size: 1rem;
+.sidebar {
+  position: sticky;
+  top: 36px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  min-width: 0;
+}
+
+.mobileFiltersBtn {
+  display: none;
+  align-self: flex-start;
+  height: 46px;
+  padding-inline: 20px;
+  border-radius: var(--radius-lg);
+  border-color: var(--color-border-light);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.mobileFiltersBtn:hover {
+  border-color: var(--color-primary);
 }
 
 .pagination {
   display: flex;
   justify-content: center;
+}
+
+.pagination :global(.ant-pagination-item) {
+  min-width: 40px;
+  height: 40px;
+  line-height: 38px;
+  border-radius: 50%;
+  border-color: var(--color-border-light);
+}
+
+.pagination :global(.ant-pagination-prev .ant-pagination-item-link),
+.pagination :global(.ant-pagination-next .ant-pagination-item-link) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .pagination :global(.ant-pagination-item-active) {
@@ -55,22 +88,33 @@
 }
 
 .pagination :global(.ant-pagination-item-active a) {
-  color: #fff;
+  color: var(--color-on-surface);
 }
 
 @media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+  .sidebar {
+    display: none;
+  }
+
+  .mobileFiltersBtn {
+    display: inline-flex;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 576px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .hero {
+    margin-bottom: 28px;
   }
 
-  .hero {
-    margin-bottom: 24px;
+  .layout {
+    gap: 24px;
+  }
+
+  .main {
+    gap: 28px;
   }
 }

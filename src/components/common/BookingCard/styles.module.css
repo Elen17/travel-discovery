@@ -1,7 +1,8 @@
 .card {
   display: flex;
-  gap: 24px;
-  padding: 20px;
+  align-items: stretch;
+  gap: 28px;
+  padding: 20px 24px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(26, 26, 46, 0.06);
@@ -9,26 +10,34 @@
 
 .image {
   flex-shrink: 0;
-  width: 140px;
-  height: 140px;
+  align-self: center;
+  width: 120px;
+  height: 120px;
   border-radius: 12px;
   object-fit: cover;
   display: block;
 }
 
 .content {
+  position: relative;
   flex: 1;
   min-width: 0;
+  min-height: 120px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  gap: 40px;
 }
 
-.topRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 8px;
+.hotelInfo {
+  flex: 1;
+  min-width: 140px;
+  padding-right: 100px;
+}
+
+.bookingDetails,
+.hotelInfo {
+  align-self: center;
 }
 
 .title {
@@ -36,6 +45,7 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
+  line-height: 1.3;
   color: var(--color-text-dark);
 }
 
@@ -48,11 +58,40 @@
   color: rgba(26, 26, 46, 0.55);
 }
 
+.bookingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.detailLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 46, 0.45);
+}
+
+.detailValue {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.occupancy {
+  font-size: 0.875rem;
+  color: rgba(26, 26, 46, 0.55);
+}
+
 .statusBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.75rem;
@@ -66,12 +105,12 @@
 }
 
 .statusConfirmed {
-  background: rgba(82, 196, 26, 0.12);
-  color: #389e0d;
+  background: rgba(13, 110, 110, 0.1);
+  color: var(--color-primary);
 }
 
 .statusConfirmed .statusDot {
-  background: #52c41a;
+  background: var(--color-primary);
 }
 
 .statusPending {
@@ -101,46 +140,14 @@
   background: var(--color-primary);
 }
 
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: auto;
-  padding-top: 8px;
-}
-
-.detailBlock {
-  min-width: 120px;
-}
-
-.detailLabel {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 46, 0.45);
-}
-
-.detailValue {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--color-text-dark);
-}
-
-.occupancy {
-  font-size: 0.9375rem;
-  color: rgba(26, 26, 46, 0.72);
-}
-
 .actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
-  margin-top: 16px;
-  padding-top: 12px;
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: flex-end;
 }
 
 .directionsLink {
@@ -149,22 +156,23 @@
   background: none;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-text-dark);
+  color: var(--color-primary);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .directionsLink:hover {
-  color: var(--color-primary);
+  color: #0a5a5a;
 }
 
 .detailsBtn {
-  height: 40px !important;
-  padding-inline: 20px !important;
+  height: 36px !important;
+  padding-inline: 18px !important;
   border-radius: 999px !important;
   border-color: var(--color-primary) !important;
   color: var(--color-primary) !important;
   font-weight: 500;
+  background: #fff !important;
 }
 
 .detailsBtn:hover {
@@ -173,9 +181,32 @@
   background: rgba(13, 110, 110, 0.06) !important;
 }
 
+@media (max-width: 900px) {
+  .content {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .hotelInfo {
+    padding-right: 0;
+    width: 100%;
+    padding-top: 32px;
+  }
+
+  .bookingDetails {
+    width: 100%;
+  }
+
+  .actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .card {
     flex-direction: column;
+    align-items: stretch;
     gap: 16px;
   }
 
@@ -184,8 +215,14 @@
     height: 180px;
   }
 
-  .topRow {
+  .content {
     flex-direction: column;
+    align-items: flex-start;
+    padding-top: 0;
+  }
+
+  .hotelInfo {
+    padding-top: 36px;
   }
 
   .actions {

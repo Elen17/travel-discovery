@@ -5,6 +5,10 @@
   padding-bottom: 32px;
 }
 
+.alert {
+  margin-bottom: 16px;
+}
+
 .title {
   margin: 0 0 24px;
   font-family: var(--font-heading);
