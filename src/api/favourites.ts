@@ -1,7 +1,7 @@
 import { apiClient } from '@/configs/axios'
 import { getHotelById } from '@/api/hotels'
 import type { Favourite } from '@/types/favourite'
-import type { Hotel } from '@/types/hotel'
+import type { HotelDetail } from '@/types/hotel'
 
 export const FAVOURITES_QUERY_KEY = ['favourites'] as const
 export const FAVOURITE_HOTELS_QUERY_KEY = ['favourites', 'hotels'] as const
@@ -42,7 +42,7 @@ export const getFavourites = async (): Promise<Favourite[]> => {
   return normalizeFavourites(data)
 }
 
-export const fetchFavouriteHotels = async (): Promise<Hotel[]> => {
+export const fetchFavouriteHotels = async (): Promise<HotelDetail[]> => {
   const favourites = await getFavourites()
 
   if (favourites.length === 0) {
@@ -54,7 +54,7 @@ export const fetchFavouriteHotels = async (): Promise<Hotel[]> => {
   )
 
   return results
-    .filter((result): result is PromiseFulfilledResult<Hotel> => result.status === 'fulfilled')
+    .filter((result): result is PromiseFulfilledResult<HotelDetail> => result.status === 'fulfilled')
     .map((result) => result.value)
 }
 

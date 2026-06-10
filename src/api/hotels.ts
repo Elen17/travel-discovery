@@ -1,11 +1,13 @@
 import { apiClient } from '@/configs/axios'
+import type { PageResponse } from '@/types/api'
 import type {
   CreateHotelReviewPayload,
+  Hotel,
+  HotelCatalogParams,
   HotelDetail,
-  HotelListResponse,
+  HotelLiveSearchParams,
   HotelReview,
   HotelReviewsPage,
-  HotelSearchParams,
 } from '@/types/hotel'
 
 /** Live search — triggers ingestion then returns DB-backed hotels (plain array). */

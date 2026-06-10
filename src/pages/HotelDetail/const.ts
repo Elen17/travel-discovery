@@ -63,12 +63,17 @@ export const GUEST_OPTIONS = [
   { value: '1-0', labelKey: 'pages.hotelDetail.booking.guestOption1Adult' },
 ] as const
 
+export const DEFAULT_GUEST_VALUE = '2-1'
+
 export const DESCRIPTION_TITLE_KEY = 'pages.hotelDetail.descriptions.default.title'
 
 export const HOTEL_DETAIL_BOOKING_DEFAULTS = {
   serviceFee: 120,
   occupancyTaxRate: 0.12,
   defaultNights: 6,
+  baseGuestsIncluded: 2,
+  singleGuestRateRatio: 0.85,
+  extraGuestNightlyRateRatio: 0.25,
 } as const
 
 export const HOTEL_DETAIL_WEATHER_DEFAULTS = {

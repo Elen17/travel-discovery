@@ -20,9 +20,12 @@ export type HotelBookingCardProps = {
   formattedTaxes: string
   formattedTotal: string
   nightsLineLabel: string
+  checkIn: Dayjs
+  checkOut: Dayjs
+  guestSelection: string
+  onCheckInChange: (date: Dayjs | null) => void
+  onCheckOutChange: (date: Dayjs | null) => void
+  onGuestsChange: (selection: string) => void
   onBookNow?: (formData: HotelBookingFormData) => void | Promise<void>
   isSubmitting?: boolean
-  defaultCheckIn: Dayjs
-  defaultCheckOut: Dayjs
-  onDatesChange?: (checkIn: Dayjs | null, checkOut: Dayjs | null) => void
 }

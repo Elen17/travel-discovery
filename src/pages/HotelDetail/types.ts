@@ -56,6 +56,7 @@ export type BookingFormValues = {
 
 export type BookingSummary = {
   nights: number
+  nightlyRate: number
   subtotal: number
   serviceFee: number
   taxes: number

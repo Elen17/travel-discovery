@@ -13,6 +13,7 @@ export const BOOKINGS_I18N = {
     guestsRoom: 'pages.bookings.card.guestsRoom',
     getDirections: 'pages.bookings.card.getDirections',
     viewDetails: 'pages.bookings.card.viewDetails',
+    cancel: 'pages.bookings.card.cancel',
     status: {
       confirmed: 'pages.bookings.card.status.confirmed',
       pending: 'pages.bookings.card.status.pending',
@@ -22,6 +23,14 @@ export const BOOKINGS_I18N = {
   },
   empty: 'pages.bookings.empty',
   loadError: 'pages.bookings.loadError',
+  cancelSuccess: 'pages.bookings.cancelSuccess',
+  cancelError: 'pages.bookings.cancelError',
+  cancelConfirm: {
+    title: 'pages.bookings.cancelConfirm.title',
+    message: 'pages.bookings.cancelConfirm.message',
+    ok: 'pages.bookings.cancelConfirm.ok',
+    dismiss: 'pages.bookings.cancelConfirm.dismiss',
+  },
   cta: {
     title: 'pages.bookings.cta.title',
     description: 'pages.bookings.cta.description',

@@ -1,5 +1,5 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
-import { getMyBookings } from '@/api/bookings'
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
+import { cancelBooking, getMyBookings } from '@/api/bookings'
 import { getHotelById } from '@/api/hotels'
 
 export const bookingsQueryKeys = {
@@ -32,3 +32,14 @@ export const useBookingHotels = (hotelIds: number[], enabled = true) =>
       enabled: enabled && id > 0,
     })),
   })
+
+export const useCancelBooking = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (bookingId: number) => cancelBooking(bookingId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['bookings', 'mine'] })
+    },
+  })
+}

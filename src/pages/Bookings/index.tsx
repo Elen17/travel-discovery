@@ -1,4 +1,4 @@
-import { Alert, Skeleton } from 'antd'
+import { Alert, Modal, Skeleton, message } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { BookingCard } from '@/components/common/BookingCard'
 import { BookingsPlannerCta } from '@/components/common/BookingsPlannerCta'
 import { CITY_TO_EXPLORATION } from '@/pages/Planner/const'
 import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
+import { notifyAdminBookingCancelled } from '@/services/telegram/bookingNotifications'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setRecentBookings } from '@/store/bookingSlice'
 import {
@@ -14,9 +15,9 @@ import {
   mapBookingsToDisplay,
 } from './utils'
 import { BOOKINGS_I18N, BOOKING_TABS, STATUS_LABEL_KEYS } from './const'
-import { useBookingHotels, useMyBookings } from './hooks'
+import { useBookingHotels, useCancelBooking, useMyBookings } from './hooks'
 import type { BookingDisplayStatus, BookingTab } from './types'
-import type { Hotel } from '@/types/hotel'
+import type { HotelDetail } from '@/types/hotel'
 import styles from './styles.module.css'
 
 const statusVariantMap: Record<
@@ -40,10 +41,13 @@ const BookingsPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [activeTab, setActiveTab] = useState<BookingTab>('upcoming')
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
 
+  const authUser = useAppSelector((state) => state.auth.user)
   const recentBookings = useAppSelector((state) => state.booking.recentBookings)
 
   const { data, isLoading, isError } = useMyBookings()
+  const { mutateAsync: cancelBookingMutation } = useCancelBooking()
 
   useEffect(() => {
     if (data?.content) {
@@ -59,7 +63,7 @@ const BookingsPage = () => {
   const hotelQueries = useBookingHotels(hotelIds)
 
   const hotelsById = useMemo(() => {
-    const map = new Map<number, Hotel>()
+    const map = new Map<number, HotelDetail>()
     hotelQueries.forEach((query, index) => {
       if (query.data) {
         map.set(hotelIds[index], query.data)
@@ -82,6 +86,44 @@ const BookingsPage = () => {
     () => allBookings.find((booking) => booking.tab === 'upcoming'),
     [allBookings],
   )
+
+  const handleCancelBooking = (bookingId: string) => {
+    Modal.confirm({
+      title: t(BOOKINGS_I18N.cancelConfirm.title),
+      content: t(BOOKINGS_I18N.cancelConfirm.message),
+      okText: t(BOOKINGS_I18N.cancelConfirm.ok),
+      cancelText: t(BOOKINGS_I18N.cancelConfirm.dismiss),
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        const bookingRecord = recentBookings.find((item) => String(item.id) === bookingId)
+        const bookingDisplay = allBookings.find((item) => item.id === bookingId)
+        setCancellingId(bookingId)
+        try {
+          await cancelBookingMutation(Number(bookingId))
+          if (bookingRecord && bookingDisplay) {
+            notifyAdminBookingCancelled(
+              {
+                hotelName: bookingDisplay.hotelName,
+                hotelLocation: `${bookingDisplay.city}, ${bookingDisplay.country}`,
+                checkIn: bookingRecord.checkIn,
+                checkOut: bookingRecord.checkOut,
+                guestCount: bookingRecord.guestCount,
+                totalPrice: bookingRecord.totalPrice,
+              },
+              authUser,
+              bookingRecord.id,
+              i18n.language,
+            )
+          }
+          message.success(t(BOOKINGS_I18N.cancelSuccess))
+        } catch {
+          message.error(t(BOOKINGS_I18N.cancelError))
+        } finally {
+          setCancellingId(null)
+        }
+      },
+    })
+  }
 
   const handlePlannerNavigate = () => {
     if (!primaryUpcoming) {
@@ -166,6 +208,13 @@ const BookingsPage = () => {
                 )
               }}
               onViewDetails={() => navigate(`/hotel/${booking.hotelId}`)}
+              {...(booking.tab === 'upcoming'
+                ? {
+                    cancelLabel: t(BOOKINGS_I18N.card.cancel),
+                    isCancelling: cancellingId === booking.id,
+                    onCancel: () => handleCancelBooking(booking.id),
+                  }
+                : {})}
             />
           ))}
         </div>

@@ -165,6 +165,22 @@
   color: #0a5a5a;
 }
 
+.cancelBtn {
+  height: 36px !important;
+  padding-inline: 18px !important;
+  border-radius: 999px !important;
+  font-weight: 500;
+  background: #fff !important;
+  border-color: rgba(212, 76, 69, 0.45) !important;
+  color: #d44c45 !important;
+}
+
+.cancelBtn:hover {
+  background: rgba(212, 76, 69, 0.06) !important;
+  border-color: #d44c45 !important;
+  color: #d44c45 !important;
+}
+
 .detailsBtn {
   height: 36px !important;
   padding-inline: 18px !important;
@@ -230,6 +246,7 @@
     align-items: stretch;
   }
 
+  .cancelBtn,
   .detailsBtn {
     width: 100%;
   }
