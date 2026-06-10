@@ -1,6 +1,7 @@
 import { HistoryOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons'
 import { Button, Input, Tooltip } from 'antd'
 import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import type { PlannerAiSource } from '@/store/planner/types'
 import styles from './styles.module.css'
 import type { PlannerChatProps } from './types'
@@ -108,7 +109,23 @@ export const PlannerChat = ({
                 message.role === 'user' ? styles.user : styles.assistant
               }`}
             >
-              {message.content}
+              {message.role === 'assistant' ? (
+                <ReactMarkdown
+                  components={{
+                    h3: ({ children }) => <h3 className={styles.planTitle}>{children}</h3>,
+                    p: ({ children }) => <p className={styles.paragraph}>{children}</p>,
+                    ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+                    ol: ({ children }) => <ol className={styles.list}>{children}</ol>,
+                    li: ({ children }) => <li className={styles.listItem}>{children}</li>,
+                    strong: ({ children }) => <strong className={styles.strong}>{children}</strong>,
+                    em: ({ children }) => <em className={styles.emphasis}>{children}</em>,
+                  }}
+                >
+                  {message.content}
+                </ReactMarkdown>
+              ) : (
+                message.content
+              )}
             </div>
           ))
         )}

@@ -91,7 +91,12 @@ const buildPlannerPrompt = (userMessage: string, explorationId: ExplorationId): 
 
 ${userContext}
 
-The user requested curated day plans. Reply with a brief conversational summary, then include exactly 3 itinerary suggestions and end with a fenced JSON block:
+The user requested curated day plans. Follow this output format strictly:
+
+1. Write ONLY a brief 1–2 sentence introduction in Markdown (no numbered lists, no plan titles, no steps in the prose).
+2. Put ALL plan details exclusively in the JSON block below — do not repeat them in the intro.
+
+End your response with this fenced JSON block (exactly 3 suggestions):
 
 \`\`\`json
 {"suggestions":[{"id":"unique-slug","title":"Activity name","category":"nature|wellness|adventure","duration":"4 Hours","description":"Brief description","steps":["Step one","Step two"]}]}
@@ -159,6 +164,43 @@ const parseSuggestions = (text: string): PlannerSuggestion[] | undefined => {
 
 const stripJsonBlock = (text: string): string =>
   text.replace(/```json[\s\S]*?```/gi, '').trim()
+
+const CATEGORY_LABEL: Record<PlannerSuggestion['category'], string> = {
+  nature: 'Nature',
+  wellness: 'Wellness',
+  adventure: 'Adventure',
+}
+
+const extractIntro = (text: string): string => {
+  const stripped = stripJsonBlock(text)
+  const withoutList = stripped.replace(/\n?\d+\.\s+[\s\S]*/g, '').trim()
+  const sentences = withoutList.match(/[^.!?]+[.!?]+/g) ?? [withoutList]
+  const intro = sentences.slice(0, 2).join(' ').trim()
+  return intro.length > 0 ? intro : ''
+}
+
+const formatSuggestionsReply = (
+  intro: string,
+  suggestions: PlannerSuggestion[],
+): string => {
+  const headline =
+    intro || `Here are ${suggestions.length} day plan ideas to get you started:`
+
+  const plans = suggestions
+    .map((suggestion, index) => {
+      const steps =
+        suggestion.steps?.map((step) => `- ${step}`).join('\n') ?? ''
+      const description = suggestion.description?.trim() ?? ''
+      const meta = `**${CATEGORY_LABEL[suggestion.category]}** · ${suggestion.duration}`
+
+      return [`### ${index + 1}. ${suggestion.title}`, meta, description, steps]
+        .filter(Boolean)
+        .join('\n\n')
+    })
+    .join('\n\n')
+
+  return `${headline}\n\n${plans}\n\n_See the itinerary cards below for quick actions and more details._`
+}
 
 const parseRetryAfterSeconds = (message: string): number | null => {
   const match = message.match(/retry in ([\d.]+)s/i)
@@ -343,8 +385,12 @@ export const sendPlannerGeminiMessage = async (
 
   const text = await postGeminiContent(buildPlannerPrompt(userMessage, explorationId))
   const suggestions = parseSuggestions(text)
+  const intro = extractIntro(text)
   return {
-    reply: stripJsonBlock(text),
+    reply:
+      suggestions && suggestions.length > 0
+        ? formatSuggestionsReply(intro, suggestions)
+        : stripJsonBlock(text),
     suggestions,
   }
 }

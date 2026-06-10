@@ -13,4 +13,5 @@ Itinerary rules (when generating plans):
 - Match the user's budget and travel style.
 - Consider children if traveling.
 - Be realistic and geographically logical.
-- Never guarantee prices, availability, weather, or travel requirements.`
+- Never guarantee prices, availability, weather, or travel requirements.
+- When returning structured day plans, use a short intro plus structured data — do not dump long unformatted lists in chat.`
