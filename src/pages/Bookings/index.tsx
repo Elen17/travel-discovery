@@ -14,7 +14,8 @@ import {
   formatBookingDateRange,
   mapBookingsToDisplay,
 } from './utils'
-import { BOOKINGS_I18N, BOOKING_TABS, STATUS_LABEL_KEYS } from './const'
+import { BookingTabs } from './components/BookingTabs'
+import { BOOKINGS_I18N, STATUS_LABEL_KEYS } from './const'
 import { useBookingHotels, useCancelBooking, useMyBookings } from './hooks'
 import type { BookingDisplayStatus, BookingTab } from './types'
 import type { HotelDetail } from '@/types/hotel'
@@ -28,12 +29,6 @@ const statusVariantMap: Record<
   PENDING: 'pending',
   CANCELLED: 'cancelled',
   COMPLETED: 'completed',
-}
-
-const tabLabelKeys: Record<BookingTab, string> = {
-  upcoming: BOOKINGS_I18N.tabs.upcoming,
-  past: BOOKINGS_I18N.tabs.past,
-  cancelled: BOOKINGS_I18N.tabs.cancelled,
 }
 
 const BookingsPage = () => {
@@ -159,20 +154,7 @@ const BookingsPage = () => {
         />
       ) : null}
 
-      <div className={styles.tabs} role="tablist" aria-label={t(BOOKINGS_I18N.title)}>
-        {BOOKING_TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === tab}
-            className={`${styles.tab} ${activeTab === tab ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {t(tabLabelKeys[tab])}
-          </button>
-        ))}
-      </div>
+      <BookingTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       {showLoading ? (
         <Skeleton active paragraph={{ rows: 4 }} />

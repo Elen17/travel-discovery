@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
 import { useLogout } from '@/hooks/useLogout'
 import { useAppSelector } from '@/store/hooks'
+import { UserRole } from '@/types/user'
 import { NAV_ITEMS } from './const'
 import Logo from '../../../../public/logo.png'
 import styles from './styles.module.css'
@@ -21,7 +22,7 @@ export const Header = () => {
 
   const isProfileActive = location.pathname.startsWith('/profile')
 
-  const isAdmin = user?.role === 'Admin'
+  const isAdmin = user?.role === UserRole.ADMIN
 
   const visibleNavItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
 

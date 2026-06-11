@@ -2,11 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createUser, deleteUser, getUserList, updateUser } from '@/api/users'
 import { useAppDispatch } from '@/store/hooks'
 import { addUser, removeUser, replaceUser } from '@/store/usersSlice'
+import { usersQueryKeys } from './const'
 import type { CreateUserPayload, User } from '@/types/user'
 
-export const usersQueryKeys = {
-  list: ['users', 'list'] as const,
-}
 
 export const useUserList = () =>
   useQuery({
