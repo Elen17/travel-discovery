@@ -1,4 +1,5 @@
 import { apiClient } from '@/configs/axios'
+import type { PageResponse } from '@/types/api'
 import type { AvatarUploadResponse, CreateUserPayload, UpdateProfilePayload, User } from '@/types/user'
 
 export const getCurrentUser = async (): Promise<User> => {
@@ -7,8 +8,8 @@ export const getCurrentUser = async (): Promise<User> => {
 }
 
 export const getUserList = async (): Promise<User[]> => {
-  const { data } = await apiClient.get<User[]>('/admin/users')
-  return data
+  const { data } = await apiClient.get<PageResponse<User>>('/admin/users')
+  return data.content
 }
 
 export const getUserById = async (id: number): Promise<User> => {

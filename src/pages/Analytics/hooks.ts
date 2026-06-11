@@ -4,7 +4,7 @@ import { useMyBookings } from '@/pages/Bookings/hooks'
 import { getAppEvents } from '@/services/appEvents'
 import { useAppSelector } from '@/store/hooks'
 import { TRACKED_NAV_ITEMS } from './const'
-import { buildDashboardFromEvents } from './utils'
+import { buildDashboardFromEvents } from './buildDashboard'
 import type { AnalyticsDateRange } from './types'
 
 export const useAnalyticsDashboard = (dateRange: AnalyticsDateRange) => {
