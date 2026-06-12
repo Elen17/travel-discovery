@@ -1,4 +1,4 @@
-import { CalendarOutlined, ExportOutlined, ShareAltOutlined, UserOutlined } from '@ant-design/icons'
+import { CalendarOutlined, ExportOutlined, UserOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import styles from './styles.module.css'
 import type { PlannerTripHeroProps } from './types'
@@ -9,9 +9,7 @@ export const PlannerTripHero = ({
   title,
   dates,
   travelers,
-  shareLabel,
   exportPdfLabel,
-  onShare,
   onExportPdf,
 }: PlannerTripHeroProps) => {
   return (
@@ -20,9 +18,6 @@ export const PlannerTripHero = ({
       <span className={styles.overlay} aria-hidden />
 
       <div className={styles.actions}>
-        <button type="button" className={styles.shareBtn} onClick={onShare} aria-label={shareLabel}>
-          <ShareAltOutlined />
-        </button>
         <Button
           icon={<ExportOutlined />}
           className={styles.exportBtn}

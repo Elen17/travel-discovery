@@ -12,7 +12,6 @@ export const PLANNER_I18N = {
     title: 'pages.planner.trip.title',
     dates: 'pages.planner.trip.dates',
     travelers: 'pages.planner.trip.travelers',
-    share: 'pages.planner.trip.share',
     exportPdf: 'pages.planner.trip.exportPdf',
     planDurationDays: 'pages.planner.trip.planDurationDays',
     planDurationHours: 'pages.planner.trip.planDurationHours',
@@ -71,10 +70,6 @@ export const PLANNER_I18N = {
     empty: 'pages.planner.applied.empty',
     added: 'pages.planner.applied.added',
     remove: 'pages.planner.applied.remove',
-  },
-  share: {
-    copied: 'pages.planner.share.copied',
-    failed: 'pages.planner.share.failed',
   },
   drawer: {
     title: 'pages.planner.drawer.title',

@@ -9,7 +9,6 @@ import { EXPLORATION_CONTENT, PLANNER_I18N } from '../../const'
 import { getExplorationContent } from '../../utils'
 
 type PlannerTripSectionProps = {
-  onShare: () => void
   onExportPdf: () => void
   onGenerateInsights: () => void
   isGenerating: boolean
@@ -43,7 +42,6 @@ const buildPlanDatesLabel = (
 }
 
 export const PlannerTripSection = ({
-  onShare,
   onExportPdf,
   onGenerateInsights,
   isGenerating,
@@ -86,9 +84,7 @@ export const PlannerTripSection = ({
         title={heroContent.title}
         dates={heroContent.dates}
         travelers={heroContent.travelers}
-        shareLabel={t(PLANNER_I18N.trip.share)}
         exportPdfLabel={t(PLANNER_I18N.trip.exportPdf)}
-        onShare={onShare}
         onExportPdf={onExportPdf}
       />
 

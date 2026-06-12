@@ -245,7 +245,6 @@
         "title": "Icelandic Ring Road",
         "dates": "Oct 12 — Oct 24",
         "travelers": "2 Travelers",
-        "share": "Share",
         "exportPdf": "Export PDF",
         "planDurationDays": "{{count}} days",
         "planDurationHours": "{{count}} hours",
@@ -304,10 +303,6 @@
         "empty": "No activities added yet.",
         "added": "Activity added to your plan",
         "remove": "Remove"
-      },
-      "share": {
-        "copied": "Share link copied to clipboard",
-        "failed": "Could not copy link — try again"
       },
       "drawer": {
         "title": "All Suggested Itineraries",

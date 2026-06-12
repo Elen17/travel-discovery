@@ -80,26 +80,6 @@
   gap: 10px;
 }
 
-.shareBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
-  backdrop-filter: blur(4px);
-}
-
-.shareBtn:hover {
-  background: rgba(255, 255, 255, 0.35);
-}
-
 .exportBtn {
   height: 40px !important;
   border-radius: 999px !important;

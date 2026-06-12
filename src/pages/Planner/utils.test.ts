@@ -6,7 +6,6 @@ import {
   buildHotelContextPrompt,
   buildPlannerPlanPayload,
   buildPlannerUrl,
-  buildShareUrl,
   getExplorationContent,
   parsePlannerSearchParams,
   plannerPlanToLoadPayload,
@@ -78,14 +77,6 @@ describe('Planner utils', () => {
 
     it('returns the base planner route when params are empty', () => {
       expect(buildPlannerUrl({})).toBe('/planner')
-    })
-  })
-
-  describe('buildShareUrl', () => {
-    it('builds a shareable planner url with encoded session id', () => {
-      expect(buildShareUrl('plan 1', 'iceland')).toBe(
-        `${window.location.origin}/planner?session=plan%201&exploration=iceland`,
-      )
     })
   })
 

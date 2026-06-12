@@ -101,11 +101,6 @@ export const buildPlannerUrl = (params: PlannerSearchParams): string => {
   return query ? `/planner?${query}` : '/planner'
 }
 
-export const buildShareUrl = (planId: string, explorationId: ExplorationId): string => {
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  return `${origin}/planner?session=${encodeURIComponent(planId)}&exploration=${explorationId}`
-}
-
 export const getExplorationContent = (
   id: string,
   contentMap: Record<string, ExplorationContent>,
