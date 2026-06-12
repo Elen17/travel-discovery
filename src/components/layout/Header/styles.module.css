@@ -92,6 +92,16 @@
   color: #fff !important;
 }
 
+.profileAvatar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem !important;
+  height: 2rem !important;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 0 16px;

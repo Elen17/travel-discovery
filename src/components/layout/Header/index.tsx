@@ -1,5 +1,5 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Layout, Menu } from 'antd'
+import { Avatar, Button, Dropdown, Layout, Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -71,7 +71,18 @@ export const Header = () => {
           <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" trigger={['click']}>
             <Button
               type="primary"
-              icon={<UserOutlined />}
+              icon={
+                user?.avatarUrl ? (
+                  <Avatar
+                    src={user.avatarUrl}
+                    size={24}
+                    className={styles.profileAvatar}
+                    alt={user.fullName}
+                  />
+                ) : (
+                  <UserOutlined />
+                )
+              }
               className={styles.profileBtn}
               loading={isLoggingOut}
             >

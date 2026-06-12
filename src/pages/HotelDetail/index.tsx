@@ -22,6 +22,7 @@ import {
   type MockPaymentValidationError,
 } from '@/services/payment'
 import { formatApiFieldErrors, parseApiError } from '@/utils/api'
+import { trackBookingConfirmed, trackDestinationView } from '@/services/analytics'
 import {
   notifyAdminBookingCheckoutStarted,
   notifyAdminBookingConfirmed,
@@ -100,6 +101,17 @@ const HotelDetailPage = () => {
       setGuestSelection(DEFAULT_GUEST_VALUE)
     }
   }, [defaultDates, id])
+
+  useEffect(() => {
+    if (!hotel) return
+    trackDestinationView({
+      item_id: hotel.id,
+      item_name: hotel.name,
+      item_category: hotel.country,
+      item_category2: hotel.city,
+      price: hotel.pricePerNight,
+    })
+  }, [hotel, id])
 
   // LOADING
   if (isHotelLoading) {
@@ -231,6 +243,7 @@ const HotelDetailPage = () => {
         guestCount: pendingBooking.guestCount,
         totalPrice: paymentSummary.total,
       })
+      trackBookingConfirmed(booking)
       notifyAdminBookingConfirmed(
         {
           hotelName: hotel.name,
