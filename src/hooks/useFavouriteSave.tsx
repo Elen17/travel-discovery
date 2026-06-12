@@ -4,7 +4,13 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { login } from '@/api/auth'
-import { addFavourite, FAVOURITE_HOTELS_QUERY_KEY, FAVOURITES_QUERY_KEY, getFavourites } from '@/api/favourites'
+import {
+  addFavourite,
+  FAVOURITE_HOTELS_QUERY_KEY,
+  FAVOURITES_QUERY_KEY,
+  getFavourites,
+  removeFavourite,
+} from '@/api/favourites'
 import { LoginRequiredModal } from '@/components/common/LoginRequiredModal'
 import { SESSION_EXPIRED_MODAL_I18N } from '@/components/common/SessionExpiredModal/const'
 import { SessionExpiredModal } from '@/components/common/SessionExpiredModal'
@@ -53,6 +59,20 @@ export const useFavouriteSave = () => {
     [queryClient],
   )
 
+  const persistRemoveFavourite = useCallback(
+    async (hotelId: number) => {
+      setSavingHotelId(hotelId)
+      try {
+        await removeFavourite(hotelId)
+        await queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })
+        await queryClient.invalidateQueries({ queryKey: FAVOURITE_HOTELS_QUERY_KEY })
+      } finally {
+        setSavingHotelId(null)
+      }
+    },
+    [queryClient],
+  )
+
   const saveFavourite = useCallback(
     async (hotelId: number) => {
       if (!isAuthenticated) {
@@ -71,6 +91,28 @@ export const useFavouriteSave = () => {
       await persistFavourite(hotelId)
     },
     [isAuthenticated, persistFavourite],
+  )
+
+  const toggleFavourite = useCallback(
+    async (hotelId: number) => {
+      if (savedHotelIds.has(hotelId)) {
+        if (!isAuthenticated) {
+          return
+        }
+
+        if (isSessionExpired()) {
+          setSessionError(null)
+          setSessionModalOpen(true)
+          return
+        }
+
+        await persistRemoveFavourite(hotelId)
+        return
+      }
+
+      await saveFavourite(hotelId)
+    },
+    [savedHotelIds, isAuthenticated, persistRemoveFavourite, saveFavourite],
   )
 
   const handleLoginRedirect = () => {
@@ -137,6 +179,7 @@ export const useFavouriteSave = () => {
 
   return {
     saveFavourite,
+    toggleFavourite,
     savedHotelIds,
     savingHotelId,
     modals,

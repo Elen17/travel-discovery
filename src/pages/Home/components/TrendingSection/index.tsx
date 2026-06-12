@@ -16,9 +16,13 @@ export const TrendingSection = () => {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const carouselRef = useRef<HTMLDivElement>(null)
-  const { saveFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
+  const { toggleFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
 
-  const { data: trendingHotels = [], isLoading, isError } = useQuery({
+  const {
+    data: trendingHotels = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: TRENDING_HOTELS_QUERY_KEY,
     queryFn: fetchTrendingHotels,
   })
@@ -72,7 +76,7 @@ export const TrendingSection = () => {
             isSaved={savedHotelIds.has(hotel.id)}
             isSaving={savingHotelId === hotel.id}
             onClick={() => handleDestinationClick(hotel.id, hotel.city, hotel.country)}
-            onSave={() => void saveFavourite(hotel.id)}
+            onSave={() => void toggleFavourite(hotel.id)}
           />
         ))}
       </div>
