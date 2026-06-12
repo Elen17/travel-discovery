@@ -1,4 +1,5 @@
 import type {
+  ActivePlannerPlan,
   AppliedItinerary,
   ExplorationId,
   PlannerMessage,
@@ -13,6 +14,7 @@ export const PLANNER_SAVED_SESSIONS_KEY = 'planner_saved_sessions'
 export type PlannerState = {
   activeExplorationId: ExplorationId
   planId: string | null
+  activePlan: ActivePlannerPlan | null
   messages: PlannerMessage[]
   appliedItineraries: AppliedItinerary[]
   dynamicSuggestions: PlannerSuggestion[] | null

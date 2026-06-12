@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ANALYTICS_I18N } from '../../const'
 import { buildDonutSegments, formatCompactCount } from '../../chartUtils'
+import { DEVICE_SWATCH_CLASS } from './const'
 import styles from './styles.module.css'
 import type { DeviceTypesCardProps } from './types'
 
@@ -29,7 +30,7 @@ export const DeviceTypesCard = ({ devices }: DeviceTypesCardProps) => {
   const totalVisitorsLabel = formatCompactCount(totalVisitors, i18n.language)
 
   return (
-    <article className={styles.chartCard}>
+    <article className={`${styles.chartCard} ${styles.chartCardDevices}`}>
       <h2 className={styles.chartTitle}>
         {t(ANALYTICS_I18N.charts.deviceTypes.title)}
       </h2>
@@ -51,18 +52,20 @@ export const DeviceTypesCard = ({ devices }: DeviceTypesCardProps) => {
           </div>
         </div>
         <div className={styles.demographicsLegend}>
-          {activeDevices.map((device) => (
-            <div key={device.id} className={styles.demographicLegendItem}>
-              <span className={styles.demographicLegendLeft}>
-                <span
-                  className={styles.demographicSwatch}
-                  style={{ background: device.color }}
-                />
-                {t(device.labelKey)}
-              </span>
-              <span className={styles.demographicPercent}>{device.percent}%</span>
-            </div>
-          ))}
+          {activeDevices.map((device) => {
+            const swatchClass =
+              styles[DEVICE_SWATCH_CLASS[device.id as keyof typeof DEVICE_SWATCH_CLASS] ?? 'swatchMobile']
+
+            return (
+              <div key={device.id} className={styles.demographicLegendItem}>
+                <span className={styles.demographicLegendLeft}>
+                  <span className={`${styles.demographicSwatch} ${swatchClass}`} />
+                  {t(device.labelKey)}
+                </span>
+                <span className={styles.demographicPercent}>{device.percent}%</span>
+              </div>
+            )
+          })}
         </div>
       </div>
     </article>

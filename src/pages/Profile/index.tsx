@@ -16,7 +16,7 @@ import { SavedPlaceCard } from '@/components/common/SavedPlaceCard'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setUser } from '@/store/authSlice'
 import { hasValidSession } from '@/utils/session'
-import { MOCK_PROFILE_USER, PROFILE_I18N } from './const'
+import { PROFILE_I18N } from './const'
 import styles from './styles.module.css'
 import type { ProfileTab } from './types'
 import { validateAvatarFile } from './utils'
@@ -75,13 +75,14 @@ const ProfilePage = () => {
   }, [avatarPreviewUrl])
 
   const displayUser = useMemo(() => {
-    if (authUser) {
-      return {
-        fullName: authUser.fullName,
-        avatarUrl: avatarPreviewUrl ?? authUser.avatarUrl ?? MOCK_PROFILE_USER.avatarUrl,
-      }
+    if (!authUser) {
+      return null
     }
-    return MOCK_PROFILE_USER
+
+    return {
+      fullName: authUser.fullName,
+      avatarUrl: avatarPreviewUrl ?? authUser.avatarUrl,
+    }
   }, [authUser, avatarPreviewUrl])
 
   const handleAvatarChange = (file: File) => {
@@ -166,6 +167,16 @@ const ProfilePage = () => {
       children: savedPlacesContent,
     },
   ]
+
+  if (!displayUser) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loading}>
+          <Spin aria-label={t('common.loading')} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>

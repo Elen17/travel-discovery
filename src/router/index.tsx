@@ -1,7 +1,7 @@
-import { Spin } from 'antd'
 import { lazy, Suspense, type ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AdminRoute } from '@/components/common/AdminRoute'
+import { PageLoader } from '@/components/common/PageLoader'
 import { ProtectedRoute } from '@/components/common/ProtectedRoute'
 import { MainLayout } from '@/components/layout/MainLayout'
 
@@ -18,12 +18,6 @@ const AnalyticsPage = lazy(() => import('@/pages/Analytics'))
 const AuthPage = lazy(() => import('@/pages/Auth'))
 const UsersPage = lazy(() => import('@/pages/Users'))
 const NotFoundPage = lazy(() => import('@/pages/NotFound'))
-
-const PageLoader = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}>
-    <Spin size="large" />
-  </div>
-)
 
 const withSuspense = (element: ReactNode) => (
   <Suspense fallback={<PageLoader />}>{element}</Suspense>

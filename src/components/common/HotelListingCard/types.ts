@@ -10,6 +10,9 @@ export type HotelListingCardProps = {
   featuredLabel: string
   bookNowLabel: string
   saveLabel: string
+  savedLabel?: string
+  isSaved?: boolean
+  isSaving?: boolean
   onBookNow?: () => void
   onSave?: () => void
 }

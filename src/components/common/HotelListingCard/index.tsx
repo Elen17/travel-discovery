@@ -1,4 +1,4 @@
-import { EnvironmentOutlined, HeartOutlined, StarFilled } from '@ant-design/icons'
+import { EnvironmentOutlined, HeartFilled, HeartOutlined, StarFilled } from '@ant-design/icons'
 import { Button } from 'antd'
 import type { HotelListingCardProps } from './types'
 import styles from './styles.module.css'
@@ -14,16 +14,31 @@ export const HotelListingCard = ({
   featuredLabel,
   bookNowLabel,
   saveLabel,
+  savedLabel,
+  isSaved = false,
+  isSaving = false,
   onBookNow,
   onSave,
 }: HotelListingCardProps) => {
+  const saveButtonClass = isSaved ? `${styles.saveBtn} ${styles.saveBtnActive}` : styles.saveBtn
+
   return (
     <article className={styles.card}>
       <div className={styles.imageWrap}>
         <img src={imageUrl} alt={`View of ${name}`} className={styles.image} loading="lazy" />
         {isFeatured ? <span className={styles.featuredBadge}>{featuredLabel}</span> : null}
-        <button type="button" className={styles.saveBtn} onClick={onSave} aria-label={saveLabel}>
-          <HeartOutlined />
+        <button
+          type="button"
+          className={saveButtonClass}
+          disabled={isSaving}
+          onClick={(event) => {
+            event.stopPropagation()
+            onSave?.()
+          }}
+          aria-label={isSaved ? (savedLabel ?? saveLabel) : saveLabel}
+          aria-pressed={isSaved}
+        >
+          {isSaved ? <HeartFilled /> : <HeartOutlined />}
         </button>
       </div>
 

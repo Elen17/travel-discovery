@@ -178,7 +178,7 @@ const UsersPage = () => {
         <Button type="primary" htmlType="submit" loading={isSubmitting} block>
           {submitLabel}
         </Button>
-        <Button onClick={closeModal} disabled={isSubmitting} block style={{ marginTop: 8 }}>
+        <Button onClick={closeModal} disabled={isSubmitting} block className={styles.cancelBtn}>
           {t(USERS_I18N.actions.cancel)}
         </Button>
       </Form.Item>

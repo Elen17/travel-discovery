@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { searchHotelsLive } from '@/api/hotels'
-import { HERO_IMAGE_URL, HOME_I18N } from '@/pages/Home/const'
+import { HOME_I18N } from '@/pages/Home/const'
 import { buildDestinationsSearchParams, buildHotelLiveSearchParams } from '@/pages/Home/utils'
 import { useAppDispatch } from '@/store/hooks'
 import { setLiveSearchParams, setLiveSearchResults } from '@/store/searchSlice'
@@ -43,7 +43,6 @@ export const HeroSection = () => {
   return (
     <section
       className={styles.hero}
-      style={{ backgroundImage: `url(${HERO_IMAGE_URL})` }}
       aria-label={t(HOME_I18N.heroTitle)}
     >
       <span className={styles.heroOverlay} aria-hidden />

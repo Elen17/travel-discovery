@@ -103,9 +103,21 @@ export const CHART_COLORS = {
   primary: '#0d6e6e',
   accent: '#ff6b6b',
   accentDark: '#e05a4a',
+  amber: '#f5a623',
+  violet: '#6b5b95',
+  sky: '#4a90a4',
   muted: 'rgba(26, 26, 46, 0.35)',
   secondary: 'rgba(13, 110, 110, 0.55)',
 } as const
+
+export const ANALYTICS_BAR_VARIANTS = [
+  'barPrimary',
+  'barAccent',
+  'barAmber',
+  'barViolet',
+  'barSky',
+  'barSecondary',
+] as const
 
 export const DEVICE_TYPE_CONFIG = [
   { id: 'mobile' as const, labelKey: ANALYTICS_I18N.charts.deviceTypes.mobile, color: CHART_COLORS.primary },

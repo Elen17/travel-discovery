@@ -35,7 +35,7 @@ export const usePlannerPlans = ({ enabled = true }: UsePlannerPlansOptions = {})
     queryKey: plannerQueryKeys.plans,
     queryFn: getPlannerPlans,
     enabled,
-    staleTime: 30_000,
+    staleTime: 5 * 60_000,
   })
 
 type SendMessageVariables = PlannerChatPayload & {

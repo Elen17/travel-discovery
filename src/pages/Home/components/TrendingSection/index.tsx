@@ -18,7 +18,11 @@ export const TrendingSection = () => {
   const carouselRef = useRef<HTMLDivElement>(null)
   const { saveFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
 
-  const { data: trendingHotels = [], isLoading, isError } = useQuery({
+  const {
+    data: trendingHotels = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: TRENDING_HOTELS_QUERY_KEY,
     queryFn: fetchTrendingHotels,
   })

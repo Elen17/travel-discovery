@@ -6,6 +6,7 @@ import type {
   PlannerAppliedItinerary,
   PlannerAppliedItineraryItem,
   PlannerMessage,
+  LoadPlanPayload,
   PlannerPlan,
   PlannerPlanPayload,
   PlannerSearchParams,
@@ -62,15 +63,15 @@ export const parsePlannerSearchParams = (
 
 export const resolveExplorationFromParams = (
   params: PlannerSearchParams,
-): ExplorationId => {
-  if (params.exploration) {
+): ExplorationId | undefined => {
+  if (params.exploration && isKnownExplorationId(params.exploration)) {
     return params.exploration
   }
   const fromDestination = resolveExplorationFromDestination(params.destination)
   if (fromDestination) {
     return fromDestination
   }
-  return DEFAULT_EXPLORATION_ID
+  return undefined
 }
 
 export const buildPlannerUrl = (params: PlannerSearchParams): string => {
@@ -134,11 +135,11 @@ const getDefaultImageForSuggestion = (
   const images: Record<string, Record<SuggestedItinerary['category'], string>> = {
     iceland: {
       nature:
-        'https://images.unsplash.com/photo-1529963183137-3323fab7c7fb?auto=format&fit=crop&w=600&q=80',
+        'https://www.motorhomeiceland.com/assets/img/blog/seljalandsfoss-waterfall-discovering-southern-icelands-beauty.webp',
       wellness:
         'https://images.unsplash.com/photo-1504829857797-ddff29c27927?auto=format&fit=crop&w=600&q=80',
       adventure:
-        'https://images.unsplash.com/photo-1531168556467-80aace0d48f1?auto=format&fit=crop&w=600&q=80',
+        'https://gti.images.tshiftcdn.com/7955524/x/0/a-person-explores-the-stunning-blue-ice-cave-beneath-vatnajokull-glacier-in-iceland-during-winter.jpg?dpr=2&height=360&quality=65',
     },
     tuscany: {
       nature:
@@ -162,7 +163,7 @@ const getDefaultImageForSuggestion = (
       wellness:
         'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=600&q=80',
       adventure:
-        'https://images.unsplash.com/photo-1516483638265-f4dbf994554a?auto=format&fit=crop&w=600&q=80',
+        'https://images.squarespace-cdn.com/content/v1/5fbd372b643b627fb8281615/1914b398-3391-478b-bf56-e755daf538e6/Path+of+the+Gods+4.jpeg',
     },
   }
   return images[explorationId]?.[category] ?? images[DEFAULT_EXPLORATION_ID][category]
@@ -195,6 +196,18 @@ export const buildPlannerPlanPayload = (
   imageUrl: exploration.heroImage,
   messages,
   appliedItineraries: appliedItineraries.map(uiAppliedToApi),
+})
+
+export const plannerPlanToLoadPayload = (plan: PlannerPlan): LoadPlanPayload => ({
+  planId: plan.id,
+  explorationId: plan.explorationId,
+  messages: plan.messages,
+  appliedItineraries: plan.appliedItineraries.map(apiAppliedToUi),
+  title: plan.title,
+  imageUrl: plan.imageUrl,
+  duration: plan.duration,
+  travelersCount: plan.travelersCount,
+  type: plan.type,
 })
 
 export const plannerPlanToSavedSession = (plan: PlannerPlan): SavedPlannerSession => ({
