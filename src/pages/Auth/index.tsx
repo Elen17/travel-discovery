@@ -7,8 +7,9 @@ import type { NamePath } from 'antd/es/form/interface'
 import { login, register } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { completeAuthSession } from '@/store/authSlice'
-import { isValidEmail } from '@/utils/validation'
-import { AUTH_I18N, PASSWORD_MIN_LENGTH } from './const'
+import { getNewPasswordRules, getPasswordRequiredRule, isValidEmail } from '@/utils/validation'
+import { PASSWORD_I18N } from '@/i18n/validation'
+import { AUTH_I18N } from './const'
 import styles from './styles.module.css'
 import type { AuthMode, LoginFormValues, RegisterFormValues } from './types'
 import { parseAuthError } from './utils'
@@ -145,13 +146,13 @@ const AuthPage = () => {
 
               <Form.Item
                 name="password"
-                label={t(AUTH_I18N.login.password)}
-                rules={[{ required: true, message: t(AUTH_I18N.validation.passwordRequired) }]}
+                label={t(PASSWORD_I18N.label)}
+                rules={[getPasswordRequiredRule(t)]}
               >
                 <Input.Password
                   className={styles.input}
                   autoComplete="current-password"
-                  placeholder={t(AUTH_I18N.login.passwordPlaceholder)}
+                  placeholder={t(PASSWORD_I18N.loginPlaceholder)}
                 />
               </Form.Item>
 
@@ -226,16 +227,13 @@ const AuthPage = () => {
 
               <Form.Item
                 name="password"
-                label={t(AUTH_I18N.register.password)}
-                rules={[
-                  { required: true, message: t(AUTH_I18N.validation.passwordRequired) },
-                  { min: PASSWORD_MIN_LENGTH, message: t(AUTH_I18N.validation.passwordMin) },
-                ]}
+                label={t(PASSWORD_I18N.label)}
+                rules={getNewPasswordRules(t)}
               >
                 <Input.Password
                   className={styles.input}
                   autoComplete="new-password"
-                  placeholder={t(AUTH_I18N.register.passwordPlaceholder)}
+                  placeholder={t(PASSWORD_I18N.newPlaceholder)}
                 />
               </Form.Item>
 

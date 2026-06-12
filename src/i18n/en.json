@@ -703,8 +703,6 @@
         "subtitle": "Sign in to manage bookings, saved places, and your profile.",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "Enter your password",
         "submit": "Log in",
         "noAccount": "Don't have an account?",
         "switchToRegister": "Create one"
@@ -716,8 +714,6 @@
         "fullNamePlaceholder": "Your name",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "At least 8 characters",
         "submit": "Sign up",
         "hasAccount": "Already have an account?",
         "switchToLogin": "Log in"
@@ -725,8 +721,6 @@
       "validation": {
         "emailRequired": "Email is required",
         "emailInvalid": "Enter a valid email address",
-        "passwordRequired": "Password is required",
-        "passwordMin": "Password must be at least 8 characters",
         "fullNameRequired": "Full name is required",
         "fullNameMin": "Name must be at least 2 characters"
       },
@@ -740,6 +734,15 @@
       "title": "Page not found",
       "description": "The page you are looking for does not exist.",
       "backHome": "Back to Explore"
+    }
+  },
+  "validation": {
+    "password": {
+      "label": "Password",
+      "loginPlaceholder": "Enter your password",
+      "newPlaceholder": "At least 8 characters",
+      "required": "Password is required",
+      "min": "Password must be at least 8 characters"
     }
   },
   "common": {

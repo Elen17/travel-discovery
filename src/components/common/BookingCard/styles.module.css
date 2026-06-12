@@ -23,20 +23,29 @@
   flex: 1;
   min-width: 0;
   min-height: 120px;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-content: center;
   align-self: stretch;
-  gap: 40px;
+  gap: 12px 32px;
+  padding-top: 32px;
 }
 
 .hotelInfo {
-  flex: 1;
-  min-width: 140px;
-  padding-right: 100px;
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  align-self: center;
 }
 
-.bookingDetails,
-.hotelInfo {
+.bookingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  grid-column: 2;
+  grid-row: 1;
   align-self: center;
 }
 
@@ -47,6 +56,10 @@
   font-weight: 700;
   line-height: 1.3;
   color: var(--color-text-dark);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .location {
@@ -54,15 +67,20 @@
   align-items: center;
   gap: 6px;
   margin: 0;
+  min-width: 0;
   font-size: 0.875rem;
   color: rgba(26, 26, 46, 0.55);
 }
 
-.bookingDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.location :global(.anticon) {
   flex-shrink: 0;
+}
+
+.locationText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .detailLabel {
@@ -141,13 +159,13 @@
 }
 
 .actions {
+  grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 20px;
-  flex-shrink: 0;
-  margin-left: auto;
-  align-self: flex-end;
+  gap: 12px 20px;
 }
 
 .directionsLink {
@@ -197,28 +215,6 @@
   background: rgba(13, 110, 110, 0.06) !important;
 }
 
-@media (max-width: 900px) {
-  .content {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .hotelInfo {
-    padding-right: 0;
-    width: 100%;
-    padding-top: 32px;
-  }
-
-  .bookingDetails {
-    width: 100%;
-  }
-
-  .actions {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-
 @media (max-width: 768px) {
   .card {
     flex-direction: column;
@@ -232,9 +228,16 @@
   }
 
   .content {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
     padding-top: 0;
+  }
+
+  .hotelInfo,
+  .bookingDetails {
+    width: 100%;
   }
 
   .hotelInfo {
@@ -242,6 +245,7 @@
   }
 
   .actions {
+    width: 100%;
     flex-direction: column;
     align-items: stretch;
   }

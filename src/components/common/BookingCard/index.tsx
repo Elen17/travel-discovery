@@ -41,7 +41,7 @@ export const BookingCard = ({
           <h3 className={styles.title}>{hotelName}</h3>
           <p className={styles.location}>
             <EnvironmentOutlined />
-            {location}
+            <span className={styles.locationText}>{location}</span>
           </p>
         </div>
 

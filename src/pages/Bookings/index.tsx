@@ -6,6 +6,7 @@ import { BookingCard } from '@/components/common/BookingCard'
 import { BookingsPlannerCta } from '@/components/common/BookingsPlannerCta'
 import { CITY_TO_EXPLORATION } from '@/pages/Planner/const'
 import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
+import { trackBookingCancelled } from '@/services/analytics'
 import { notifyAdminBookingCancelled } from '@/services/telegram/bookingNotifications'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setRecentBookings } from '@/store/bookingSlice'
@@ -14,7 +15,8 @@ import {
   formatBookingDateRange,
   mapBookingsToDisplay,
 } from './utils'
-import { BOOKINGS_I18N, BOOKING_TABS, STATUS_LABEL_KEYS } from './const'
+import { BookingTabs } from './components/BookingTabs'
+import { BOOKINGS_I18N, STATUS_LABEL_KEYS } from './const'
 import { useBookingHotels, useCancelBooking, useMyBookings } from './hooks'
 import type { BookingDisplayStatus, BookingTab } from './types'
 import type { HotelDetail } from '@/types/hotel'
@@ -28,12 +30,6 @@ const statusVariantMap: Record<
   PENDING: 'pending',
   CANCELLED: 'cancelled',
   COMPLETED: 'completed',
-}
-
-const tabLabelKeys: Record<BookingTab, string> = {
-  upcoming: BOOKINGS_I18N.tabs.upcoming,
-  past: BOOKINGS_I18N.tabs.past,
-  cancelled: BOOKINGS_I18N.tabs.cancelled,
 }
 
 const BookingsPage = () => {
@@ -100,6 +96,7 @@ const BookingsPage = () => {
         setCancellingId(bookingId)
         try {
           await cancelBookingMutation(Number(bookingId))
+          trackBookingCancelled(Number(bookingId))
           if (bookingRecord && bookingDisplay) {
             notifyAdminBookingCancelled(
               {
@@ -159,20 +156,7 @@ const BookingsPage = () => {
         />
       ) : null}
 
-      <div className={styles.tabs} role="tablist" aria-label={t(BOOKINGS_I18N.title)}>
-        {BOOKING_TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === tab}
-            className={`${styles.tab} ${activeTab === tab ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {t(tabLabelKeys[tab])}
-          </button>
-        ))}
-      </div>
+      <BookingTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       {showLoading ? (
         <Skeleton active paragraph={{ rows: 4 }} />

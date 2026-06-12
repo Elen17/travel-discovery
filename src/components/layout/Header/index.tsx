@@ -1,5 +1,5 @@
-import { LogoutOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Grid, Layout, Menu } from 'antd'
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { Avatar, Button, Dropdown, Layout, Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +8,7 @@ import { BaseDrawer } from '@/components/common/BaseDrawer'
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
 import { useLogout } from '@/hooks/useLogout'
 import { useAppSelector } from '@/store/hooks'
+import { UserRole } from '@/types/user'
 import { NAV_ITEMS } from './const'
 import Logo from '../../../../public/logo.png'
 import styles from './styles.module.css'
@@ -28,7 +29,7 @@ export const Header = () => {
 
   const isProfileActive = location.pathname.startsWith('/profile')
 
-  const isAdmin = user?.role === 'Admin'
+  const isAdmin = user?.role === UserRole.ADMIN
 
   const visibleNavItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
 
@@ -77,59 +78,35 @@ export const Header = () => {
             />
           ) : (
             <Button
-              type="text"
-              icon={<MenuOutlined />}
-              className={styles.menuBtn}
-              aria-label={t('nav.menu')}
-              onClick={() => setNavDrawerOpen(true)}
-            />
-          )}
-
-          <div className={styles.actions}>
-            <LanguageSwitcher className={styles.langBtn} />
-            {isAuthenticated ? (
-              <Dropdown
-                menu={{ items: profileMenuItems }}
-                placement="bottomRight"
-                trigger={['click']}
-              >
-                <Button
-                  type="primary"
-                  icon={<UserOutlined />}
-                  className={styles.profileBtn}
-                  loading={isLoggingOut}
-                >
-                  {user?.fullName ?? t('nav.profile')}
-                </Button>
-              </Dropdown>
-            ) : (
-              <Button
-                type="primary"
-                icon={<UserOutlined />}
-                className={styles.profileBtn}
-                onClick={() => navigate('/auth/login')}
-              >
-                {t('nav.profile')}
-              </Button>
-            )}
-          </div>
-        </div>
-
-        <BaseDrawer
-          open={navDrawerOpen}
-          onClose={() => setNavDrawerOpen(false)}
-          title={t('nav.menu')}
-        >
-          <div className={styles.drawerBody}>
-            <Menu
-              mode="vertical"
-              selectedKeys={[selectedKey]}
-              className={styles.drawerNav}
-              items={navMenuItems}
-              onClick={() => setNavDrawerOpen(false)}
-            />
-          </div>
-        </BaseDrawer>
+              type="primary"
+              icon={
+                user?.avatarUrl ? (
+                  <Avatar
+                    src={user.avatarUrl}
+                    size={24}
+                    className={styles.profileAvatar}
+                    alt={user.fullName}
+                  />
+                ) : (
+                  <UserOutlined />
+                )
+              }
+              className={styles.profileBtn}
+              loading={isLoggingOut}
+            >
+              {user?.fullName ?? t('nav.profile')}
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button
+            type="primary"
+            icon={<UserOutlined />}
+            className={styles.profileBtn}
+            onClick={() => navigate('/auth/login')}
+          >
+            {t('nav.profile')}
+          </Button>
+        )}
       </div>
     </AntHeader>
   )

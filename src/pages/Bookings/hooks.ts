@@ -22,6 +22,7 @@ export const useMyBookings = ({
     queryKey: bookingsQueryKeys.myBookings(page, size),
     queryFn: () => getMyBookings({ page, size }),
     enabled,
+    refetchOnMount: 'always',
   })
 
 export const useBookingHotels = (hotelIds: number[], enabled = true) =>

@@ -668,8 +668,6 @@
         "subtitle": "Войдите, чтобы управлять бронированиями и сохранёнными местами.",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Пароль",
-        "passwordPlaceholder": "Введите пароль",
         "submit": "Войти",
         "noAccount": "Нет аккаунта?",
         "switchToRegister": "Зарегистрироваться"
@@ -681,8 +679,6 @@
         "fullNamePlaceholder": "Ваше имя",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Пароль",
-        "passwordPlaceholder": "Минимум 8 символов",
         "submit": "Зарегистрироваться",
         "hasAccount": "Уже есть аккаунт?",
         "switchToLogin": "Войти"
@@ -690,8 +686,6 @@
       "validation": {
         "emailRequired": "Укажите email",
         "emailInvalid": "Введите корректный email",
-        "passwordRequired": "Укажите пароль",
-        "passwordMin": "Пароль должен быть не короче 8 символов",
         "fullNameRequired": "Укажите имя",
         "fullNameMin": "Имя должно быть не короче 2 символов"
       },
@@ -705,6 +699,15 @@
       "title": "Страница не найдена",
       "description": "Запрашиваемая страница не существует.",
       "backHome": "На главную"
+    }
+  },
+  "validation": {
+    "password": {
+      "label": "Пароль",
+      "loginPlaceholder": "Введите пароль",
+      "newPlaceholder": "Минимум 8 символов",
+      "required": "Пароль обязателен",
+      "min": "Пароль должен быть не короче 8 символов"
     }
   },
   "common": {
