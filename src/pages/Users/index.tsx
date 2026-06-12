@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons'
 import { Alert, Avatar, Button, Form, Modal, Skeleton, Table, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setUserList } from '@/store/usersSlice'
@@ -51,7 +51,7 @@ const UsersPage = () => {
     form.resetFields()
   }
 
-  const openModal = (mode: Exclude<UsersModalMode, null>, user?: UsersTableRow) => {
+  const openModal = useCallback((mode: Exclude<UsersModalMode, null>, user?: UsersTableRow) => {
     if (mode === UsersModalType.ADD) {
       form.resetFields()
       setSelectedUser(null)
@@ -59,7 +59,7 @@ const UsersPage = () => {
       setSelectedUser(user)
     }
     setModalMode(mode)
-  }
+  }, [form])
 
   const handleCreate = async (values: UserFormValues) => {
     try {
@@ -164,7 +164,7 @@ const UsersPage = () => {
         ),
       },
     ],
-    [t],
+    [t, openModal],
   )
 
   const userFormContent = (
@@ -178,7 +178,7 @@ const UsersPage = () => {
         <Button type="primary" htmlType="submit" loading={isSubmitting} block>
           {submitLabel}
         </Button>
-        <Button onClick={closeModal} disabled={isSubmitting} block style={{ marginTop: 8 }}>
+        <Button onClick={closeModal} disabled={isSubmitting} block className={styles.cancelBtn}>
           {t(USERS_I18N.actions.cancel)}
         </Button>
       </Form.Item>

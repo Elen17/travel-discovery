@@ -61,7 +61,7 @@ export const SessionExpiredModal = ({
           <Button type="primary" htmlType="submit" block loading={loading}>
             {t(SESSION_EXPIRED_MODAL_I18N.submit)}
           </Button>
-          <Button block onClick={handleCancel} style={{ marginTop: 8 }}>
+          <Button block onClick={handleCancel} className={styles.cancelBtn}>
             {t(SESSION_EXPIRED_MODAL_I18N.cancel)}
           </Button>
         </Form.Item>

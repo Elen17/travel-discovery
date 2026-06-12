@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type {
   AppliedItinerary,
   ExplorationId,
+  LoadPlanPayload,
   PlannerMessage,
   PlannerStoredSession,
   PlannerSuggestion,
@@ -56,6 +57,7 @@ const stored = loadStoredSession()
 const initialState: PlannerState = {
   activeExplorationId: stored.activeExplorationId ?? DEFAULT_EXPLORATION_ID,
   planId: stored.planId ?? null,
+  activePlan: null,
   messages: stored.messages ?? [],
   appliedItineraries: stored.appliedItineraries ?? [],
   dynamicSuggestions: stored.dynamicSuggestions ?? null,
@@ -95,11 +97,18 @@ const plannerSlice = createSlice({
       state.isHydrated = action.payload
     },
     setActiveExploration: (state, action: PayloadAction<ExplorationId>) => {
-      if (state.activeExplorationId === action.payload) {
+      const hasLoadedSession =
+        state.planId !== null ||
+        state.messages.length > 0 ||
+        state.dynamicSuggestions !== null ||
+        state.dynamicItineraries !== null
+
+      if (state.activeExplorationId === action.payload && !hasLoadedSession) {
         return
       }
       state.activeExplorationId = action.payload
       state.planId = null
+      state.activePlan = null
       state.messages = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
@@ -143,6 +152,7 @@ const plannerSlice = createSlice({
     },
     startNewChat: (state) => {
       state.planId = null
+      state.activePlan = null
       state.messages = []
       state.appliedItineraries = []
       state.dynamicSuggestions = null
@@ -166,6 +176,11 @@ const plannerSlice = createSlice({
       const session = action.payload
       state.activeExplorationId = session.explorationId
       state.planId = normalizePlanId(session.id)
+      state.activePlan = {
+        id: session.id,
+        title: session.title,
+        explorationId: session.explorationId,
+      }
       state.messages = session.messages
       state.appliedItineraries = session.appliedItineraries
       state.dynamicSuggestions = session.dynamicSuggestions
@@ -173,19 +188,22 @@ const plannerSlice = createSlice({
       state.isOfflineMode = false
       persistPlannerSession(state)
     },
-    loadPlan: (
-      state,
-      action: PayloadAction<{
-        planId: string
-        explorationId: ExplorationId
-        messages: PlannerMessage[]
-        appliedItineraries: AppliedItinerary[]
-      }>,
-    ) => {
-      state.planId = normalizePlanId(action.payload.planId)
-      state.activeExplorationId = action.payload.explorationId
-      state.messages = action.payload.messages
-      state.appliedItineraries = action.payload.appliedItineraries
+    loadPlan: (state, action: PayloadAction<LoadPlanPayload>) => {
+      const { planId, explorationId, messages, appliedItineraries, title, imageUrl, duration, travelersCount, type } =
+        action.payload
+      state.planId = normalizePlanId(planId)
+      state.activeExplorationId = explorationId
+      state.activePlan = {
+        id: planId,
+        title,
+        imageUrl,
+        explorationId,
+        duration,
+        travelersCount,
+        type,
+      }
+      state.messages = messages
+      state.appliedItineraries = appliedItineraries
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
       state.isOfflineMode = false

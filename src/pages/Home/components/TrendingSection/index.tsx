@@ -16,7 +16,7 @@ export const TrendingSection = () => {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const carouselRef = useRef<HTMLDivElement>(null)
-  const { toggleFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
+  const { saveFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
 
   const {
     data: trendingHotels = [],

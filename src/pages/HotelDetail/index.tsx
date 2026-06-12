@@ -1,4 +1,5 @@
 import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { message, Spin } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -72,8 +73,6 @@ const HotelDetailPage = () => {
   }, [reviewsResponse, t, i18n.language])
 
   const defaultDates = useMemo(() => (hotel ? getDefaultDates(hotel.defaultNights) : null), [hotel])
-
-  // DESCRIPTION
   const description = useMemo(() => {
     return {
       title: t('pages.hotelDetail.descriptions.default.title'),
@@ -89,18 +88,19 @@ const HotelDetailPage = () => {
   const [checkIn, setCheckIn] = useState<Dayjs | null>(null)
   const [checkOut, setCheckOut] = useState<Dayjs | null>(null)
   const [guestSelection, setGuestSelection] = useState(DEFAULT_GUEST_VALUE)
+  const [bookingHotelId, setBookingHotelId] = useState<string | null>(null)
   const [paymentOpen, setPaymentOpen] = useState(false)
   const [pendingBooking, setPendingBooking] = useState<HotelBookingFormData | null>(null)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [paymentBookingError, setPaymentBookingError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (defaultDates) {
-      setCheckIn(defaultDates.checkIn)
-      setCheckOut(defaultDates.checkOut)
-      setGuestSelection(DEFAULT_GUEST_VALUE)
-    }
-  }, [defaultDates, id])
+  if (hotel && hotel.id !== bookingHotelId) {
+    const dates = getDefaultDates(hotel.defaultNights)
+    setBookingHotelId(hotel.id)
+    setCheckIn(dates.checkIn)
+    setCheckOut(dates.checkOut)
+    setGuestSelection(DEFAULT_GUEST_VALUE)
+  }
 
   useEffect(() => {
     if (!hotel) return
@@ -152,21 +152,29 @@ const HotelDetailPage = () => {
       return
     }
 
-    setCheckIn(date)
+    const normalizedCheckIn = dayjs(date).startOf('day')
+    setCheckIn(normalizedCheckIn)
     setCheckOut((current) => {
-      if (!current || !current.isAfter(date, 'day')) {
-        return date.add(hotel.defaultNights, 'day')
+      const normalizedCheckOut = current ? dayjs(current).startOf('day') : null
+      if (!normalizedCheckOut || !normalizedCheckOut.isAfter(normalizedCheckIn, 'day')) {
+        return normalizedCheckIn.add(hotel.defaultNights, 'day')
       }
-      return current
+      return normalizedCheckOut
     })
   }
 
   const handleCheckOutChange = (date: Dayjs | null) => {
-    if (!date || !date.isAfter(activeCheckIn, 'day')) {
+    if (!date) {
       return
     }
 
-    setCheckOut(date)
+    const normalizedCheckOut = dayjs(date).startOf('day')
+    const normalizedCheckIn = dayjs(activeCheckIn).startOf('day')
+    if (!normalizedCheckOut.isAfter(normalizedCheckIn, 'day')) {
+      return
+    }
+
+    setCheckOut(normalizedCheckOut)
   }
 
   const handleGuestsChange = (selection: string) => {

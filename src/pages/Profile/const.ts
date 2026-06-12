@@ -1,5 +1,3 @@
-import type { ProfileUserDisplay } from './types'
-
 export const AVATAR_MAX_SIZE_BYTES = 5 * 1024 * 1024
 
 export const PROFILE_I18N = {
@@ -28,9 +26,3 @@ export const PROFILE_I18N = {
     },
   },
 } as const
-
-export const MOCK_PROFILE_USER: ProfileUserDisplay = {
-  fullName: 'Julian Thorne',
-  avatarUrl:
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-}

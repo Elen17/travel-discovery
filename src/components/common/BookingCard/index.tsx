@@ -1,4 +1,4 @@
-import { EnvironmentOutlined } from '@ant-design/icons'
+import { CompassOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import styles from './styles.module.css'
 import type { BookingCardProps } from './types'
@@ -40,8 +40,17 @@ export const BookingCard = ({
         <div className={styles.hotelInfo}>
           <h3 className={styles.title}>{hotelName}</h3>
           <p className={styles.location}>
-            <EnvironmentOutlined />
+            <EnvironmentOutlined className={styles.locationIcon} aria-hidden />
             <span className={styles.locationText}>{location}</span>
+            {onGetDirections ? (
+              <Button
+                type="text"
+                icon={<CompassOutlined />}
+                className={styles.directionsBtn}
+                aria-label={getDirectionsLabel}
+                onClick={onGetDirections}
+              />
+            ) : null}
           </p>
         </div>
 
@@ -52,12 +61,11 @@ export const BookingCard = ({
         </div>
 
         <div className={styles.actions}>
-          <button type="button" className={styles.directionsLink} onClick={onGetDirections}>
-            {getDirectionsLabel}
-          </button>
           {onCancel && cancelLabel ? (
             <Button
-              className={styles.cancelBtn}
+              type="link"
+              danger
+              className={styles.cancelLink}
               onClick={onCancel}
               loading={isCancelling}
               disabled={isCancelling}
@@ -65,7 +73,12 @@ export const BookingCard = ({
               {cancelLabel}
             </Button>
           ) : null}
-          <Button className={styles.detailsBtn} onClick={onViewDetails}>
+          <Button
+            color="primary"
+            variant="outlined"
+            className={styles.actionBtn}
+            onClick={onViewDetails}
+          >
             {viewDetailsLabel}
           </Button>
         </div>

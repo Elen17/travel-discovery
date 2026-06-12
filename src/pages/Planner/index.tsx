@@ -1,14 +1,16 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, startTransition } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { PlannerSidebar } from '@/components/layout/PlannerSidebar'
 import type { PlannerSidebarPlan } from '@/components/layout/PlannerSidebar/types'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   loadPlan,
   restoreSession,
+  setActiveExploration,
   setDynamicItineraries,
   startNewChat,
 } from '@/store/plannerSlice'
-import type { PlannerPlan } from '@/types/planner'
+import type { ExplorationId, PlannerPlan } from '@/types/planner'
 import { AppliedItinerariesSection } from './components/AppliedItinerariesSection'
 import { ItinerariesSection } from './components/ItinerariesSection'
 import { PlannerChatSection } from './components/PlannerChatSection'
@@ -23,9 +25,9 @@ import {
   usePlannerShare,
   usePlannerUsePlan,
 } from './hooks'
-import { EXPLORATION_CONTENT } from './const'
+import { EXPLORATION_CONTENT, RECENT_EXPLORATIONS } from './const'
 import styles from './styles.module.css'
-import { apiAppliedToUi, getExplorationContent, suggestionsToItineraries } from './utils'
+import { getExplorationContent, plannerPlanToLoadPayload, suggestionsToItineraries } from './utils'
 import { loadSavedSessions } from './utils/sessionStorage'
 
 const formatPlanMeta = (plan: PlannerPlan): string => {
@@ -44,13 +46,14 @@ const mapPlanToSidebarItem = (plan: PlannerPlan): PlannerSidebarPlan => ({
 
 const PlannerPage = () => {
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
   usePlannerHydration()
 
   const { activeExplorationId, dynamicItineraries, dynamicSuggestions, isHydrated, planId } =
     useAppSelector((state) => state.planner)
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-  const { data: dailyPlans = [] } = usePlannerPlans()
+  const { data: dailyPlans = [] } = usePlannerPlans({ enabled: isAuthenticated })
 
   const sidebarPlans = useMemo(
     () => dailyPlans.map(mapPlanToSidebarItem),
@@ -74,37 +77,49 @@ const PlannerPage = () => {
     activeExplorationId,
   })
 
+  const handleSelectExploration = useCallback(
+    (id: ExplorationId) => {
+      dispatch(setActiveExploration(id))
+      const next = new URLSearchParams(searchParams)
+      next.set('exploration', id)
+      next.delete('session')
+      setSearchParams(next, { replace: true })
+    },
+    [dispatch, searchParams, setSearchParams],
+  )
+
   const handleSelectPlan = useCallback(
     (id: string) => {
       const selected = dailyPlans.find((plan) => plan.id === id)
       if (selected) {
-        dispatch(
-          loadPlan({
-            planId: selected.id,
-            explorationId: selected.explorationId,
-            messages: selected.messages,
-            appliedItineraries: selected.appliedItineraries.map(apiAppliedToUi),
-          }),
-        )
+        dispatch(loadPlan(plannerPlanToLoadPayload(selected)))
+        const next = new URLSearchParams(searchParams)
+        next.set('session', selected.id)
+        next.set('exploration', selected.explorationId)
+        startTransition(() => {
+          setSearchParams(next, { replace: true })
+        })
         return
       }
 
-      const savedSession = loadSavedSessions().find((session) => session.id === id)
-      if (savedSession) {
-        dispatch(restoreSession(savedSession))
-        if (savedSession.dynamicSuggestions?.length) {
-          dispatch(
-            setDynamicItineraries(
-              suggestionsToItineraries(
-                savedSession.dynamicSuggestions,
-                savedSession.explorationId,
+      if (!isAuthenticated) {
+        const savedSession = loadSavedSessions().find((session) => session.id === id)
+        if (savedSession) {
+          dispatch(restoreSession(savedSession))
+          if (savedSession.dynamicSuggestions?.length) {
+            dispatch(
+              setDynamicItineraries(
+                suggestionsToItineraries(
+                  savedSession.dynamicSuggestions,
+                  savedSession.explorationId,
+                ),
               ),
-            ),
-          )
+            )
+          }
         }
       }
     },
-    [dailyPlans, dispatch],
+    [dailyPlans, dispatch, isAuthenticated, searchParams, setSearchParams],
   )
 
   const handleNewChat = useCallback(() => {
@@ -118,9 +133,12 @@ const PlannerPage = () => {
   return (
     <div className={styles.page}>
       <PlannerSidebar
+        explorations={RECENT_EXPLORATIONS}
+        activeExplorationId={activeExplorationId}
         plans={sidebarPlans}
-        activeId={planId}
-        onSelect={handleSelectPlan}
+        activePlanId={planId}
+        onSelectExploration={handleSelectExploration}
+        onSelectPlan={handleSelectPlan}
         showNewChat={isAuthenticated}
         onNewChat={handleNewChat}
       />

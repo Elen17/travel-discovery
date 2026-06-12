@@ -1,5 +1,5 @@
-import { Spin } from 'antd'
 import { Navigate } from 'react-router-dom'
+import { PageLoader } from '@/components/common/PageLoader'
 import { useAppSelector } from '@/store/hooks'
 import { UserRole } from '@/types/user'
 import type { AdminRouteProps } from './types'
@@ -12,11 +12,7 @@ export const AdminRoute = ({ children }: AdminRouteProps) => {
   }
 
   if (!user) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}>
-        <Spin size="large" />
-      </div>
-    )
+    return <PageLoader />
   }
 
   if (user.role !== UserRole.ADMIN) {

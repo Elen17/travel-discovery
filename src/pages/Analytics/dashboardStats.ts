@@ -79,7 +79,7 @@ export const buildTopPages = (events: AppEvent[]): PageTrafficItem[] => {
 export const buildEventBreakdown = (events: AppEvent[]): EventBreakdownSegment[] => {
   const types = ['page_view', 'search', 'view_item', 'custom'] as const
   const total = events.length || 1
-  const colors = [CHART_COLORS.primary, CHART_COLORS.accent, CHART_COLORS.accentDark, CHART_COLORS.muted]
+  const colors = [CHART_COLORS.primary, CHART_COLORS.accent, CHART_COLORS.amber, CHART_COLORS.violet]
 
   return types
     .map((type, index) => {

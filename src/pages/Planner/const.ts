@@ -14,6 +14,9 @@ export const PLANNER_I18N = {
     travelers: 'pages.planner.trip.travelers',
     share: 'pages.planner.trip.share',
     exportPdf: 'pages.planner.trip.exportPdf',
+    planDurationDays: 'pages.planner.trip.planDurationDays',
+    planDurationHours: 'pages.planner.trip.planDurationHours',
+    planTravelersCount: 'pages.planner.trip.planTravelersCount',
   },
   ai: {
     label: 'pages.planner.ai.label',
@@ -109,7 +112,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   iceland: {
     id: 'iceland',
     heroImage:
-      'https://images.unsplash.com/photo-1504893521153-965663756c02?auto=format&fit=crop&w=1400&q=80',
+      'https://api.travalot.com/attachment/9dc9f840-5b17-11f0-a193-ad9eff9dce55.jpg',
     trip: {
       eyebrowKey: 'pages.planner.explorations.iceland.trip.eyebrow',
       titleKey: 'pages.planner.explorations.iceland.trip.title',
@@ -122,7 +125,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.iceland.itineraries.waterfall.title',
         descriptionKey: 'pages.planner.explorations.iceland.itineraries.waterfall.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1529963183137-3323fab7c7fb?auto=format&fit=crop&w=600&q=80',
+          'https://www.motorhomeiceland.com/assets/img/blog/seljalandsfoss-waterfall-discovering-southern-icelands-beauty.webp',
         category: 'nature',
         durationKey: 'pages.planner.explorations.iceland.itineraries.waterfall.duration',
         stepKeys: [
@@ -149,7 +152,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.iceland.itineraries.iceCave.title',
         descriptionKey: 'pages.planner.explorations.iceland.itineraries.iceCave.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1531168556467-80aace0d48f1?auto=format&fit=crop&w=600&q=80',
+          'https://gti.images.tshiftcdn.com/7955524/x/0/a-person-explores-the-stunning-blue-ice-cave-beneath-vatnajokull-glacier-in-iceland-during-winter.jpg?dpr=2&height=360&quality=65',
         category: 'adventure',
         durationKey: 'pages.planner.explorations.iceland.itineraries.iceCave.duration',
         stepKeys: [
@@ -162,7 +165,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   tuscany: {
     id: 'tuscany',
     heroImage:
-      'https://images.unsplash.com/photo-1523531294911-0b948c834cfb?auto=format&fit=crop&w=1400&q=80',
+      'https://media.istockphoto.com/id/938325926/photo/downtown-siena-skyline-in-italy.jpg?s=612x612&w=0&k=20&c=Lj-py0qNKy4HIs3ulnZgCIkFYMRH0hGvTPAyqgcPE2c=',
     trip: {
       eyebrowKey: 'pages.planner.explorations.tuscany.trip.eyebrow',
       titleKey: 'pages.planner.explorations.tuscany.trip.title',
@@ -175,7 +178,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.tuscany.itineraries.chianti.title',
         descriptionKey: 'pages.planner.explorations.tuscany.itineraries.chianti.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1506377247377-894fda64f028?auto=format&fit=crop&w=600&q=80',
+          'https://media.tacdn.com/media/attractions-splice-spp-674x446/09/ab/44/0b.jpg',
         category: 'nature',
         durationKey: 'pages.planner.explorations.tuscany.itineraries.chianti.duration',
         stepKeys: [
@@ -214,7 +217,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   kyoto: {
     id: 'kyoto',
     heroImage:
-      'https://images.unsplash.com/photo-1493976040374-85c8e412f188?auto=format&fit=crop&w=1400&q=80',
+      'https://www.advantour.com/img/japan/images/kyoto.jpg',
     trip: {
       eyebrowKey: 'pages.planner.explorations.kyoto.trip.eyebrow',
       titleKey: 'pages.planner.explorations.kyoto.trip.title',
@@ -253,7 +256,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.kyoto.itineraries.gion.title',
         descriptionKey: 'pages.planner.explorations.kyoto.itineraries.gion.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1549693578-d683be719e2e?auto=format&fit=crop&w=600&q=80',
+          'https://citytravelcompanion.com/wp-content/uploads/2024/06/tasty_food_experiences_described.jpg',
         category: 'adventure',
         durationKey: 'pages.planner.explorations.kyoto.itineraries.gion.duration',
         stepKeys: [
@@ -266,7 +269,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   amalfi: {
     id: 'amalfi',
     heroImage:
-      'https://images.unsplash.com/photo-15341134145014-8745f22b55a4?auto=format&fit=crop&w=1400&q=80',
+      'https://amalfi-coast-tours.com/wp-content/uploads/2025/02/amalfi-coast-campania.jpg',
     trip: {
       eyebrowKey: 'pages.planner.explorations.amalfi.trip.eyebrow',
       titleKey: 'pages.planner.explorations.amalfi.trip.title',
@@ -279,7 +282,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.amalfi.itineraries.path.title',
         descriptionKey: 'pages.planner.explorations.amalfi.itineraries.path.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1516483638265-f4dbf994554a?auto=format&fit=crop&w=600&q=80',
+          'https://images.squarespace-cdn.com/content/v1/5fbd372b643b627fb8281615/1914b398-3391-478b-bf56-e755daf538e6/Path+of+the+Gods+4.jpeg',
         category: 'nature',
         durationKey: 'pages.planner.explorations.amalfi.itineraries.path.duration',
         stepKeys: [
@@ -305,7 +308,7 @@ export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
         titleKey: 'pages.planner.explorations.amalfi.itineraries.ravello.title',
         descriptionKey: 'pages.planner.explorations.amalfi.itineraries.ravello.description',
         imageUrl:
-          'https://images.unsplash.com/photo-1534445867742-431588f22f5b?auto=format&fit=crop&w=600&q=80',
+          'https://www.lucatourguide.eu/wp-content/uploads/2025/02/art-ravello-01.webp',
         category: 'adventure',
         durationKey: 'pages.planner.explorations.amalfi.itineraries.ravello.duration',
         stepKeys: [

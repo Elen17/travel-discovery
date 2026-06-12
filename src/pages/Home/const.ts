@@ -50,8 +50,6 @@ export const HOME_I18N = {
   },
 } as const
 
-export const HERO_IMAGE_URL = 'https://i.postimg.cc/TPYfkhLk/b8a00a19-9737-4e4a-b00b-01d61df9c72f.png'
-
 export const HOME_CATEGORIES: HomeCategory[] = [
   { id: 'beaches', labelKey: HOME_I18N.categories.beaches, icon: SunOutlined },
   { id: 'adventure', labelKey: HOME_I18N.categories.adventure, icon: RiseOutlined },

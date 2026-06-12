@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from 'antd'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from './styles.module.css'
 
 type PlannerSaveSessionModalProps = {
@@ -25,11 +25,11 @@ export const PlannerSaveSessionModal = ({
 }: PlannerSaveSessionModalProps) => {
   const [sessionTitle, setSessionTitle] = useState(defaultTitle)
 
-  useEffect(() => {
-    if (open) {
+  const handleAfterOpenChange = (visible: boolean) => {
+    if (visible) {
       setSessionTitle(defaultTitle)
     }
-  }, [defaultTitle, open])
+  }
 
   const handleConfirm = () => {
     const trimmed = sessionTitle.trim()
@@ -44,6 +44,7 @@ export const PlannerSaveSessionModal = ({
       title={title}
       open={open}
       onCancel={onCancel}
+      afterOpenChange={handleAfterOpenChange}
       footer={[
         <Button key="cancel" onClick={onCancel}>
           {cancelLabel}

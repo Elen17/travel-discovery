@@ -1,3 +1,5 @@
+import type { ExplorationId, PlannerExploration } from '@/types/planner'
+
 export type PlannerSidebarPlan = {
   id: string
   title: string
@@ -5,9 +7,12 @@ export type PlannerSidebarPlan = {
 }
 
 export type PlannerSidebarProps = {
+  explorations: PlannerExploration[]
+  activeExplorationId: ExplorationId
   plans: PlannerSidebarPlan[]
-  activeId: string | null
-  onSelect: (id: string) => void
+  activePlanId: string | null
+  onSelectExploration: (id: ExplorationId) => void
+  onSelectPlan: (id: string) => void
   onNewChat: () => void
   showNewChat?: boolean
   canNewChat?: boolean
