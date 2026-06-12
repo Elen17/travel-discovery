@@ -115,6 +115,28 @@ export type PlannerPlanPayload = {
   appliedItineraries?: PlannerAppliedItineraryItem[]
 }
 
+export type ActivePlannerPlan = {
+  id: string
+  title: string
+  imageUrl?: string
+  explorationId: ExplorationId
+  duration?: number
+  travelersCount?: number
+  type?: string
+}
+
+export type LoadPlanPayload = {
+  planId: string
+  explorationId: ExplorationId
+  messages: PlannerMessage[]
+  appliedItineraries: AppliedItinerary[]
+  title: string
+  imageUrl?: string
+  duration?: number
+  travelersCount?: number
+  type?: string
+}
+
 export type PlannerPlan = {
   id: string
   title: string

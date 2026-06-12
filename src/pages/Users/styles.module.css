@@ -50,3 +50,15 @@
   align-items: center;
   gap: 4px;
 }
+
+.editBtn {
+  color: var(--color-primary) !important;
+}
+
+.editBtn:hover {
+  color: var(--color-primary-hover) !important;
+}
+
+.cancelBtn {
+  margin-top: 8px;
+}

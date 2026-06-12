@@ -1,4 +1,5 @@
 import type {
+  ActivePlannerPlan,
   AppliedItinerary,
   ExplorationId,
   PlannerMessage,
@@ -15,6 +16,7 @@ export type PlannerAiSource = 'gemini' | 'backend' | 'demo' | null
 export type PlannerState = {
   activeExplorationId: ExplorationId
   planId: string | null
+  activePlan: ActivePlannerPlan | null
   messages: PlannerMessage[]
   appliedItineraries: AppliedItinerary[]
   dynamicSuggestions: PlannerSuggestion[] | null

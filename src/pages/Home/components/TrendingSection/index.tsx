@@ -18,7 +18,11 @@ export const TrendingSection = () => {
   const carouselRef = useRef<HTMLDivElement>(null)
   const { saveFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
 
-  const { data: trendingHotels = [], isLoading, isError } = useQuery({
+  const {
+    data: trendingHotels = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: TRENDING_HOTELS_QUERY_KEY,
     queryFn: fetchTrendingHotels,
   })
@@ -72,7 +76,14 @@ export const TrendingSection = () => {
             isSaved={savedHotelIds.has(hotel.id)}
             isSaving={savingHotelId === hotel.id}
             onClick={() => handleDestinationClick(hotel.id, hotel.city, hotel.country)}
-            onSave={() => void saveFavourite(hotel.id)}
+            onSave={() =>
+              void saveFavourite(hotel.id, {
+                item_name: hotel.name,
+                item_category: hotel.country,
+                item_category2: hotel.city,
+                price: hotel.pricePerNight,
+              })
+            }
           />
         ))}
       </div>

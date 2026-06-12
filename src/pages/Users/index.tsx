@@ -1,14 +1,18 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons'
-import { Alert, Avatar, Button, Form, Input, Modal, Skeleton, Table, message } from 'antd'
+import { Alert, Avatar, Button, Form, Modal, Skeleton, Table, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setUserList } from '@/store/usersSlice'
-import { isValidEmail } from '@/utils/validation'
-import { ROLE_LABEL_KEYS, USERS_I18N } from './const'
+import { getUserFormFields, ROLE_LABEL_KEYS, USERS_I18N } from './const'
 import { useUserList, useUserMutations } from './hooks'
-import type { UserFormValues, UsersModalMode, UsersTableRow } from './types'
+import {
+  UsersModalType,
+  type UserFormValues,
+  type UsersModalMode,
+  type UsersTableRow,
+} from './types'
 import styles from './styles.module.css'
 
 const UsersPage = () => {
@@ -33,7 +37,7 @@ const UsersPage = () => {
     createMutation.isPending || updateMutation.isPending || deleteMutation.isPending
 
   useEffect(() => {
-    if (modalMode !== 'edit' || !selectedUser) return
+    if (modalMode !== UsersModalType.EDIT || !selectedUser) return
     form.setFieldsValue({
       fullName: selectedUser.fullName,
       email: selectedUser.email,
@@ -47,27 +51,22 @@ const UsersPage = () => {
     form.resetFields()
   }
 
-  const openAddModal = () => {
-    form.resetFields()
-    setSelectedUser(null)
-    setModalMode('add')
-  }
-
-  const openEditModal = (user: UsersTableRow) => {
-    setSelectedUser(user)
-    setModalMode('edit')
-  }
-
-  const openDeleteModal = (user: UsersTableRow) => {
-    setSelectedUser(user)
-    setModalMode('delete')
-  }
+  const openModal = useCallback((mode: Exclude<UsersModalMode, null>, user?: UsersTableRow) => {
+    if (mode === UsersModalType.ADD) {
+      form.resetFields()
+      setSelectedUser(null)
+    } else if (user) {
+      setSelectedUser(user)
+    }
+    setModalMode(mode)
+  }, [form])
 
   const handleCreate = async (values: UserFormValues) => {
     try {
       await createMutation.mutateAsync({
         fullName: values.fullName.trim(),
         email: values.email.trim(),
+        password: values.password,
         avatarUrl: values.avatarUrl?.trim() || null,
       })
       message.success(t(USERS_I18N.messages.createSuccess))
@@ -149,58 +148,88 @@ const UsersPage = () => {
           <div className={styles.actionsCell}>
             <Button
               type="text"
+              className={styles.editBtn}
               icon={<EditOutlined />}
               aria-label={t(USERS_I18N.table.edit)}
-              onClick={() => openEditModal(record)}
+              onClick={() => openModal(UsersModalType.EDIT, record)}
             />
             <Button
               type="text"
               danger
               icon={<DeleteOutlined />}
               aria-label={t(USERS_I18N.table.delete)}
-              onClick={() => openDeleteModal(record)}
+              onClick={() => openModal(UsersModalType.DELETE, record)}
             />
           </div>
         ),
       },
     ],
-    [t],
+    [t, openModal],
   )
 
-  const formFields = (
-    <>
-      <Form.Item
-        name="fullName"
-        label={t(USERS_I18N.form.fullName)}
-        rules={[
-          { required: true, message: t(USERS_I18N.validation.fullNameRequired) },
-          { min: 2, message: t(USERS_I18N.validation.fullNameMin) },
-        ]}
-      >
-        <Input placeholder={t(USERS_I18N.form.fullNamePlaceholder)} />
+  const userFormContent = (
+    submitLabel: string,
+    onFinish: (values: UserFormValues) => void,
+    includePassword = false,
+  ) => (
+    <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
+      {getUserFormFields(t, { includePassword })}
+      <Form.Item>
+        <Button type="primary" htmlType="submit" loading={isSubmitting} block>
+          {submitLabel}
+        </Button>
+        <Button onClick={closeModal} disabled={isSubmitting} block className={styles.cancelBtn}>
+          {t(USERS_I18N.actions.cancel)}
+        </Button>
       </Form.Item>
-
-      <Form.Item
-        name="email"
-        label={t(USERS_I18N.form.email)}
-        rules={[
-          { required: true, message: t(USERS_I18N.validation.emailRequired) },
-          {
-            validator: (_, value: string) =>
-              !value || isValidEmail(value)
-                ? Promise.resolve()
-                : Promise.reject(new Error(t(USERS_I18N.validation.emailInvalid))),
-          },
-        ]}
-      >
-        <Input type="email" placeholder={t(USERS_I18N.form.emailPlaceholder)} />
-      </Form.Item>
-
-      <Form.Item name="avatarUrl" label={t(USERS_I18N.form.avatarUrl)}>
-        <Input placeholder={t(USERS_I18N.form.avatarUrlPlaceholder)} />
-      </Form.Item>
-    </>
+    </Form>
   )
+
+  const modalProps = (() => {
+    switch (modalMode) {
+      case UsersModalType.ADD:
+        return {
+          title: t(USERS_I18N.modals.addTitle),
+          content: userFormContent(t(USERS_I18N.actions.create), handleCreate, true),
+          footer: null,
+        }
+      case UsersModalType.EDIT:
+        return {
+          title: t(USERS_I18N.modals.editTitle),
+          content: userFormContent(t(USERS_I18N.actions.save), handleUpdate),
+          footer: null,
+        }
+      case UsersModalType.DELETE:
+        return {
+          title: t(USERS_I18N.modals.deleteTitle),
+          content: (
+            <p>
+              {t(USERS_I18N.modals.deleteConfirm, {
+                userName: selectedUser?.fullName ?? '',
+              })}
+            </p>
+          ),
+          footer: [
+            <Button key="cancel" onClick={closeModal} disabled={isSubmitting}>
+              {t(USERS_I18N.actions.cancel)}
+            </Button>,
+            <Button
+              key="delete"
+              type="primary"
+              danger
+              loading={isSubmitting}
+              onClick={() => {
+                void handleDelete()
+              }}
+            >
+              {t(USERS_I18N.actions.delete)}
+            </Button>,
+          ],
+        }
+      default:
+        return null
+    }
+  })()
 
   return (
     <div className={styles.page}>
@@ -218,7 +247,7 @@ const UsersPage = () => {
       ) : null}
 
       <div className={styles.toolbar}>
-        <Button type="primary" icon={<PlusOutlined />} onClick={openAddModal}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal(UsersModalType.ADD)}>
           {t(USERS_I18N.addUser)}
         </Button>
       </div>
@@ -238,82 +267,13 @@ const UsersPage = () => {
       </div>
 
       <Modal
-        title={t(USERS_I18N.modals.addTitle)}
-        open={modalMode === 'add'}
+        title={modalProps?.title}
+        open={modalMode !== null}
         onCancel={closeModal}
-        footer={null}
+        footer={modalProps?.footer}
         destroyOnHidden
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleCreate}
-          requiredMark={false}
-        >
-          {formFields}
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={isSubmitting} block>
-              {t(USERS_I18N.actions.create)}
-            </Button>
-            <Button onClick={closeModal} disabled={isSubmitting} block style={{ marginTop: 8 }}>
-              {t(USERS_I18N.actions.cancel)}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title={t(USERS_I18N.modals.editTitle)}
-        open={modalMode === 'edit'}
-        onCancel={closeModal}
-        footer={null}
-        destroyOnHidden
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleUpdate}
-          requiredMark={false}
-        >
-          {formFields}
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={isSubmitting} block>
-              {t(USERS_I18N.actions.save)}
-            </Button>
-            <Button onClick={closeModal} disabled={isSubmitting} block style={{ marginTop: 8 }}>
-              {t(USERS_I18N.actions.cancel)}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title={t(USERS_I18N.modals.deleteTitle)}
-        open={modalMode === 'delete'}
-        onCancel={closeModal}
-        footer={[
-          <Button key="cancel" onClick={closeModal} disabled={isSubmitting}>
-            {t(USERS_I18N.actions.cancel)}
-          </Button>,
-          <Button
-            key="delete"
-            type="primary"
-            danger
-            loading={isSubmitting}
-            onClick={() => {
-              void handleDelete()
-            }}
-          >
-            {t(USERS_I18N.actions.delete)}
-          </Button>,
-        ]}
-        destroyOnHidden
-      >
-        <p>
-          {t(USERS_I18N.modals.deleteConfirm, {
-            userName: selectedUser?.fullName ?? '',
-          })}
-        </p>
+        {modalProps?.content}
       </Modal>
     </div>
   )

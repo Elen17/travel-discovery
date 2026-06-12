@@ -13,8 +13,10 @@
     "analytics": "Analytics",
     "users": "Users",
     "login": "Log in",
+    "menu": "Menu",
     "profile": "Profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "openMenu": "Open menu"
   },
   "footer": {
     "contactUs": "Contact Us",
@@ -244,7 +246,10 @@
         "dates": "Oct 12 — Oct 24",
         "travelers": "2 Travelers",
         "share": "Share",
-        "exportPdf": "Export PDF"
+        "exportPdf": "Export PDF",
+        "planDurationDays": "{{count}} days",
+        "planDurationHours": "{{count}} hours",
+        "planTravelersCount": "{{count}} travelers"
       },
       "ai": {
         "label": "Intelligent Travel Assistant",
@@ -318,7 +323,7 @@
           "meta": "7 days • Updated 2h ago",
           "trip": {
             "eyebrow": "Curated Expedition",
-            "title": "Icelandic Ring Road",
+            "title": "Icelandic Northern Lights",
             "dates": "Oct 12 — Oct 24",
             "travelers": "2 Travelers"
           },
@@ -358,7 +363,7 @@
           "meta": "5 days • Updated 1d ago",
           "trip": {
             "eyebrow": "Wine Country Escape",
-            "title": "Chianti & Florence Highlights",
+            "title": "Tuscany Vine Country",
             "dates": "Sep 5 — Sep 10",
             "travelers": "2 Travelers"
           },
@@ -709,8 +714,6 @@
         "subtitle": "Sign in to manage bookings, saved places, and your profile.",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "Enter your password",
         "submit": "Log in",
         "noAccount": "Don't have an account?",
         "switchToRegister": "Create one"
@@ -722,8 +725,6 @@
         "fullNamePlaceholder": "Your name",
         "email": "Email",
         "emailPlaceholder": "you@example.com",
-        "password": "Password",
-        "passwordPlaceholder": "At least 8 characters",
         "submit": "Sign up",
         "hasAccount": "Already have an account?",
         "switchToLogin": "Log in"
@@ -731,8 +732,6 @@
       "validation": {
         "emailRequired": "Email is required",
         "emailInvalid": "Enter a valid email address",
-        "passwordRequired": "Password is required",
-        "passwordMin": "Password must be at least 8 characters",
         "fullNameRequired": "Full name is required",
         "fullNameMin": "Name must be at least 2 characters"
       },
@@ -746,6 +745,35 @@
       "title": "Page not found",
       "description": "The page you are looking for does not exist.",
       "backHome": "Back to Explore"
+    }
+  },
+  "validation": {
+    "password": {
+      "label": "Password",
+      "loginPlaceholder": "Enter your password",
+      "newPlaceholder": "At least 8 characters",
+      "required": "Password is required",
+      "min": "Password must be at least 8 characters"
+    }
+  },
+  "authModals": {
+    "loginRequired": {
+      "title": "Log in to save",
+      "message": "Sign in to save destinations to your favourites and access them from your profile.",
+      "login": "Log in",
+      "cancel": "Cancel"
+    },
+    "sessionExpired": {
+      "title": "Session expired",
+      "message": "Your session has expired. Enter your password to continue.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Continue",
+      "cancel": "Cancel",
+      "errors": {
+        "passwordRequired": "Password is required",
+        "generic": "Something went wrong. Please try again."
+      }
     }
   },
   "common": {

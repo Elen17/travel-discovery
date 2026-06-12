@@ -3,9 +3,10 @@
   align-items: stretch;
   gap: 28px;
   padding: 20px 24px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(26, 26, 46, 0.06);
+  background: var(--color-on-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
 }
 
 .image {
@@ -13,7 +14,7 @@
   align-self: center;
   width: 120px;
   height: 120px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   object-fit: cover;
   display: block;
 }
@@ -23,20 +24,31 @@
   flex: 1;
   min-width: 0;
   min-height: 120px;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-content: center;
   align-self: stretch;
-  gap: 40px;
+  gap: 12px 32px;
+  padding-top: 32px;
 }
 
 .hotelInfo {
-  flex: 1;
-  min-width: 140px;
-  padding-right: 100px;
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  align-self: center;
+  padding-right: 88px;
 }
 
-.bookingDetails,
-.hotelInfo {
+.bookingDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+  grid-column: 2;
+  grid-row: 1;
   align-self: center;
 }
 
@@ -45,8 +57,12 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--color-text-dark);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .location {
@@ -54,15 +70,35 @@
   align-items: center;
   gap: 6px;
   margin: 0;
+  min-width: 0;
   font-size: 0.875rem;
-  color: rgba(26, 26, 46, 0.55);
+  color: var(--color-text-muted);
 }
 
-.bookingDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.locationIcon {
   flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+.locationText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.directionsBtn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-left: 2px;
+  color: var(--color-primary);
+}
+
+.directionsBtn:hover {
+  color: var(--color-primary-hover);
+  background: rgba(13, 110, 110, 0.08);
 }
 
 .detailLabel {
@@ -81,7 +117,7 @@
 
 .occupancy {
   font-size: 0.875rem;
-  color: rgba(26, 26, 46, 0.55);
+  color: var(--color-text-muted);
 }
 
 .statusBadge {
@@ -93,7 +129,7 @@
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -114,17 +150,17 @@
 }
 
 .statusPending {
-  background: rgba(250, 140, 22, 0.12);
-  color: #d46b08;
+  background: rgba(245, 166, 35, 0.14);
+  color: #b8740f;
 }
 
 .statusPending .statusDot {
-  background: #fa8c16;
+  background: var(--color-rating);
 }
 
 .statusCancelled {
   background: rgba(26, 26, 46, 0.08);
-  color: rgba(26, 26, 46, 0.55);
+  color: var(--color-text-muted);
 }
 
 .statusCancelled .statusDot {
@@ -141,82 +177,31 @@
 }
 
 .actions {
+  grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 20px;
-  flex-shrink: 0;
-  margin-left: auto;
-  align-self: flex-end;
+  gap: 12px 20px;
 }
 
-.directionsLink {
-  padding: 0;
-  border: none;
-  background: none;
+.cancelLink {
+  height: 36px;
+  padding-inline: 0;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-primary);
   text-decoration: underline;
-  cursor: pointer;
+  text-underline-offset: 3px;
 }
 
-.directionsLink:hover {
-  color: #0a5a5a;
-}
-
-.cancelBtn {
-  height: 36px !important;
-  padding-inline: 18px !important;
-  border-radius: 999px !important;
+.actionBtn {
+  height: 36px;
+  min-width: 140px;
+  padding-inline: 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
   font-weight: 500;
-  background: #fff !important;
-  border-color: rgba(212, 76, 69, 0.45) !important;
-  color: #d44c45 !important;
-}
-
-.cancelBtn:hover {
-  background: rgba(212, 76, 69, 0.06) !important;
-  border-color: #d44c45 !important;
-  color: #d44c45 !important;
-}
-
-.detailsBtn {
-  height: 36px !important;
-  padding-inline: 18px !important;
-  border-radius: 999px !important;
-  border-color: var(--color-primary) !important;
-  color: var(--color-primary) !important;
-  font-weight: 500;
-  background: #fff !important;
-}
-
-.detailsBtn:hover {
-  border-color: var(--color-primary) !important;
-  color: var(--color-primary) !important;
-  background: rgba(13, 110, 110, 0.06) !important;
-}
-
-@media (max-width: 900px) {
-  .content {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .hotelInfo {
-    padding-right: 0;
-    width: 100%;
-    padding-top: 32px;
-  }
-
-  .bookingDetails {
-    width: 100%;
-  }
-
-  .actions {
-    width: 100%;
-    margin-left: 0;
-  }
 }
 
 @media (max-width: 768px) {
@@ -232,22 +217,31 @@
   }
 
   .content {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
     padding-top: 0;
   }
 
+  .hotelInfo,
+  .bookingDetails {
+    width: 100%;
+  }
+
   .hotelInfo {
+    padding-right: 0;
     padding-top: 36px;
   }
 
   .actions {
+    width: 100%;
     flex-direction: column;
     align-items: stretch;
   }
 
-  .cancelBtn,
-  .detailsBtn {
+  .actionBtn {
+    min-width: 0;
     width: 100%;
   }
 }

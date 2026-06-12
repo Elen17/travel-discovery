@@ -6,6 +6,7 @@ import type {
   PlannerAppliedItinerary,
   PlannerAppliedItineraryItem,
   PlannerMessage,
+  LoadPlanPayload,
   PlannerPlan,
   PlannerPlanPayload,
   PlannerSearchParams,
@@ -62,15 +63,15 @@ export const parsePlannerSearchParams = (
 
 export const resolveExplorationFromParams = (
   params: PlannerSearchParams,
-): ExplorationId => {
-  if (params.exploration) {
+): ExplorationId | undefined => {
+  if (params.exploration && isKnownExplorationId(params.exploration)) {
     return params.exploration
   }
   const fromDestination = resolveExplorationFromDestination(params.destination)
   if (fromDestination) {
     return fromDestination
   }
-  return DEFAULT_EXPLORATION_ID
+  return undefined
 }
 
 export const buildPlannerUrl = (params: PlannerSearchParams): string => {
@@ -134,35 +135,35 @@ const getDefaultImageForSuggestion = (
   const images: Record<string, Record<SuggestedItinerary['category'], string>> = {
     iceland: {
       nature:
-        'https://images.unsplash.com/photo-1529963183137-3323fab7c7fb?auto=format&fit=crop&w=600&q=80',
+        'https://www.motorhomeiceland.com/assets/img/blog/seljalandsfoss-waterfall-discovering-southern-icelands-beauty.webp',
       wellness:
-        'https://images.unsplash.com/photo-1504829857797-ddff29c27927?auto=format&fit=crop&w=600&q=80',
+        'https://adventures.com/media/212871/m-snaefellsness-peninsula-nature-and-wildlife-tours-in-iceland.jpg?anchor=center&mode=crop&width=425&height=265&format=jpg&quality=80&rnd=133251592710000000',
       adventure:
-        'https://images.unsplash.com/photo-1531168556467-80aace0d48f1?auto=format&fit=crop&w=600&q=80',
+        'https://amarok.is/wp-content/uploads/2024/12/DSC6637.jpg',
     },
     tuscany: {
       nature:
-        'https://images.unsplash.com/photo-1523531294911-0b948c834cfb?auto=format&fit=crop&w=600&q=80',
+        'https://mysa.wine/cdn/shop/files/Tuscany.jpg?v=1715168955&width=2000',
       wellness:
-        'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
+        'https://www.montalcinowinetours.com/wp-content/uploads/2020/10/thermal-spa-hotsprings-tuscany-3-768x1024.jpg',
       adventure:
-        'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?auto=format&fit=crop&w=600&q=80',
+        'https://www.to-tuscany.com/cmsdata/usr/images/journal/Appenine.JPG',
     },
     kyoto: {
       nature:
-        'https://images.unsplash.com/photo-1493976040374-85c8e412f188?auto=format&fit=crop&w=600&q=80',
+        'https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/vlugyivdngoci999kug3.jpg',
       wellness:
-        'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=600&q=80',
+        'https://www.thewanderinglens.com/wp-content/uploads/2018/03/BLOG-HEADER.jpg',
       adventure:
-        'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=80',
+        'https://i.pinimg.com/736x/26/cd/1a/26cd1a0ac227f41d66dd06490becb105.jpg',
     },
     amalfi: {
       nature:
-        'https://images.unsplash.com/photo-15341134145014-8745f22b55a4?auto=format&fit=crop&w=600&q=80',
+        'https://www.homeinitaly.com/_data/magazine/articles/2020-03-amalfi-coasts-beauty/amalfi-coasts-beauty-7.jpeg',
       wellness:
-        'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=600&q=80',
+        'https://d2xsxph8kpxj0f.cloudfront.net/310519663239706159/ZrKsStTpw6Tk4eyvPzmVDW/hero-travel-iuD9WtuxtPC9zn9ewTgGCF.webp',
       adventure:
-        'https://images.unsplash.com/photo-1516483638265-f4dbf994554a?auto=format&fit=crop&w=600&q=80',
+        'https://images.squarespace-cdn.com/content/v1/5fbd372b643b627fb8281615/1914b398-3391-478b-bf56-e755daf538e6/Path+of+the+Gods+4.jpeg',
     },
   }
   return images[explorationId]?.[category] ?? images[DEFAULT_EXPLORATION_ID][category]
@@ -195,6 +196,18 @@ export const buildPlannerPlanPayload = (
   imageUrl: exploration.heroImage,
   messages,
   appliedItineraries: appliedItineraries.map(uiAppliedToApi),
+})
+
+export const plannerPlanToLoadPayload = (plan: PlannerPlan): LoadPlanPayload => ({
+  planId: plan.id,
+  explorationId: plan.explorationId,
+  messages: plan.messages,
+  appliedItineraries: plan.appliedItineraries.map(apiAppliedToUi),
+  title: plan.title,
+  imageUrl: plan.imageUrl,
+  duration: plan.duration,
+  travelersCount: plan.travelersCount,
+  type: plan.type,
 })
 
 export const plannerPlanToSavedSession = (plan: PlannerPlan): SavedPlannerSession => ({

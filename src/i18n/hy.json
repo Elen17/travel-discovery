@@ -13,8 +13,10 @@
     "analytics": "Անալիտիկա",
     "users": "Օգտատերեր",
     "login": "Մուտք",
+    "menu": "Մենյու",
     "profile": "Պրոֆիլ",
-    "logout": "Ելք"
+    "logout": "Ելք",
+    "openMenu": "Բացել մենյուն"
   },
   "footer": {
     "contactUs": "Կապ մեզ հետ",
@@ -124,7 +126,7 @@
         "open": "Ֆիլտրեր",
         "typeHotel": "Հյուրանոց",
         "typeApartment": "Բնակարան",
-        "typeResort": "Հանգստարան",
+        "typeResort": "Հանգստավայր",
         "typeVilla": "Վիլլա",
         "typeGuestHouse": "Հյուրատուն",
         "typeHostel": "Հոսթել",
@@ -256,7 +258,10 @@
         "dates": "Հոկտ 12 — Հոկտ 24",
         "travelers": "2 ճանապարհորդ",
         "share": "Կիսվել",
-        "exportPdf": "Արտահանել PDF"
+        "exportPdf": "Արտահանել PDF",
+        "planDurationDays": "{{count}} օր",
+        "planDurationHours": "{{count}} ժամ",
+        "planTravelersCount": "{{count}} ճանապարհորդ"
       },
       "ai": {
         "label": "Խելացի ճանապարհորդական օգնական",
@@ -328,7 +333,12 @@
         "iceland": {
           "title": "Իսլանդիայի հյուսիսային լույսեր",
           "meta": "7 օր • Թարմացվել է 2 ժ առաջ",
-          "trip": { "eyebrow": "Ընտրված էքսպեդիցիա", "title": "Իսլանդիայի օղակաձև ճանապարհ", "dates": "Հոկտ 12 — Հոկտ 24", "travelers": "2 ճանապարհորդ" },
+          "trip": {
+            "eyebrow": "Ընտրված էքսպեդիցիա",
+            "title": "Իսլանդիայի հյուսիսային լույսեր",
+            "dates": "Հոկտ 12 — Հոկտ 24",
+            "travelers": "2 ճանապարհորդ"
+          },
           "itineraries": {
             "waterfall": {
               "title": "Սելյալանդսֆոս և Գլյուվրաբուի",
@@ -724,8 +734,6 @@
         "subtitle": "Մուտք գործեք՝ ամրագրումներն ու պահված վայրերը կառավարելու համար։",
         "email": "Էլ. փոստ",
         "emailPlaceholder": "you@example.com",
-        "password": "Գաղտնաբառ",
-        "passwordPlaceholder": "Մուտքագրեք գաղտնաբառը",
         "submit": "Մուտք",
         "noAccount": "Հաշիվ չունե՞ք",
         "switchToRegister": "Գրանցվել"
@@ -737,8 +745,6 @@
         "fullNamePlaceholder": "Ձեր անունը",
         "email": "Էլ. փոստ",
         "emailPlaceholder": "you@example.com",
-        "password": "Գաղտնաբառ",
-        "passwordPlaceholder": "Առնվազն 8 նիշ",
         "submit": "Գրանցվել",
         "hasAccount": "Արդեն ունե՞ք հաշիվ",
         "switchToLogin": "Մուտք"
@@ -746,8 +752,6 @@
       "validation": {
         "emailRequired": "Էլ. փոստը պարտադիր է",
         "emailInvalid": "Մուտքագրեք վավեր էլ. հասցե",
-        "passwordRequired": "Գաղտնաբառը պարտադիր է",
-        "passwordMin": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ",
         "fullNameRequired": "Անունը պարտադիր է",
         "fullNameMin": "Անունը պետք է լինի առնվազն 2 նիշ"
       },
@@ -761,6 +765,44 @@
       "title": "Էջը չի գտնվել",
       "description": "Ձեր փնտրած էջը գոյություն չունի։",
       "backHome": "Վերադառնալ"
+    }
+  },
+  "validation": {
+    "password": {
+      "label": "Գաղտնաբառ",
+      "loginPlaceholder": "Մուտքագրեք գաղտնաբառը",
+      "newPlaceholder": "Առնվազն 8 նիշ",
+      "required": "Գաղտնաբառը պարտադիր է",
+      "min": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ"
+    }
+  },
+  "validation": {
+    "password": {
+      "label": "Գաղտնաբառ",
+      "loginPlaceholder": "Մուտքագրեք գաղտնաբառը",
+      "newPlaceholder": "Առնվազն 8 նիշ",
+      "required": "Գաղտնաբառը պարտադիր է",
+      "min": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ"
+    }
+  },
+  "authModals": {
+    "loginRequired": {
+      "title": "Մուտք գործեք՝ պահպանելու համար",
+      "message": "Մուտք գործեք՝ ուղղությունները ընտրյալներում պահելու և դրանք պրոֆիլից տեսնելու համար։",
+      "login": "Մուտք",
+      "cancel": "Չեղարկել"
+    },
+    "sessionExpired": {
+      "title": "Նիստի ժամկետը լրացել է",
+      "message": "Ձեր նիստի ժամկետը լրացել է։ Շարունակելու համար մուտքագրեք գաղտնաբառը։",
+      "email": "Էլ. փոստ",
+      "password": "Գաղտնաբառ",
+      "submit": "Շարունակել",
+      "cancel": "Չեղարկել",
+      "errors": {
+        "passwordRequired": "Գաղտնաբառը պարտադիր է",
+        "generic": "Ինչ-որ բան սխալ է։ Կրկին փորձեք։"
+      }
     }
   },
   "common": {

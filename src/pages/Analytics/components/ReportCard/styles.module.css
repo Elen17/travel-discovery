@@ -1,0 +1,74 @@
+.chartCard {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.chartCardBooking {
+  border-top: 4px solid var(--color-primary);
+  background: linear-gradient(180deg, rgba(13, 110, 110, 0.06) 0%, var(--color-on-surface) 40%);
+}
+
+.chartCardRevenue {
+  border-top: 4px solid var(--color-rating);
+  background: linear-gradient(180deg, rgba(245, 166, 35, 0.08) 0%, var(--color-on-surface) 40%);
+}
+
+.chartCardUser {
+  border-top: 4px solid #4a90a4;
+  background: linear-gradient(180deg, rgba(74, 144, 164, 0.08) 0%, var(--color-on-surface) 40%);
+}
+
+.chartTitle {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.chartSubtitle {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.reportList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.reportRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.reportRow:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.reportLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.reportValue {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.noData {
+  margin: 0;
+  padding: 16px 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}

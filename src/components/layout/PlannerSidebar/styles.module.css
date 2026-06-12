@@ -35,6 +35,10 @@
   color: rgba(26, 26, 46, 0.45);
 }
 
+.sectionLabelSpaced {
+  margin-top: 24px;
+}
+
 .empty {
   margin: 8px 0 0;
 }

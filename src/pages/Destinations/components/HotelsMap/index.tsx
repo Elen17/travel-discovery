@@ -22,7 +22,7 @@ export const HotelsMap = ({ hotels }: HotelsMapProps) => {
       <Map
         key={`${viewState.longitude}-${viewState.latitude}`}
         initialViewState={viewState}
-        style={{ width: '100%', height: '420px' }}
+        style={{ width: '100%', height: '440px' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_MAPTILER_API_KEY}`}
       >
         {validHotels.map((hotel) => (

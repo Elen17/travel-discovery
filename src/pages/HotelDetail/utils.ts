@@ -69,7 +69,7 @@ export const calculateNights = (
   fallback: number,
 ): number => {
   if (!checkIn || !checkOut) return fallback
-  const nights = checkOut.diff(checkIn, 'day')
+  const nights = dayjs(checkOut).startOf('day').diff(dayjs(checkIn).startOf('day'), 'day')
   return nights > 0 ? nights : fallback
 }
 
@@ -104,7 +104,7 @@ export const calculateBookingSummary = (
 }
 
 export const getDefaultDates = (nights: number): { checkIn: Dayjs; checkOut: Dayjs } => {
-  const checkIn = dayjs().add(14, 'day')
+  const checkIn = dayjs().add(14, 'day').startOf('day')
   const checkOut = checkIn.add(nights, 'day')
   return { checkIn, checkOut }
 }

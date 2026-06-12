@@ -1,0 +1,94 @@
+.chartCard {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.chartCardDestinations {
+  border-top: 4px solid var(--color-accent);
+  background: linear-gradient(180deg, rgba(255, 107, 107, 0.06) 0%, var(--color-on-surface) 40%);
+}
+
+.chartTitle {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.chartSubtitle {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.interestList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.interestRow {
+  display: grid;
+  grid-template-columns: 110px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+}
+
+.interestLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+}
+
+.interestBarTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+
+.interestBarFill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.barPrimary {
+  background: linear-gradient(90deg, var(--color-primary), rgba(13, 110, 110, 0.65));
+}
+
+.barAccent {
+  background: linear-gradient(90deg, var(--color-accent), rgba(255, 107, 107, 0.65));
+}
+
+.barAmber {
+  background: linear-gradient(90deg, var(--color-rating), rgba(245, 166, 35, 0.65));
+}
+
+.barViolet {
+  background: linear-gradient(90deg, #6b5b95, rgba(107, 91, 149, 0.65));
+}
+
+.barSky {
+  background: linear-gradient(90deg, #4a90a4, rgba(74, 144, 164, 0.65));
+}
+
+.barSecondary {
+  background: linear-gradient(90deg, var(--color-accent-dark), rgba(224, 90, 74, 0.65));
+}
+
+.interestPercent {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  text-align: right;
+}
+
+.noData {
+  margin: 0;
+  padding: 16px 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}

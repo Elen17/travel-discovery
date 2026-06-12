@@ -1,5 +1,15 @@
 import ReactGA from 'react-ga4'
+import type { Booking } from '@/types/booking'
 import { recordAppEvent } from './appEvents'
+
+export const BOOKING_CONFIRMED_PREFIX = 'booking_confirmed|'
+export const BOOKING_CANCELLED_PREFIX = 'booking_cancelled|'
+
+export const formatBookingConfirmedLabel = (booking: Booking): string =>
+  `${BOOKING_CONFIRMED_PREFIX}${booking.id}|${booking.totalPrice}|${booking.status}|${booking.checkIn}|${booking.checkOut}`
+
+export const formatBookingCancelledLabel = (bookingId: number): string =>
+  `${BOOKING_CANCELLED_PREFIX}${bookingId}`
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_ID
 
@@ -52,6 +62,55 @@ export const trackDestinationView = (
     currency,
     value: item.price ?? 0,
     items: [item],
+  })
+}
+
+export type SaveFavouriteDetails = Pick<
+  TravelItem,
+  'item_name' | 'item_category' | 'item_category2' | 'price'
+>
+
+export const trackSaveFavourite = (
+  hotelId: number,
+  details?: SaveFavouriteDetails,
+  currency: string = 'USD',
+): void => {
+  const item: TravelItem = {
+    item_id: String(hotelId),
+    item_name: details?.item_name ?? String(hotelId),
+    item_category: details?.item_category,
+    item_category2: details?.item_category2,
+    price: details?.price,
+  }
+  recordAppEvent('custom', {
+    path: `/hotel/${hotelId}`,
+    label: `save_favourite:${item.item_name}`,
+  })
+  if (!GA_MEASUREMENT_ID) return
+  ReactGA.event('add_to_wishlist', {
+    currency,
+    value: item.price ?? 0,
+    items: [item],
+  })
+}
+
+export const trackBookingConfirmed = (booking: Booking): void => {
+  recordAppEvent('custom', {
+    path: '/bookings',
+    label: formatBookingConfirmedLabel(booking),
+  })
+  if (!GA_MEASUREMENT_ID) return
+  ReactGA.event('purchase', {
+    currency: 'USD',
+    value: booking.totalPrice,
+    transaction_id: String(booking.id),
+  })
+}
+
+export const trackBookingCancelled = (bookingId: number): void => {
+  recordAppEvent('custom', {
+    path: '/bookings',
+    label: formatBookingCancelledLabel(bookingId),
   })
 }
 

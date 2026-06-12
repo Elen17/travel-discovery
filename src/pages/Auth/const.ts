@@ -5,8 +5,6 @@ export const AUTH_I18N = {
     subtitle: 'pages.auth.login.subtitle',
     email: 'pages.auth.login.email',
     emailPlaceholder: 'pages.auth.login.emailPlaceholder',
-    password: 'pages.auth.login.password',
-    passwordPlaceholder: 'pages.auth.login.passwordPlaceholder',
     submit: 'pages.auth.login.submit',
     noAccount: 'pages.auth.login.noAccount',
     switchToRegister: 'pages.auth.login.switchToRegister',
@@ -18,8 +16,6 @@ export const AUTH_I18N = {
     fullNamePlaceholder: 'pages.auth.register.fullNamePlaceholder',
     email: 'pages.auth.register.email',
     emailPlaceholder: 'pages.auth.register.emailPlaceholder',
-    password: 'pages.auth.register.password',
-    passwordPlaceholder: 'pages.auth.register.passwordPlaceholder',
     submit: 'pages.auth.register.submit',
     hasAccount: 'pages.auth.register.hasAccount',
     switchToLogin: 'pages.auth.register.switchToLogin',
@@ -27,8 +23,6 @@ export const AUTH_I18N = {
   validation: {
     emailRequired: 'pages.auth.validation.emailRequired',
     emailInvalid: 'pages.auth.validation.emailInvalid',
-    passwordRequired: 'pages.auth.validation.passwordRequired',
-    passwordMin: 'pages.auth.validation.passwordMin',
     fullNameRequired: 'pages.auth.validation.fullNameRequired',
     fullNameMin: 'pages.auth.validation.fullNameMin',
   },
@@ -38,5 +32,3 @@ export const AUTH_I18N = {
     emailTaken: 'pages.auth.errors.emailTaken',
   },
 } as const
-
-export const PASSWORD_MIN_LENGTH = 8

@@ -6,9 +6,12 @@ import styles from './styles.module.css'
 import type { PlannerSidebarProps } from './types'
 
 export const PlannerSidebar = ({
+  explorations,
+  activeExplorationId,
   plans,
-  activeId,
-  onSelect,
+  activePlanId,
+  onSelectExploration,
+  onSelectPlan,
   onNewChat,
   showNewChat = false,
   canNewChat = true,
@@ -38,17 +41,41 @@ export const PlannerSidebar = ({
           <Tooltip title={newChatHint}>{newChatButton}</Tooltip>
         ))}
 
-      <span className={styles.sectionLabel}>{t(SIDEBAR_I18N.dailyPlans)}</span>
+      <span className={styles.sectionLabel}>{t(SIDEBAR_I18N.recentExplorations)}</span>
+      <ul className={styles.list}>
+        {explorations.map((item) => (
+          <li key={item.id}>
+            <button
+              type="button"
+              className={`${styles.item} ${
+                item.id === activeExplorationId && activePlanId === null ? styles.itemActive : ''
+              }`}
+              onClick={() => onSelectExploration(item.id)}
+            >
+              <span className={styles.itemTitle}>{t(item.titleKey)}</span>
+              <span className={styles.itemMeta}>{t(item.metaKey)}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <span className={`${styles.sectionLabel} ${styles.sectionLabelSpaced}`}>
+        {t(SIDEBAR_I18N.dailyPlans)}
+      </span>
       {plans.length === 0 ? (
-        <Empty description={t(SIDEBAR_I18N.dailyPlansEmpty)} className={styles.empty} image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        <Empty
+          description={t(SIDEBAR_I18N.dailyPlansEmpty)}
+          className={styles.empty}
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
       ) : (
         <ul className={styles.list}>
           {plans.map((item) => (
             <li key={item.id}>
               <button
                 type="button"
-                className={`${styles.item} ${item.id === activeId ? styles.itemActive : ''}`}
-                onClick={() => onSelect(item.id)}
+                className={`${styles.item} ${item.id === activePlanId ? styles.itemActive : ''}`}
+                onClick={() => onSelectPlan(item.id)}
               >
                 <span className={styles.itemTitle}>{item.title}</span>
                 <span className={styles.itemMeta}>{item.meta}</span>

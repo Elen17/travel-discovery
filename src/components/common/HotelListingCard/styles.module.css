@@ -56,6 +56,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
+  border: 0;
   border-radius: 50%;
   font-size: 1rem;
   background: var(--color-surface-overlay);
@@ -72,6 +73,15 @@
 
 .saveBtn:hover svg {
   color: var(--color-accent-dark);
+}
+
+.saveBtnActive {
+  color: var(--color-accent-dark);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 
 .body {
