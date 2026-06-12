@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { login } from '@/api/auth'
 import { addFavourite, FAVOURITE_HOTELS_QUERY_KEY, FAVOURITES_QUERY_KEY, getFavourites } from '@/api/favourites'
+import { trackSaveFavourite, type SaveFavouriteDetails } from '@/services/analytics'
 import { LoginRequiredModal } from '@/components/common/LoginRequiredModal'
 import { SESSION_EXPIRED_MODAL_I18N } from '@/components/common/SessionExpiredModal/const'
 import { SessionExpiredModal } from '@/components/common/SessionExpiredModal'
@@ -22,6 +23,9 @@ export const useFavouriteSave = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const [sessionModalOpen, setSessionModalOpen] = useState(false)
   const [pendingHotelId, setPendingHotelId] = useState<number | null>(null)
+  const [pendingFavouriteDetails, setPendingFavouriteDetails] = useState<
+    SaveFavouriteDetails | undefined
+  >(undefined)
   const [savingHotelId, setSavingHotelId] = useState<number | null>(null)
   const [sessionError, setSessionError] = useState<string | null>(null)
   const [reauthLoading, setReauthLoading] = useState(false)
@@ -40,10 +44,11 @@ export const useFavouriteSave = () => {
   )
 
   const persistFavourite = useCallback(
-    async (hotelId: number) => {
+    async (hotelId: number, details?: SaveFavouriteDetails) => {
       setSavingHotelId(hotelId)
       try {
         await addFavourite(hotelId)
+        trackSaveFavourite(hotelId, details)
         await queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })
         await queryClient.invalidateQueries({ queryKey: FAVOURITE_HOTELS_QUERY_KEY })
       } finally {
@@ -54,21 +59,23 @@ export const useFavouriteSave = () => {
   )
 
   const saveFavourite = useCallback(
-    async (hotelId: number) => {
+    async (hotelId: number, details?: SaveFavouriteDetails) => {
       if (!isAuthenticated) {
         setPendingHotelId(hotelId)
+        setPendingFavouriteDetails(details)
         setLoginModalOpen(true)
         return
       }
 
       if (isSessionExpired()) {
         setPendingHotelId(hotelId)
+        setPendingFavouriteDetails(details)
         setSessionError(null)
         setSessionModalOpen(true)
         return
       }
 
-      await persistFavourite(hotelId)
+      await persistFavourite(hotelId, details)
     },
     [isAuthenticated, persistFavourite],
   )
@@ -82,6 +89,7 @@ export const useFavouriteSave = () => {
     setSessionModalOpen(false)
     setSessionError(null)
     setPendingHotelId(null)
+    setPendingFavouriteDetails(undefined)
   }
 
   const handleSessionSubmit = async (password: string) => {
@@ -100,8 +108,9 @@ export const useFavouriteSave = () => {
       setSessionModalOpen(false)
 
       if (pendingHotelId !== null) {
-        await persistFavourite(pendingHotelId)
+        await persistFavourite(pendingHotelId, pendingFavouriteDetails)
         setPendingHotelId(null)
+        setPendingFavouriteDetails(undefined)
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
@@ -121,6 +130,7 @@ export const useFavouriteSave = () => {
         onCancel={() => {
           setLoginModalOpen(false)
           setPendingHotelId(null)
+          setPendingFavouriteDetails(undefined)
         }}
         onLogin={handleLoginRedirect}
       />

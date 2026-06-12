@@ -72,7 +72,14 @@ export const TrendingSection = () => {
             isSaved={savedHotelIds.has(hotel.id)}
             isSaving={savingHotelId === hotel.id}
             onClick={() => handleDestinationClick(hotel.id, hotel.city, hotel.country)}
-            onSave={() => void saveFavourite(hotel.id)}
+            onSave={() =>
+              void saveFavourite(hotel.id, {
+                item_name: hotel.name,
+                item_category: hotel.country,
+                item_category2: hotel.city,
+                price: hotel.pricePerNight,
+              })
+            }
           />
         ))}
       </div>

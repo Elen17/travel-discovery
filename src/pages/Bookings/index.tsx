@@ -6,6 +6,7 @@ import { BookingCard } from '@/components/common/BookingCard'
 import { BookingsPlannerCta } from '@/components/common/BookingsPlannerCta'
 import { CITY_TO_EXPLORATION } from '@/pages/Planner/const'
 import { buildPlannerUrl, resolveExplorationFromDestination } from '@/pages/Planner/utils'
+import { trackBookingCancelled } from '@/services/analytics'
 import { notifyAdminBookingCancelled } from '@/services/telegram/bookingNotifications'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setRecentBookings } from '@/store/bookingSlice'
@@ -95,6 +96,7 @@ const BookingsPage = () => {
         setCancellingId(bookingId)
         try {
           await cancelBookingMutation(Number(bookingId))
+          trackBookingCancelled(Number(bookingId))
           if (bookingRecord && bookingDisplay) {
             notifyAdminBookingCancelled(
               {

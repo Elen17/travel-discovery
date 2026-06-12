@@ -65,9 +65,15 @@ export const buildDashboardFromEvents = (
         color: device.color,
       }))
     })(),
-    bookingReport: buildBookingReport(options.bookings, range, options.isAuthenticated),
+    bookingReport: buildBookingReport(
+      options.bookings,
+      events,
+      range,
+      options.isAuthenticated,
+    ),
     revenueReport: buildRevenueReport(
       options.bookings,
+      events,
       range,
       options.isAuthenticated,
       options.locale,

@@ -15,6 +15,12 @@ export const parseFiltersFromParams = (searchParams: URLSearchParams) => ({
   hotelType: (searchParams.get('hotelType') as HotelType) ?? undefined,
 })
 
+export const buildFilterSearchTerm = (applied: SidebarFiltersState): string =>
+  [applied.country, applied.city]
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value))
+    .join(' ')
+
 export const buildSearchParams = (
   applied: SidebarFiltersState,
   priceRange: typeof PRICE_RANGE,

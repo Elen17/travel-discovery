@@ -11,7 +11,8 @@ import { HotelsMap } from './components/HotelsMap'
 import { FiltersSidebar } from './components/FiltersSidebar'
 import { DESTINATIONS_I18N, PAGE_SIZE, PRICE_RANGE } from './const'
 import type { SidebarFiltersState } from './types'
-import { parseFiltersFromParams, buildSearchParams } from './utils'
+import { trackSearch } from '@/services/analytics'
+import { parseFiltersFromParams, buildFilterSearchTerm, buildSearchParams } from './utils'
 import styles from './styles.module.css'
 
 const DestinationsPage = () => {
@@ -55,6 +56,10 @@ const DestinationsPage = () => {
 
   const handleApplyFilters = useCallback(
     (applied: SidebarFiltersState) => {
+      const searchTerm = buildFilterSearchTerm(applied)
+      if (searchTerm) {
+        trackSearch(searchTerm)
+      }
       setSearchParams(buildSearchParams(applied, PRICE_RANGE), { replace: true })
       window.scrollTo({ top: 0, behavior: 'smooth' })
       setFiltersDrawerOpen(false)

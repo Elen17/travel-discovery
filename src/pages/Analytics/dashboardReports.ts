@@ -1,11 +1,25 @@
 import dayjs from 'dayjs'
 import type { AppEvent } from '@/services/appEvents'
-import type { Booking } from '@/types/booking'
+import {
+  BOOKING_CANCELLED_PREFIX,
+  BOOKING_CONFIRMED_PREFIX,
+} from '@/services/analytics'
+import type { Booking, BookingStatus } from '@/types/booking'
 import { formatCurrency } from '@/utils/currency'
 import { ANALYTICS_I18N } from './const'
 import { isInRange } from './dateRangeUtils'
 import { countUnique } from './dashboardStats'
 import type { AnalyticsDateRange, AnalyticsReport } from './types'
+
+const isBookingStatus = (value: string): value is BookingStatus =>
+  value === 'PENDING' || value === 'CONFIRMED' || value === 'CANCELLED'
+
+const getBookingRangeDate = (booking: Booking): string => {
+  if (booking.createdAt && dayjs(booking.createdAt).isValid()) {
+    return booking.createdAt
+  }
+  return booking.checkIn
+}
 
 const filterBookingsByRange = (
   bookings: Booking[],
@@ -13,7 +27,66 @@ const filterBookingsByRange = (
 ): Booking[] => {
   const start = dayjs(range.start).startOf('day')
   const end = dayjs(range.end).endOf('day')
-  return bookings.filter((booking) => isInRange(booking.createdAt, start, end))
+  return bookings.filter((booking) => isInRange(getBookingRangeDate(booking), start, end))
+}
+
+const parseBookingsFromEvents = (events: AppEvent[]): Booking[] => {
+  const bookings = new Map<number, Booking>()
+  const sorted = [...events].sort((a, b) => a.timestamp.localeCompare(b.timestamp))
+
+  for (const event of sorted) {
+    if (event.type !== 'custom' || !event.label) continue
+
+    if (event.label.startsWith(BOOKING_CANCELLED_PREFIX)) {
+      const bookingId = Number(event.label.slice(BOOKING_CANCELLED_PREFIX.length))
+      if (Number.isNaN(bookingId)) continue
+      const existing = bookings.get(bookingId)
+      if (existing) {
+        bookings.set(bookingId, { ...existing, status: 'CANCELLED' })
+      }
+      continue
+    }
+
+    if (!event.label.startsWith(BOOKING_CONFIRMED_PREFIX)) continue
+
+    const payload = event.label.slice(BOOKING_CONFIRMED_PREFIX.length)
+    const [idStr, priceStr, status, checkIn, checkOut] = payload.split('|')
+    const id = Number(idStr)
+    const totalPrice = Number(priceStr)
+    if (Number.isNaN(id) || !checkIn || !checkOut) continue
+
+    bookings.set(id, {
+      id,
+      hotelId: 0,
+      checkIn,
+      checkOut,
+      guestCount: 1,
+      totalPrice: Number.isNaN(totalPrice) ? 0 : totalPrice,
+      status: status && isBookingStatus(status) ? status : 'CONFIRMED',
+      createdAt: event.timestamp,
+    })
+  }
+
+  return Array.from(bookings.values())
+}
+
+const mergeBookingsForReports = (apiBookings: Booking[], events: AppEvent[]): Booking[] => {
+  const merged = new Map<number, Booking>()
+
+  for (const booking of parseBookingsFromEvents(events)) {
+    merged.set(booking.id, booking)
+  }
+
+  for (const booking of apiBookings) {
+    const existing = merged.get(booking.id)
+    merged.set(booking.id, {
+      ...existing,
+      ...booking,
+      createdAt: booking.createdAt || existing?.createdAt || booking.checkIn,
+    })
+  }
+
+  return Array.from(merged.values())
 }
 
 const countPageViews = (events: AppEvent[], path: string): number =>
@@ -21,6 +94,7 @@ const countPageViews = (events: AppEvent[], path: string): number =>
 
 export const buildBookingReport = (
   bookings: Booking[],
+  events: AppEvent[],
   range: AnalyticsDateRange,
   isAuthenticated: boolean,
 ): AnalyticsReport => {
@@ -34,7 +108,7 @@ export const buildBookingReport = (
 
   if (!isAuthenticated) return report
 
-  const filtered = filterBookingsByRange(bookings, range)
+  const filtered = filterBookingsByRange(mergeBookingsForReports(bookings, events), range)
   const upcoming = filtered.filter(
     (booking) =>
       booking.status !== 'CANCELLED' &&
@@ -69,6 +143,7 @@ export const buildBookingReport = (
 
 export const buildRevenueReport = (
   bookings: Booking[],
+  events: AppEvent[],
   range: AnalyticsDateRange,
   isAuthenticated: boolean,
   locale: string,
@@ -83,10 +158,10 @@ export const buildRevenueReport = (
 
   if (!isAuthenticated) return report
 
-  const filtered = filterBookingsByRange(bookings, range)
+  const filtered = filterBookingsByRange(mergeBookingsForReports(bookings, events), range)
   const confirmed = filtered.filter((booking) => booking.status === 'CONFIRMED')
-  const totalRevenue = filtered.reduce((sum, booking) => sum + booking.totalPrice, 0)
-  const confirmedRevenue = confirmed.reduce((sum, booking) => sum + booking.totalPrice, 0)
+  const totalRevenue = filtered.reduce((sum, booking) => sum + (booking.totalPrice ?? 0), 0)
+  const confirmedRevenue = confirmed.reduce((sum, booking) => sum + (booking.totalPrice ?? 0), 0)
   const average = filtered.length > 0 ? totalRevenue / filtered.length : 0
 
   report.items = [
