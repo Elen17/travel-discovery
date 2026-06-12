@@ -1,18 +1,35 @@
 import { HistoryOutlined, SaveOutlined, SendOutlined } from '@ant-design/icons'
 import { Button, Input, Tooltip } from 'antd'
 import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import type { PlannerAiSource } from '@/store/planner/types'
 import styles from './styles.module.css'
 import type { PlannerChatProps } from './types'
+
+const sourceBannerClass = (aiSource: PlannerAiSource): string | undefined => {
+  if (aiSource === 'gemini') {
+    return styles.sourceGemini
+  }
+  if (aiSource === 'backend') {
+    return styles.sourceBackend
+  }
+  if (aiSource === 'demo') {
+    return styles.sourceDemo
+  }
+  return undefined
+}
 
 export const PlannerChat = ({
   messages,
   isSending,
-  isOfflineMode,
+  aiSource,
+  sourceGeminiLabel,
+  sourceBackendLabel,
+  sourceDemoLabel,
   placeholder,
   sendLabel,
   emptyLabel,
   emptyHint,
-  offlineLabel,
   typingLabel,
   historyLabel,
   saveLabel,
@@ -32,6 +49,17 @@ export const PlannerChat = ({
     onSend(trimmed)
     setInput('')
   }
+
+  const sourceLabel =
+    aiSource === 'gemini'
+      ? sourceGeminiLabel
+      : aiSource === 'backend'
+        ? sourceBackendLabel
+        : aiSource === 'demo'
+          ? sourceDemoLabel
+          : null
+
+  const sourceClass = sourceBannerClass(aiSource)
 
   return (
     <section className={styles.plannerChat} aria-label={emptyLabel}>
@@ -61,9 +89,9 @@ export const PlannerChat = ({
         </Tooltip>
       </div>
 
-      {isOfflineMode && (
-        <div className={styles.offlineBanner} role="status">
-          {offlineLabel}
+      {sourceLabel && sourceClass && (
+        <div className={`${styles.sourceBanner} ${sourceClass}`} role="status">
+          {sourceLabel}
         </div>
       )}
 
@@ -81,7 +109,23 @@ export const PlannerChat = ({
                 message.role === 'user' ? styles.user : styles.assistant
               }`}
             >
-              {message.content}
+              {message.role === 'assistant' ? (
+                <ReactMarkdown
+                  components={{
+                    h3: ({ children }) => <h3 className={styles.planTitle}>{children}</h3>,
+                    p: ({ children }) => <p className={styles.paragraph}>{children}</p>,
+                    ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+                    ol: ({ children }) => <ol className={styles.list}>{children}</ol>,
+                    li: ({ children }) => <li className={styles.listItem}>{children}</li>,
+                    strong: ({ children }) => <strong className={styles.strong}>{children}</strong>,
+                    em: ({ children }) => <em className={styles.emphasis}>{children}</em>,
+                  }}
+                >
+                  {message.content}
+                </ReactMarkdown>
+              ) : (
+                message.content
+              )}
             </div>
           ))
         )}

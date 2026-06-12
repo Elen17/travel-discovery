@@ -16,7 +16,7 @@ type PlannerChatSectionProps = {
 
 export const PlannerChatSection = ({ isSending, onSend }: PlannerChatSectionProps) => {
   const { t } = useTranslation()
-  const { messages, isOfflineMode } = useAppSelector((state) => state.planner)
+  const { messages, aiSource } = useAppSelector((state) => state.planner)
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
 
   const saveSession = usePlannerSaveSession()
@@ -40,12 +40,14 @@ export const PlannerChatSection = ({ isSending, onSend }: PlannerChatSectionProp
       <PlannerChat
         messages={messages}
         isSending={isSending}
-        isOfflineMode={isOfflineMode}
+        aiSource={aiSource}
+        sourceGeminiLabel={t(PLANNER_I18N.chat.sourceGemini)}
+        sourceBackendLabel={t(PLANNER_I18N.chat.sourceBackend)}
+        sourceDemoLabel={t(PLANNER_I18N.chat.sourceDemo)}
         placeholder={t(PLANNER_I18N.chat.placeholder)}
         sendLabel={t(PLANNER_I18N.chat.send)}
         emptyLabel={t(PLANNER_I18N.chat.empty)}
         emptyHint={t(PLANNER_I18N.chat.emptyHint)}
-        offlineLabel={t(PLANNER_I18N.chat.offline)}
         typingLabel={t(PLANNER_I18N.chat.typing)}
         historyLabel={chatHistory.historyLabel}
         saveLabel={saveSession.saveLabel}

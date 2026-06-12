@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import {
   sendPlannerMessage,
@@ -11,6 +12,7 @@ import { store } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   appendMessages,
+  setAiSource,
   setDynamicItineraries,
   setDynamicSuggestions,
   setOfflineMode,
@@ -26,6 +28,7 @@ import {
   suggestionsToItineraries,
   toChatPlanId,
 } from '../utils'
+import { PLANNER_I18N } from '../const'
 import { plannerQueryKeys } from './usePlannerApi'
 
 type UsePlannerChatSendOptions = {
@@ -68,6 +71,7 @@ const applySuggestions = (
 }
 
 export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOptions) => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
@@ -95,6 +99,7 @@ export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOp
 
             dispatch(appendMessages([{ role: 'assistant', content: geminiResponse.reply }]))
             applySuggestions(dispatch, geminiResponse.suggestions, activeExplorationId)
+            dispatch(setAiSource('gemini'))
 
             if (isAuthenticated) {
               try {
@@ -136,23 +141,36 @@ export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOp
         dispatch(setPlanId(response.planId))
         dispatch(appendMessages([{ role: 'assistant', content: response.reply }]))
         applySuggestions(dispatch, response.suggestions, activeExplorationId)
-
+        dispatch(setAiSource(response.fromMock ? 'demo' : 'backend'))
         dispatch(setOfflineMode(response.fromMock))
+
         if (!response.fromMock) {
           void queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
         }
       } catch {
+        dispatch(setAiSource('demo'))
         dispatch(setOfflineMode(true))
+        dispatch(
+          appendMessages([
+            {
+              role: 'assistant',
+              content: t(PLANNER_I18N.chat.errorGeneric),
+            },
+          ]),
+        )
       } finally {
         setIsSending(false)
       }
     },
-    [activeExplorationId, dispatch, isAuthenticated, queryClient],
+    [activeExplorationId, dispatch, isAuthenticated, queryClient, t],
   )
 
   const handleGenerateInsights = useCallback(() => {
+    if (isSending) {
+      return
+    }
     void handleChatSend(buildGenerateInsightsPrompt(activeExplorationId))
-  }, [activeExplorationId, handleChatSend])
+  }, [activeExplorationId, handleChatSend, isSending])
 
   useEffect(() => {
     if (hasSentContextRef.current || !isHydrated) {

@@ -14,12 +14,14 @@ import { DEFAULT_EXPLORATION_ID } from '@/utils/exploration'
 import {
   PLANNER_LEGACY_STORAGE_KEY,
   PLANNER_STORAGE_KEY,
+  type PlannerAiSource,
   type PlannerState,
 } from './planner/types'
 
 export {
   PLANNER_SAVED_SESSIONS_KEY,
   PLANNER_STORAGE_KEY,
+  type PlannerAiSource,
   type PlannerState,
 } from './planner/types'
 
@@ -62,6 +64,7 @@ const initialState: PlannerState = {
   appliedItineraries: stored.appliedItineraries ?? [],
   dynamicSuggestions: stored.dynamicSuggestions ?? null,
   dynamicItineraries: null,
+  aiSource: null,
   isOfflineMode: false,
   isHydrated: false,
 }
@@ -112,6 +115,7 @@ const plannerSlice = createSlice({
       state.messages = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
+      state.aiSource = null
       state.isOfflineMode = false
       persistPlannerSession(state)
     },
@@ -150,6 +154,10 @@ const plannerSlice = createSlice({
     setOfflineMode: (state, action: PayloadAction<boolean>) => {
       state.isOfflineMode = action.payload
     },
+    setAiSource: (state, action: PayloadAction<PlannerAiSource>) => {
+      state.aiSource = action.payload
+      state.isOfflineMode = action.payload === 'demo'
+    },
     startNewChat: (state) => {
       state.planId = null
       state.activePlan = null
@@ -157,6 +165,8 @@ const plannerSlice = createSlice({
       state.appliedItineraries = []
       state.dynamicSuggestions = null
       state.dynamicItineraries = null
+      state.aiSource = null
+      state.isOfflineMode = false
       localStorage.removeItem(PLANNER_STORAGE_KEY)
       localStorage.removeItem(PLANNER_LEGACY_STORAGE_KEY)
     },
@@ -185,6 +195,7 @@ const plannerSlice = createSlice({
       state.appliedItineraries = session.appliedItineraries
       state.dynamicSuggestions = session.dynamicSuggestions
       state.dynamicItineraries = null
+      state.aiSource = null
       state.isOfflineMode = false
       persistPlannerSession(state)
     },
@@ -223,6 +234,7 @@ export const {
   setDynamicSuggestions,
   setDynamicItineraries,
   setOfflineMode,
+  setAiSource,
   startNewChat,
   hydrateFromUrl,
   restoreSession,

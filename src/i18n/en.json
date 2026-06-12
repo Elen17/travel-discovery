@@ -255,7 +255,10 @@
         "label": "Intelligent Travel Assistant",
         "title": "Let AI suggest your next activity",
         "description": "Based on your preferences and current conditions, we've identified three unique experiences available today.",
-        "generate": "Generate Insights"
+        "generate": "Generate Insights",
+        "generating": "Generating…",
+        "sourceGemini": "Powered by Gemini",
+        "sourceDemo": "Demo mode"
       },
       "itineraries": {
         "title": "Suggested Day Itineraries",
@@ -277,6 +280,10 @@
         "offline": "Demo mode — built-in assistant (no API charges)",
         "typing": "Assistant is typing…",
         "loginPrompt": "Log in to sync your chat history across devices.",
+        "sourceGemini": "Powered by Gemini",
+        "sourceBackend": "Connected to server",
+        "sourceDemo": "Demo mode — built-in assistant",
+        "errorGeneric": "Something went wrong. Please try again.",
         "history": "History",
         "historyTitle": "Saved chats & plans",
         "historyEmpty": "No saved chats yet. Use Save to keep a plan from your conversation.",

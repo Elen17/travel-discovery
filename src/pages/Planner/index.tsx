@@ -154,6 +154,7 @@ const PlannerPage = () => {
             onShare={() => void handleShare()}
             onExportPdf={handleExportPdf}
             onGenerateInsights={handleGenerateInsights}
+            isGenerating={isSending}
           />
 
           <PlannerChatSection
