@@ -6,7 +6,7 @@ import type { AppliedItinerary, SuggestedItinerary } from '@/types/planner'
 import { PLANNER_I18N } from '../const'
 
 export const usePlannerUsePlan = (
-  setShareMessage: (message: string | null) => void,
+  setFeedbackMessage: (message: string | null) => void,
 ) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -23,9 +23,9 @@ export const usePlannerUsePlan = (
         appliedAt: new Date().toISOString(),
       }
       dispatch(applyItinerary(applied))
-      setShareMessage(t(PLANNER_I18N.applied.added))
+      setFeedbackMessage(t(PLANNER_I18N.applied.added))
     },
-    [dispatch, setShareMessage, t],
+    [dispatch, setFeedbackMessage, t],
   )
 
   return handleUsePlan

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, startTransition } from 'react'
+import { useCallback, useMemo, startTransition, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { PlannerSidebar } from '@/components/layout/PlannerSidebar'
 import type { PlannerSidebarPlan } from '@/components/layout/PlannerSidebar/types'
@@ -22,7 +22,6 @@ import {
   usePlannerExportPdf,
   usePlannerHydration,
   usePlannerPlans,
-  usePlannerShare,
   usePlannerUsePlan,
 } from './hooks'
 import { EXPLORATION_CONTENT, RECENT_EXPLORATIONS } from './const'
@@ -70,9 +69,9 @@ const PlannerPage = () => {
     return getExplorationContent(activeExplorationId, EXPLORATION_CONTENT).suggestedItineraries
   }, [activeExplorationId, dynamicItineraries, dynamicSuggestions])
 
-  const { shareMessage, setShareMessage, handleShare } = usePlannerShare()
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
   const handleExportPdf = usePlannerExportPdf(hourlyPlans)
-  const handleUsePlan = usePlannerUsePlan(setShareMessage)
+  const handleUsePlan = usePlannerUsePlan(setFeedbackMessage)
   const { handleChatSend, handleGenerateInsights, isSending } = usePlannerChatSend({
     activeExplorationId,
   })
@@ -145,13 +144,12 @@ const PlannerPage = () => {
 
       <main className={styles.main}>
         <ShareAlert
-          message={shareMessage}
-          onClose={() => setShareMessage(null)}
+          message={feedbackMessage}
+          onClose={() => setFeedbackMessage(null)}
         />
 
         <div className={styles.tripColumn}>
           <PlannerTripSection
-            onShare={() => void handleShare()}
             onExportPdf={handleExportPdf}
             onGenerateInsights={handleGenerateInsights}
             isGenerating={isSending}
