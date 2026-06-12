@@ -13,6 +13,7 @@
     "analytics": "Аналитика",
     "users": "Пользователи",
     "login": "Войти",
+    "menu": "Меню",
     "profile": "Профиль",
     "logout": "Выйти"
   },
@@ -107,7 +108,7 @@
         "min": "Мин.",
         "max": "Макс.",
         "hotelType": "Тип жилья",
-        "starRating": "Звёздность",
+        "starRating": "Рейтинг",
         "apply": "Применить фильтры",
         "open": "Фильтры",
         "typeHotel": "Отель",
@@ -307,41 +308,125 @@
         "iceland": {
           "title": "Северное сияние Исландии",
           "meta": "7 дней • Обновлено 2 ч назад",
-          "trip": { "eyebrow": "Кураторская экспедиция", "title": "Кольцевая дорога Исландии", "dates": "12 окт — 24 окт", "travelers": "2 путешественника" },
+          "trip": {
+            "eyebrow": "Кураторская экспедиция",
+            "title": "Кольцевая дорога Исландии",
+            "dates": "12 окт — 24 окт",
+            "travelers": "2 путешественника"
+          },
           "itineraries": {
-            "waterfall": { "title": "Сельяландсфосс и Гльюврабуи", "description": "Пройдите за водопадами южного побережья.", "duration": "6 часов", "steps": { "0": "Поездка из Вика", "1": "Тропа за водопадом", "2": "Ущелье Гльюврабуи" } },
-            "lagoon": { "title": "Голубая лагуна", "description": "Геотермальные воды и спа.", "duration": "4 часа", "steps": { "0": "Забронировать время", "1": "Купание в лагуне" } },
-            "iceCave": { "title": "Ледяная пещера", "description": "Натуральная ледниковая пещера с гидами.", "duration": "5 часов", "steps": { "0": "Встреча у Jökulsárlón", "1": "Экскурсия в пещеру" } }
+            "waterfall": {
+              "title": "Сельяландсфосс и Гльюврабуи",
+              "description": "Пройдите за водопадами южного побережья.",
+              "duration": "6 часов",
+              "steps": {
+                "0": "Поездка из Вика",
+                "1": "Тропа за водопадом",
+                "2": "Ущелье Гльюврабуи"
+              }
+            },
+            "lagoon": {
+              "title": "Голубая лагуна",
+              "description": "Геотермальные воды и спа.",
+              "duration": "4 часа",
+              "steps": { "0": "Забронировать время", "1": "Купание в лагуне" }
+            },
+            "iceCave": {
+              "title": "Ледяная пещера",
+              "description": "Натуральная ледниковая пещера с гидами.",
+              "duration": "5 часов",
+              "steps": { "0": "Встреча у Jökulsárlón", "1": "Экскурсия в пещеру" }
+            }
           }
         },
         "tuscany": {
           "title": "Тур по виноградникам Тосканы",
           "meta": "5 дней • Обновлено 1 дн назад",
-          "trip": { "eyebrow": "Винный край", "title": "Кianti и Флоренция", "dates": "5 сен — 10 сен", "travelers": "2 путешественника" },
+          "trip": {
+            "eyebrow": "Винный край",
+            "title": "Кianti и Флоренция",
+            "dates": "5 сен — 10 сен",
+            "travelers": "2 путешественника"
+          },
           "itineraries": {
-            "chianti": { "title": "Винный маршрут Кianti", "description": "Холмы, деревни и дегустации.", "duration": "7 часов", "steps": { "0": "Утром из Флоренции", "1": "Две винодельни" } },
-            "terme": { "title": "Термальные источники", "description": "Природные бассейны Saturnia.", "duration": "5 часов", "steps": { "0": "Поездка в Saturnia", "1": "Отдых в бассейнах" } },
-            "cycling": { "title": "Велотур по холмам", "description": "E-bike между San Gimignano и Volterra.", "duration": "6 часов", "steps": { "0": "Инструктаж", "1": "Джелато в San Gimignano" } }
+            "chianti": {
+              "title": "Винный маршрут Кianti",
+              "description": "Холмы, деревни и дегустации.",
+              "duration": "7 часов",
+              "steps": { "0": "Утром из Флоренции", "1": "Две винодельни" }
+            },
+            "terme": {
+              "title": "Термальные источники",
+              "description": "Природные бассейны Saturnia.",
+              "duration": "5 часов",
+              "steps": { "0": "Поездка в Saturnia", "1": "Отдых в бассейнах" }
+            },
+            "cycling": {
+              "title": "Велотур по холмам",
+              "description": "E-bike между San Gimignano и Volterra.",
+              "duration": "6 часов",
+              "steps": { "0": "Инструктаж", "1": "Джелато в San Gimignano" }
+            }
           }
         },
         "kyoto": {
           "title": "Храмовый маршрут Киото",
           "meta": "4 дня • Обновлено 3 дн назад",
-          "trip": { "eyebrow": "Культурное погружение", "title": "Наследие Киото", "dates": "2 апр — 6 апр", "travelers": "2 путешественника" },
+          "trip": {
+            "eyebrow": "Культурное погружение",
+            "title": "Наследие Киото",
+            "dates": "2 апр — 6 апр",
+            "travelers": "2 путешественника"
+          },
           "itineraries": {
-            "fushimi": { "title": "Fushimi Inari и бамбук", "description": "Тории и бамбуковая роща.", "duration": "6 часов", "steps": { "0": "Fushimi Inari", "1": "Arashiyama" } },
-            "onsen": { "title": "Onsen retreat", "description": "Рёкан и wellness.", "duration": "4 часа", "steps": { "0": "Check-in в рёкане", "1": "Чайная церемония" } },
-            "gion": { "title": "Вечерняя прогулка по Gion", "description": "Наследие с подсветкой храмов.", "duration": "5 часов", "steps": { "0": "Yasaka Shrine", "1": "Прогулка по Gion" } }
+            "fushimi": {
+              "title": "Fushimi Inari и бамбук",
+              "description": "Тории и бамбуковая роща.",
+              "duration": "6 часов",
+              "steps": { "0": "Fushimi Inari", "1": "Arashiyama" }
+            },
+            "onsen": {
+              "title": "Onsen retreat",
+              "description": "Рёкан и wellness.",
+              "duration": "4 часа",
+              "steps": { "0": "Check-in в рёкане", "1": "Чайная церемония" }
+            },
+            "gion": {
+              "title": "Вечерняя прогулка по Gion",
+              "description": "Наследие с подсветкой храмов.",
+              "duration": "5 часов",
+              "steps": { "0": "Yasaka Shrine", "1": "Прогулка по Gion" }
+            }
           }
         },
         "amalfi": {
           "title": "Побережье Амальфи",
           "meta": "6 дней • Обновлено 1 нед назад",
-          "trip": { "eyebrow": "Средиземноморье", "title": "Экспедиция по Амальфи", "dates": "14 июн — 20 июн", "travelers": "2 путешественника" },
+          "trip": {
+            "eyebrow": "Средиземноморье",
+            "title": "Экспедиция по Амальфи",
+            "dates": "14 июн — 20 июн",
+            "travelers": "2 путешественника"
+          },
           "itineraries": {
-            "path": { "title": "Path of the Gods", "description": "Тропа с видом на море.", "duration": "6 часов", "steps": { "0": "Bomerano", "1": "Sentiero degli Dei" } },
-            "boat": { "title": "Морская прогулка", "description": "Частный катер и бухты.", "duration": "5 часов", "steps": { "0": "Порт Amalfi", "1": "Аперитив на закате" } },
-            "ravello": { "title": "Сады Ravello", "description": "Villa Rufolo и террасы.", "duration": "4 часа", "steps": { "0": "Дорога в Ravello", "1": "Вид на побережье" } }
+            "path": {
+              "title": "Path of the Gods",
+              "description": "Тропа с видом на море.",
+              "duration": "6 часов",
+              "steps": { "0": "Bomerano", "1": "Sentiero degli Dei" }
+            },
+            "boat": {
+              "title": "Морская прогулка",
+              "description": "Частный катер и бухты.",
+              "duration": "5 часов",
+              "steps": { "0": "Порт Amalfi", "1": "Аперитив на закате" }
+            },
+            "ravello": {
+              "title": "Сады Ravello",
+              "description": "Villa Rufolo и террасы.",
+              "duration": "4 часа",
+              "steps": { "0": "Дорога в Ravello", "1": "Вид на побережье" }
+            }
           }
         }
       }

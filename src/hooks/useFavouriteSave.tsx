@@ -58,6 +58,20 @@ export const useFavouriteSave = () => {
     [queryClient],
   )
 
+  const persistRemoveFavourite = useCallback(
+    async (hotelId: number) => {
+      setSavingHotelId(hotelId)
+      try {
+        await removeFavourite(hotelId)
+        await queryClient.invalidateQueries({ queryKey: FAVOURITES_QUERY_KEY })
+        await queryClient.invalidateQueries({ queryKey: FAVOURITE_HOTELS_QUERY_KEY })
+      } finally {
+        setSavingHotelId(null)
+      }
+    },
+    [queryClient],
+  )
+
   const saveFavourite = useCallback(
     async (hotelId: number, details?: SaveFavouriteDetails) => {
       if (!isAuthenticated) {
@@ -78,6 +92,28 @@ export const useFavouriteSave = () => {
       await persistFavourite(hotelId, details)
     },
     [isAuthenticated, persistFavourite],
+  )
+
+  const toggleFavourite = useCallback(
+    async (hotelId: number) => {
+      if (savedHotelIds.has(hotelId)) {
+        if (!isAuthenticated) {
+          return
+        }
+
+        if (isSessionExpired()) {
+          setSessionError(null)
+          setSessionModalOpen(true)
+          return
+        }
+
+        await persistRemoveFavourite(hotelId)
+        return
+      }
+
+      await saveFavourite(hotelId)
+    },
+    [savedHotelIds, isAuthenticated, persistRemoveFavourite, saveFavourite],
   )
 
   const handleLoginRedirect = () => {
@@ -147,6 +183,7 @@ export const useFavouriteSave = () => {
 
   return {
     saveFavourite,
+    toggleFavourite,
     savedHotelIds,
     savingHotelId,
     modals,

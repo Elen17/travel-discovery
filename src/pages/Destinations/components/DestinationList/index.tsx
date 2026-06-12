@@ -1,6 +1,7 @@
 import { Skeleton } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { HotelListingCard } from '@/components/common/HotelListingCard'
+import { useFavouriteSave } from '@/hooks/useFavouriteSave'
 import { formatCurrency } from '@/utils/currency'
 import { PAGE_SIZE } from '@/pages/Destinations/const'
 import { DESTINATION_LIST_I18N } from './const'
@@ -15,6 +16,7 @@ export const DestinationList = ({
   onBookNow,
 }: DestinationListProps) => {
   const { t, i18n } = useTranslation()
+  const { toggleFavourite, savedHotelIds, savingHotelId, modals } = useFavouriteSave()
 
   if (isLoading) {
     return (
@@ -53,11 +55,16 @@ export const DestinationList = ({
               featuredLabel={t(DESTINATION_LIST_I18N.featured)}
               bookNowLabel={t(DESTINATION_LIST_I18N.bookNow)}
               saveLabel={t('common.saveDestination')}
+              savedLabel={t('pages.home.trending.savedDestination', { city: hotel.name })}
+              isSaved={savedHotelIds.has(hotel.id)}
+              isSaving={savingHotelId === hotel.id}
               onBookNow={() => onBookNow(hotel.id)}
+              onSave={() => void toggleFavourite(hotel.id)}
             />
           ))}
         </div>
       )}
+      {modals}
     </section>
   )
 }
