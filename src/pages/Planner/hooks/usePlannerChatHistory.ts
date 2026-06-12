@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { restoreSession, setDynamicItineraries } from '@/store/plannerSlice'
@@ -13,22 +13,25 @@ export const usePlannerChatHistory = () => {
   const dispatch = useAppDispatch()
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const [historyOpen, setHistoryOpen] = useState(false)
-  const [localSessions, setLocalSessions] = useState<SavedPlannerSession[]>([])
+  const [guestSessionsVersion, setGuestSessionsVersion] = useState(0)
+  const [trackedAuth, setTrackedAuth] = useState(isAuthenticated)
+
+  if (trackedAuth !== isAuthenticated) {
+    setTrackedAuth(isAuthenticated)
+    if (!isAuthenticated) {
+      setGuestSessionsVersion((version) => version + 1)
+    }
+  }
 
   const { data: backendPlans = [], refetch: refetchPlans } = usePlannerPlans()
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setLocalSessions(loadSavedSessions())
-    }
-  }, [isAuthenticated])
 
   const savedSessions = useMemo(() => {
     if (backendPlans.length > 0) {
       return backendPlans.map(plannerPlanToSavedSession)
     }
-    return localSessions
-  }, [backendPlans, localSessions])
+    void guestSessionsVersion
+    return loadSavedSessions()
+  }, [backendPlans, guestSessionsVersion])
 
   const refreshHistory = useCallback(async () => {
     const { data } = await refetchPlans()
@@ -38,7 +41,7 @@ export const usePlannerChatHistory = () => {
     }
 
     const sessions = loadSavedSessions()
-    setLocalSessions(sessions)
+    setGuestSessionsVersion((version) => version + 1)
     return sessions
   }, [refetchPlans])
 
@@ -73,7 +76,8 @@ export const usePlannerChatHistory = () => {
       if (isAuthenticated) {
         return
       }
-      setLocalSessions(deleteSavedSession(id))
+      deleteSavedSession(id)
+      setGuestSessionsVersion((version) => version + 1)
     },
     [isAuthenticated],
   )

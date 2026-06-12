@@ -46,10 +46,8 @@ export const usePlannerChat = (explorationId: ExplorationId) => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    mutationFn: async (variables: SendMessageVariables) => {
-      const { onReply: _onReply, ...payload } = variables
-      return sendPlannerMessageHybrid({ ...payload, explorationId })
-    },
+    mutationFn: async ({ message, planId, role }: SendMessageVariables) =>
+      sendPlannerMessageHybrid({ message, planId, role, explorationId }),
     onSuccess: (data, variables) => {
       if (variables.planId ?? data.planId) {
         queryClient.invalidateQueries({

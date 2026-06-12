@@ -73,8 +73,6 @@ const HotelDetailPage = () => {
   }, [reviewsResponse, t, i18n.language])
 
   const defaultDates = useMemo(() => (hotel ? getDefaultDates(hotel.defaultNights) : null), [hotel])
-
-  // DESCRIPTION
   const description = useMemo(() => {
     return {
       title: t('pages.hotelDetail.descriptions.default.title'),
@@ -90,21 +88,19 @@ const HotelDetailPage = () => {
   const [checkIn, setCheckIn] = useState<Dayjs | null>(null)
   const [checkOut, setCheckOut] = useState<Dayjs | null>(null)
   const [guestSelection, setGuestSelection] = useState(DEFAULT_GUEST_VALUE)
+  const [bookingHotelId, setBookingHotelId] = useState<string | null>(null)
   const [paymentOpen, setPaymentOpen] = useState(false)
   const [pendingBooking, setPendingBooking] = useState<HotelBookingFormData | null>(null)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [paymentBookingError, setPaymentBookingError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!hotel) {
-      return
-    }
-
+  if (hotel && hotel.id !== bookingHotelId) {
     const dates = getDefaultDates(hotel.defaultNights)
+    setBookingHotelId(hotel.id)
     setCheckIn(dates.checkIn)
     setCheckOut(dates.checkOut)
     setGuestSelection(DEFAULT_GUEST_VALUE)
-  }, [hotel?.id, hotel?.defaultNights])
+  }
 
   useEffect(() => {
     if (!hotel) return

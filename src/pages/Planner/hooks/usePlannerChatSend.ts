@@ -161,7 +161,10 @@ export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOp
     const parsed = parsePlannerSearchParams(searchParams)
     if (parsed.hotelName && parsed.destination && messages.length === 0) {
       hasSentContextRef.current = true
-      void handleChatSend(buildHotelContextPrompt(parsed.hotelName, parsed.destination))
+      const prompt = buildHotelContextPrompt(parsed.hotelName, parsed.destination)
+      queueMicrotask(() => {
+        void handleChatSend(prompt)
+      })
     }
   }, [handleChatSend, isHydrated, messages.length, searchParams])
 

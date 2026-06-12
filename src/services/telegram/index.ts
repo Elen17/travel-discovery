@@ -60,6 +60,7 @@ export const sendMessage = async (
     }
     throw new Error(
       readErrorMessage(err as AxiosError<TelegramResponse<unknown>>, 'sendMessage failed.'),
+      { cause: err },
     )
   }
 }
