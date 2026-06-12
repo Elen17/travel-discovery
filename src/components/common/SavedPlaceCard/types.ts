@@ -2,7 +2,7 @@ export type SavedPlaceCardProps = {
   name: string
   country: string
   description: string
-  guestRating: number
+  guestRating?: number
   imageUrl: string
   bookNowLabel: string
   planWithAiLabel: string

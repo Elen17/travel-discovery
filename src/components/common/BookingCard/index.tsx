@@ -21,42 +21,50 @@ export const BookingCard = ({
   imageUrl,
   getDirectionsLabel,
   viewDetailsLabel,
+  cancelLabel,
+  isCancelling = false,
   onGetDirections,
   onViewDetails,
+  onCancel,
 }: BookingCardProps) => {
   return (
     <article className={styles.card}>
       <img src={imageUrl} alt="" className={styles.image} loading="lazy" />
 
       <div className={styles.content}>
-        <div className={styles.topRow}>
-          <div>
-            <h3 className={styles.title}>{hotelName}</h3>
-            <p className={styles.location}>
-              <EnvironmentOutlined />
-              {location}
-            </p>
-          </div>
-          <span className={`${styles.statusBadge} ${statusClassMap[statusVariant]}`}>
-            <span className={styles.statusDot} aria-hidden />
-            {statusLabel}
-          </span>
+        <span className={`${styles.statusBadge} ${statusClassMap[statusVariant]}`}>
+          <span className={styles.statusDot} aria-hidden />
+          {statusLabel}
+        </span>
+
+        <div className={styles.hotelInfo}>
+          <h3 className={styles.title}>{hotelName}</h3>
+          <p className={styles.location}>
+            <EnvironmentOutlined />
+            {location}
+          </p>
         </div>
 
-        <div className={styles.details}>
-          <div className={styles.detailBlock}>
-            <span className={styles.detailLabel}>{datesLabel}</span>
-            <span className={styles.detailValue}>{dateRange}</span>
-          </div>
-          <div className={styles.detailBlock}>
-            <span className={styles.occupancy}>{guestsRoom}</span>
-          </div>
+        <div className={styles.bookingDetails}>
+          <span className={styles.detailLabel}>{datesLabel}</span>
+          <span className={styles.detailValue}>{dateRange}</span>
+          <span className={styles.occupancy}>{guestsRoom}</span>
         </div>
 
         <div className={styles.actions}>
           <button type="button" className={styles.directionsLink} onClick={onGetDirections}>
             {getDirectionsLabel}
           </button>
+          {onCancel && cancelLabel ? (
+            <Button
+              className={styles.cancelBtn}
+              onClick={onCancel}
+              loading={isCancelling}
+              disabled={isCancelling}
+            >
+              {cancelLabel}
+            </Button>
+          ) : null}
           <Button className={styles.detailsBtn} onClick={onViewDetails}>
             {viewDetailsLabel}
           </Button>

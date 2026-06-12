@@ -4,6 +4,8 @@ export const PLANNER_I18N = {
   title: 'pages.planner.title',
   comingSoon: 'pages.planner.comingSoon',
   newChat: 'pages.planner.newChat',
+  dailyPlans: 'pages.planner.dailyPlans',
+  dailyPlansEmpty: 'pages.planner.dailyPlansEmpty',
   recentExplorations: 'pages.planner.recentExplorations',
   trip: {
     eyebrow: 'pages.planner.trip.eyebrow',
@@ -110,7 +112,7 @@ export const RECENT_EXPLORATIONS: PlannerExploration[] = [
   },
 ]
 
-export const EXPLORATION_CONTENT: Record<ExplorationId, ExplorationContent> = {
+export const EXPLORATION_CONTENT: Record<string, ExplorationContent> = {
   iceland: {
     id: 'iceland',
     heroImage:

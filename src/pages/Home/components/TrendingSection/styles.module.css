@@ -1,0 +1,102 @@
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 0 0;
+}
+
+.carouselControls {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.carouselBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(26, 26, 46, 0.15);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.carouselBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.empty {
+  padding: 24px;
+  text-align: center;
+  color: rgba(26, 26, 46, 0.55);
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 1024px) {
+  .section {
+    padding-top: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-top: 40px;
+  }
+
+  .carouselTrack {
+    gap: 16px;
+    margin-inline: -16px;
+    padding-inline: 16px;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .carouselBtn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding-top: 32px;
+  }
+
+  .carouselTrack {
+    gap: 12px;
+    margin-inline: -12px;
+    padding-inline: 12px;
+    scroll-padding-inline: 12px;
+  }
+
+  .carouselControls {
+    gap: 6px;
+  }
+}

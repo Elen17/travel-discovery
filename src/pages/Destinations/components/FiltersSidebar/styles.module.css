@@ -1,0 +1,172 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 28px 24px 32px;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+}
+
+.selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.select {
+  width: 100%;
+  min-height: 48px;
+  background: var(--color-on-surface);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+}
+
+.customDropdown {
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
+  padding: 4px;
+}
+
+.customDropdown :global(.ant-select-item) {
+  height: 48px;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-dark);
+  transition: all 0.2s var(--transition-ease);
+}
+
+.customDropdown :global(.ant-select-item-option-selected) {
+  background-color: var(--color-surface) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600;
+}
+
+.priceInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.priceField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.priceFieldLabel {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.priceInput {
+  width: 100%;
+  color: var(--color-text-muted);
+  min-height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--color-on-surface);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.priceInput :global(.ant-input-number-prefix) {
+  margin-inline-end: 2px;
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+.slider {
+  margin: 8px 4px 0 !important;
+}
+
+.slider :global(.ant-slider-track) {
+  height: 3px;
+  background: var(--color-primary);
+}
+
+.slider :global(.ant-slider-handle)::after {
+  width: 16px;
+  height: 16px;
+  inset-inline-start: -2px;
+  inset-block-start: -2px;
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.checkboxList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkbox,
+.starCheckbox {
+  margin-inline-start: 0 !important;
+  align-items: center;
+  color: var(--color-text-dark);
+  font-size: 0.9375rem;
+}
+
+.starCheckbox :global(.ant-checkbox + span) {
+  padding-inline-start: 10px;
+}
+
+.starRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.starIcon {
+  font-size: 0.875rem;
+  color: var(--color-rating);
+}
+
+.applyBtn {
+  width: 100%;
+  height: 48px;
+  margin-top: 4px;
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.applyBtn:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    padding: 24px 18px 28px;
+  }
+}

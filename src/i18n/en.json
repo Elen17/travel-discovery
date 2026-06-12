@@ -10,6 +10,8 @@
     "events": "Events",
     "planner": "Planner",
     "bookings": "Bookings",
+    "analytics": "Analytics",
+    "users": "Users",
     "login": "Log in",
     "profile": "Profile",
     "logout": "Log out"
@@ -35,20 +37,28 @@
     "home": {
       "heroTitle": "Where do you want to go?",
       "search": {
-        "destination": "Destination",
-        "destinationPlaceholder": "Search places...",
+        "country": "Country",
+        "countryPlaceholder": "Select country",
+        "city": "City",
+        "cityPlaceholder": "Select city",
         "dates": "Dates",
-        "datesPlaceholder": "Add dates",
+        "startDatesPlaceholder": "Start",
+        "endDatesPlaceholder": "End",
         "guests": "Guests",
         "guestsPlaceholder": "Add guests",
-        "submit": "Search"
+        "submit": "Search",
+        "errors": {
+          "countryRequired": "Please select a country.",
+          "cityRequired": "Please select a city.",
+          "generic": "Search failed. Please try again."
+        }
       },
       "categories": {
         "eyebrow": "Curated",
         "title": "Explore by Category",
         "beaches": "Beaches",
         "adventure": "Adventure",
-        "luxuryTour": "Luxury Tour",
+        "europeTour": "Europe Tour",
         "cabinStays": "Cabin Stays",
         "foodWine": "Food & Wine"
       },
@@ -58,24 +68,56 @@
         "avgPrice": "Avg. {{price}} / night",
         "prev": "Previous destinations",
         "next": "Next destinations",
+        "cardAlt": "{{city}}, {{country}}",
+        "savedDestination": "Saved {{city}} to favourites",
+        "loadError": "Could not load trending destinations. Please try again later.",
         "destinations": {
           "ubud": { "city": "Ubud, Bali", "country": "Indonesia" },
           "kyoto": { "city": "Kyoto", "country": "Japan" },
           "paris": { "city": "Paris", "country": "France" },
           "venice": { "city": "Venice", "country": "Italy" }
         }
+      },
+      "newsletter": {
+        "title": "The Travel Discovery Journal",
+        "description": "Curated travel insights, hidden destinations, and exclusive membership offers delivered once a month.",
+        "emailPlaceholder": "Enter your email",
+        "submit": "Subscribe",
+        "disclaimerPrefix": "By subscribing, you agree to our",
+        "disclaimerAnd": "and",
+        "success": "You're subscribed! Check your inbox for upcoming events and travel insights.",
+        "errors": {
+          "emailRequired": "Please enter your email address.",
+          "emailInvalid": "Please enter a valid email address.",
+          "generic": "Something went wrong. Please try again later."
+        }
       }
     },
     "destinations": {
       "title": "Destinations",
       "heroTitle": "Find Your Sanctuary",
-      "heroSubtitle": "Discover curated stays across the world's most breathtaking landscapes.",
+      "heroSubtitle": "Discover extraordinary stays in the world’s most stunning locations.",
       "empty": "No stays match your filters. Try adjusting your search.",
+      "resultsCount": "Showing {{count}} Results",
       "filters": {
+        "location": "Location",
+        "allCountries": "All Countries",
+        "selectCity": "Select City",
         "priceRange": "Price Range",
+        "min": "Min",
+        "max": "Max",
+        "hotelType": "Property Type",
         "starRating": "Star Rating",
-        "topFilters": "Top Filters",
-        "mapView": "Map View",
+        "apply": "Apply Filters",
+        "open": "Filters",
+        "typeHotel": "Hotel",
+        "typeApartment": "Apartment",
+        "typeResort": "Resort",
+        "typeVilla": "Villa",
+        "typeGuestHouse": "Guest House",
+        "typeHostel": "Hostel",
+        "typeMotel": "Motel",
+        "typeOther": "Other",
         "infinityPool": "Infinity Pool",
         "privateBeach": "Private Beach"
       },
@@ -95,6 +137,7 @@
       "reviewsSummary": "Based on {{count}} reviews",
       "reviewsExceptional": "Exceptional",
       "notFound": "This property could not be found.",
+      "loadError": "We couldn't load this property. Please try again later.",
       "booking": {
         "perNight": "/ per night",
         "checkIn": "Check-in",
@@ -110,8 +153,26 @@
         "total": "Total",
         "bookNow": "Book Now",
         "notCharged": "You won't be charged yet",
+        "createError": "We couldn't complete your booking. Please try again.",
         "safeBooking": "Safe Booking",
         "freeCancellation": "Free Cancellation"
+      },
+      "payment": {
+        "title": "Secure payment",
+        "amount": "Total to pay",
+        "cardName": "Card number",
+        "cardHolder": "Cardholder name",
+        "cvv": "CVV",
+        "cardNameRequired": "Card number is required",
+        "cardNameInvalid": "Enter a valid card number (13–19 digits)",
+        "cardHolderRequired": "Cardholder name is required",
+        "cardHolderInvalid": "Enter the full name on the card",
+        "cvvRequired": "CVV is required",
+        "cvvInvalid": "Enter a valid 3 or 4 digit CVV",
+        "cancel": "Cancel",
+        "pay": "Pay & book",
+        "paymentError": "Payment failed. Please check your card details and try again.",
+        "bookingValidationError": "Booking could not be completed. Please review your stay dates and try again."
       },
       "weather": {
         "sunny": "Sunny"
@@ -120,7 +181,13 @@
         "infinityPool": "Infinity Pool",
         "oceanSpa": "Ocean Spa",
         "michelinDining": "Michelin Dining",
-        "yogaStudio": "Yoga Studio"
+        "yogaStudio": "Yoga Studio",
+        "wifi": "Wi-Fi",
+        "gym": "Fitness Center",
+        "parking": "Parking",
+        "restaurant": "Restaurant",
+        "petFriendly": "Pet Friendly",
+        "kidsActivities": "Kids Activities"
       },
       "descriptions": {
         "coastal": {
@@ -130,15 +197,16 @@
         },
         "default": {
           "title": "An Unforgettable Stay",
-          "p1": "Discover a refined retreat where thoughtful design, warm hospitality, and breathtaking surroundings come together. This property offers an intimate escape tailored to discerning travelers.",
-          "p2": "Whether you are unwinding by the water, exploring local culture, or indulging in world-class amenities, every detail has been considered for a seamless stay."
+          "paragraphs": "Discover a refined retreat where thoughtful design, warm hospitality, and breathtaking surroundings come together. This property is designed for travelers who appreciate comfort, elegance, and attention to detail in every aspect of their stay. From the moment you arrive, you are welcomed into a calm and relaxing atmosphere that helps you disconnect from everyday stress. Spacious rooms, modern amenities, and carefully crafted interiors ensure a smooth and enjoyable experience throughout your visit. The hotel is located in a prime area, offering easy access to nearby attractions and natural beauty. Guests can enjoy a wide range of services that are designed to enhance both relaxation and convenience. Whether you are exploring the surroundings or simply unwinding, every moment feels balanced and peaceful. Every detail is carefully considered to ensure a memorable and truly enjoyable stay."
         }
       },
       "gallery": {
         "bedroom": "Minimalist suite bedroom",
-        "cocktail": "Craft cocktail at the bar"
+        "cocktail": "Craft cocktail at the bar",
+        "photo": "{{name}} photo"
       },
       "reviews": {
+        "guest": "Guest #{{id}}",
         "eh": {
           "author": "Elena Hartwell",
           "date": "October 2024",
@@ -167,6 +235,8 @@
       "title": "Planner",
       "comingSoon": "{{feature}} — coming soon",
       "newChat": "New Chat",
+      "dailyPlans": "Daily Plans",
+      "dailyPlansEmpty": "No saved daily plans yet",
       "recentExplorations": "Recent Explorations",
       "trip": {
         "eyebrow": "Curated Expedition",
@@ -202,7 +272,7 @@
         "send": "Send",
         "empty": "Start planning your trip",
         "emptyHint": "Ask a question or tap Generate Insights for curated day plans.",
-        "offline": "Offline mode — using saved recommendations",
+        "offline": "Demo mode — built-in assistant (no API charges)",
         "typing": "Assistant is typing…",
         "loginPrompt": "Log in to sync your chat history across devices.",
         "sourceGemini": "Powered by Gemini",
@@ -402,6 +472,150 @@
         }
       }
     },
+    "analytics": {
+      "title": "App Analytics",
+      "subtitle": "Charts built from your navigation and in-app events across menu pages.",
+      "exportData": "Export Data",
+      "empty": "No events in this date range. Browse the app or widen the range.",
+      "events": {
+        "dateChange": "Date range changed",
+        "dateChangeDetail": "{{start}} — {{end}}",
+        "export": "Data exported",
+        "exportDetail": "{{start}} — {{end}}"
+      },
+      "kpis": {
+        "totalVisitors": "Total Visitors",
+        "totalPageViews": "Page Views",
+        "activeUsers": "Active Users",
+        "engagementRate": "Engagement Rate",
+        "steady": "Steady"
+      },
+      "charts": {
+        "pageViewTrends": {
+          "title": "Page View Trends",
+          "subtitle": "Current period vs previous period",
+          "currentPeriod": "Current Period",
+          "previousPeriod": "Previous Period"
+        },
+        "menuPageTraffic": {
+          "title": "Menu Page Traffic"
+        },
+        "eventBreakdown": {
+          "title": "Event Breakdown",
+          "total": "Total",
+          "pageView": "Page Views",
+          "search": "Searches",
+          "destinationView": "Destination Views",
+          "custom": "Custom Events"
+        },
+        "topDestinations": {
+          "title": "Top Destinations",
+          "subtitle": "From hotel views and destination searches"
+        },
+        "deviceTypes": {
+          "title": "Device Types",
+          "subtitle": "Unique visitors by device",
+          "mobile": "Mobile",
+          "tablet": "Tablet",
+          "desktop": "Desktop"
+        },
+        "reports": {
+          "booking": {
+            "title": "Booking Reports",
+            "subtitle": "Your bookings in the selected period",
+            "total": "Total bookings",
+            "confirmed": "Confirmed",
+            "upcoming": "Upcoming",
+            "cancelled": "Cancelled",
+            "loginRequired": "Log in to see booking reports."
+          },
+          "revenue": {
+            "title": "Revenue Reports",
+            "subtitle": "Booking revenue in the selected period",
+            "total": "Total revenue",
+            "confirmed": "Confirmed revenue",
+            "average": "Average booking value",
+            "loginRequired": "Log in to see revenue reports."
+          },
+          "user": {
+            "title": "User Reports",
+            "subtitle": "App usage from tracked events",
+            "visitors": "Total visitors",
+            "activeUsers": "Active users",
+            "profileViews": "Profile page views",
+            "bookingsViews": "Bookings page views"
+          }
+        },
+        "topPages": {
+          "title": "Top Pages",
+          "subtitle": "Most visited routes in the selected range",
+          "live": "Live",
+          "other": "Other Pages"
+        },
+        "recentEvents": {
+          "title": "Recent Events",
+          "viewAll": "View All Events",
+          "minutesAgo": "{{count}} mins ago",
+          "eventTypes": {
+            "pageView": "Page View",
+            "search": "Search",
+            "destinationView": "Destination View",
+            "custom": "Custom"
+          }
+        }
+      }
+    },
+    "users": {
+      "title": "Users",
+      "addUser": "Add User",
+      "loadError": "Could not load users. Please try again later.",
+      "empty": "No users found.",
+      "table": {
+        "avatar": "Avatar",
+        "fullName": "Full name",
+        "email": "Email",
+        "role": "Role",
+        "actions": "Actions",
+        "edit": "Edit user",
+        "delete": "Delete user"
+      },
+      "roles": {
+        "admin": "Admin",
+        "user": "User"
+      },
+      "form": {
+        "fullName": "Full name",
+        "fullNamePlaceholder": "Enter full name",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "avatarUrl": "Avatar URL",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg"
+      },
+      "modals": {
+        "addTitle": "Add User",
+        "editTitle": "Edit User",
+        "deleteTitle": "Delete User",
+        "deleteConfirm": "Are you sure you want to delete {{userName}} user?"
+      },
+      "actions": {
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "validation": {
+        "fullNameRequired": "Full name is required",
+        "fullNameMin": "Full name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address"
+      },
+      "messages": {
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "genericError": "Something went wrong. Please try again."
+      }
+    },
     "bookings": {
       "title": "My Bookings",
       "tabs": {
@@ -411,9 +625,11 @@
       },
       "card": {
         "dates": "Dates",
+        "defaultRoomType": "Standard Room",
         "guestsRoom": "{{count}} Guests • {{room}}",
         "getDirections": "Get Directions",
         "viewDetails": "View Details",
+        "cancel": "Cancel booking",
         "status": {
           "confirmed": "Confirmed",
           "pending": "Pending",
@@ -422,6 +638,15 @@
         }
       },
       "empty": "No bookings in this category.",
+      "loadError": "Could not load your bookings. Please try again later.",
+      "cancelSuccess": "Booking cancelled successfully.",
+      "cancelError": "Could not cancel this booking. Please try again.",
+      "cancelConfirm": {
+        "title": "Cancel booking?",
+        "message": "This action cannot be undone. Your reservation will be cancelled.",
+        "ok": "Yes, cancel",
+        "dismiss": "Keep booking"
+      },
       "cta": {
         "title": "Need help planning your next trip?",
         "description": "Let our AI curator craft a personalized itinerary based on your travel style and preferences.",
@@ -445,8 +670,19 @@
         "planWithAi": "Plan with AI",
         "removeSaved": "Remove from saved places"
       },
+      "avatar": {
+        "change": "Change photo",
+        "uploading": "Uploading photo…",
+        "success": "Profile photo updated.",
+        "errors": {
+          "invalidType": "Please choose a JPEG, PNG, WebP, or GIF image.",
+          "tooLarge": "Image must be 5 MB or smaller.",
+          "generic": "Could not update your profile photo. Please try again."
+        }
+      },
       "savedPlaces": {
         "empty": "You haven't saved any places yet. Explore destinations and tap the heart to save your favorites.",
+        "loadError": "Could not load your saved places. Please try again later.",
         "villaMargherita": {
           "country": "Italy",
           "description": "A sun-drenched villa perched above the Amalfi cliffs with private terraces and sea views."
@@ -516,6 +752,9 @@
     "loading": "Loading…",
     "search": "Search",
     "language": "Language",
-    "saveDestination": "Save destination"
+    "saveDestination": "Save destination",
+    "errors": {
+      "forbidden": "You need to be logged in to perform this action."
+    }
   }
 }

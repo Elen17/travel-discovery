@@ -9,6 +9,9 @@ export type BookingCardProps = {
   imageUrl: string
   getDirectionsLabel: string
   viewDetailsLabel: string
+  cancelLabel?: string
+  isCancelling?: boolean
   onGetDirections?: () => void
   onViewDetails?: () => void
+  onCancel?: () => void
 }

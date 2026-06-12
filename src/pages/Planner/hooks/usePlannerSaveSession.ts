@@ -1,9 +1,12 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import type { SavedPlannerSession } from '@/types/planner'
-import { RECENT_EXPLORATIONS, PLANNER_I18N } from '../const'
-import { findSavedSessionByToken, loadSavedSessions, upsertSavedSession } from '../utils/sessionStorage'
+import { setPlanId } from '@/store/plannerSlice'
+import { EXPLORATION_CONTENT, RECENT_EXPLORATIONS, PLANNER_I18N } from '../const'
+import { buildPlannerPlanPayload, getExplorationContent, isBackendPlanId } from '../utils'
+import { findSavedSessionByPlanId, loadSavedSessions, upsertSavedSession } from '../utils/sessionStorage'
+import { useCreatePlannerPlan } from './usePlannerApi'
 
 const truncate = (value: string, maxLength: number): string => {
   const trimmed = value.trim()
@@ -26,7 +29,10 @@ export const buildDefaultSessionTitle = (
 
 export const usePlannerSaveSession = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const plannerState = useAppSelector((state) => state.planner)
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+  const { createPlan } = useCreatePlannerPlan()
   const [saveModalOpen, setSaveModalOpen] = useState(false)
   const [savedSessions, setSavedSessions] = useState<SavedPlannerSession[]>([])
 
@@ -60,12 +66,13 @@ export const usePlannerSaveSession = () => {
       }
 
       const now = new Date().toISOString()
-      const existing = findSavedSessionByToken(plannerState.sessionToken)
+      const existing = findSavedSessionByPlanId(plannerState.planId)
+      const resolvedPlanId = isBackendPlanId(plannerState.planId) ? plannerState.planId : null
+
       const session: SavedPlannerSession = {
-        id: existing?.id ?? `saved_${Date.now()}`,
+        id: existing?.id ?? resolvedPlanId ?? `saved_${Date.now()}`,
         title: trimmedTitle,
         explorationId: plannerState.activeExplorationId,
-        sessionToken: plannerState.sessionToken,
         messages: plannerState.messages,
         appliedItineraries: plannerState.appliedItineraries,
         dynamicSuggestions: plannerState.dynamicSuggestions,
@@ -73,11 +80,31 @@ export const usePlannerSaveSession = () => {
         updatedAt: now,
       }
 
-      setSavedSessions(upsertSavedSession(session))
+      if (isAuthenticated) {
+        const exploration = getExplorationContent(
+          plannerState.activeExplorationId,
+          EXPLORATION_CONTENT,
+        )
+        void createPlan(
+          buildPlannerPlanPayload(
+            trimmedTitle,
+            plannerState.activeExplorationId,
+            plannerState.messages,
+            plannerState.appliedItineraries,
+            exploration,
+          ),
+        ).then((plan) => {
+          dispatch(setPlanId(plan.id))
+        })
+      } else {
+        setSavedSessions(upsertSavedSession(session))
+        dispatch(setPlanId(session.id))
+      }
+
       setSaveModalOpen(false)
       return session
     },
-    [plannerState],
+    [createPlan, dispatch, isAuthenticated, plannerState],
   )
 
   const canSave = plannerState.messages.length > 0

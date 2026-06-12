@@ -45,7 +45,7 @@ export const PlannerChatHistoryDrawer = ({
     }
     open={open}
     onClose={onClose}
-    width={420}
+    size={420}
     footer={
       <Button onClick={onClose} block>
         {closeLabel}

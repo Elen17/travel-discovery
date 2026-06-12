@@ -1,7 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import type { PlannerChatResult } from '@/api/planner'
+import {
+  sendPlannerMessage,
+  sendPlannerMessageGuest,
+  sendPlannerMessageHybrid,
+} from '@/api/planner'
+import { isPlannerMockFallbackEnabled } from '@/configs/features'
 import { store } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -9,26 +15,47 @@ import {
   setAiSource,
   setDynamicItineraries,
   setDynamicSuggestions,
-  setSessionToken,
+  setOfflineMode,
+  setPlanId,
 } from '@/store/plannerSlice'
 import { isGeminiConfigured, sendPlannerGeminiMessage } from '@/services/gemini'
 import type { ExplorationId, PlannerSuggestion } from '@/types/planner'
-import { PLANNER_I18N } from '../const'
+import { toApiPlanId } from '@/utils/plannerPlanId'
 import {
   buildGenerateInsightsPrompt,
   buildHotelContextPrompt,
   parsePlannerSearchParams,
   suggestionsToItineraries,
+  toChatPlanId,
 } from '../utils'
-
-type SendMessageFn = (payload: {
-  message: string
-  sessionToken?: string
-}) => Promise<PlannerChatResult>
+import { PLANNER_I18N } from '../const'
+import { plannerQueryKeys } from './usePlannerApi'
 
 type UsePlannerChatSendOptions = {
   activeExplorationId: ExplorationId
-  sendMessage: SendMessageFn
+}
+
+const syncChatToBackend = async (
+  userMessage: string,
+  assistantReply: string,
+  planId: string | null,
+  explorationId: ExplorationId,
+): Promise<string> => {
+  const userResponse = await sendPlannerMessage({
+    message: userMessage,
+    planId: toApiPlanId(planId),
+    explorationId,
+    role: 'user',
+  })
+
+  await sendPlannerMessage({
+    message: assistantReply,
+    planId: userResponse.planId,
+    explorationId,
+    role: 'assistant',
+  })
+
+  return userResponse.planId
 }
 
 const applySuggestions = (
@@ -43,16 +70,15 @@ const applySuggestions = (
   dispatch(setDynamicItineraries(suggestionsToItineraries(suggestions, explorationId)))
 }
 
-export const usePlannerChatSend = ({
-  activeExplorationId,
-  sendMessage,
-}: UsePlannerChatSendOptions) => {
+export const usePlannerChatSend = ({ activeExplorationId }: UsePlannerChatSendOptions) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
   const [isSending, setIsSending] = useState(false)
   const hasSentContextRef = useRef(false)
   const { messages, isHydrated } = useAppSelector((state) => state.planner)
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
   useEffect(() => {
     hasSentContextRef.current = false
@@ -64,7 +90,7 @@ export const usePlannerChatSend = ({
       dispatch(appendMessages([userMessage]))
       setIsSending(true)
 
-      const { sessionToken } = store.getState().planner
+      const { planId } = store.getState().planner
 
       try {
         if (isGeminiConfigured()) {
@@ -74,23 +100,56 @@ export const usePlannerChatSend = ({
             dispatch(appendMessages([{ role: 'assistant', content: geminiResponse.reply }]))
             applySuggestions(dispatch, geminiResponse.suggestions, activeExplorationId)
             dispatch(setAiSource('gemini'))
+
+            if (isAuthenticated) {
+              try {
+                const syncedPlanId = await syncChatToBackend(
+                  message,
+                  geminiResponse.reply,
+                  planId,
+                  activeExplorationId,
+                )
+                dispatch(setPlanId(syncedPlanId))
+                dispatch(setOfflineMode(false))
+                void queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
+              } catch {
+                dispatch(setOfflineMode(true))
+              }
+            } else {
+              dispatch(setOfflineMode(false))
+            }
+
             return
           } catch {
-            // Fall through to backend/mock via sendMessage
+            if (!isPlannerMockFallbackEnabled()) {
+              throw new Error('Gemini request failed')
+            }
           }
         }
 
-        const response = await sendMessage({
+        const chatPayload = {
           message,
-          sessionToken: sessionToken ?? undefined,
-        })
+          planId: toChatPlanId(planId),
+          explorationId: activeExplorationId,
+          role: 'user' as const,
+        }
 
-        dispatch(setSessionToken(response.sessionToken))
+        const response = isAuthenticated
+          ? await sendPlannerMessageHybrid(chatPayload)
+          : await sendPlannerMessageGuest(chatPayload)
+
+        dispatch(setPlanId(response.planId))
         dispatch(appendMessages([{ role: 'assistant', content: response.reply }]))
         applySuggestions(dispatch, response.suggestions, activeExplorationId)
         dispatch(setAiSource(response.fromMock ? 'demo' : 'backend'))
+        dispatch(setOfflineMode(response.fromMock))
+
+        if (!response.fromMock) {
+          void queryClient.invalidateQueries({ queryKey: plannerQueryKeys.plans })
+        }
       } catch {
         dispatch(setAiSource('demo'))
+        dispatch(setOfflineMode(true))
         dispatch(
           appendMessages([
             {
@@ -103,7 +162,7 @@ export const usePlannerChatSend = ({
         setIsSending(false)
       }
     },
-    [activeExplorationId, dispatch, sendMessage, t],
+    [activeExplorationId, dispatch, isAuthenticated, queryClient, t],
   )
 
   const handleGenerateInsights = useCallback(() => {

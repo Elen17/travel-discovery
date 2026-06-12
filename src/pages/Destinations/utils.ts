@@ -1,61 +1,32 @@
-import type { DestinationAmenityFilter, DestinationFilters, DestinationListing } from './types'
+import type { SidebarFiltersState, StarRatingFilter } from './types'
+import { PRICE_RANGE } from './const'
+import type { HotelType } from '@/types/hotel'
 
-const CATEGORY_AMENITY_MAP: Record<string, DestinationAmenityFilter[]> = {
-  beaches: ['private-beach'],
-  adventure: [],
-  'luxury-tour': ['infinity-pool'],
-  'cabin-stays': [],
-  'food-wine': [],
-}
+export const parseFiltersFromParams = (searchParams: URLSearchParams) => ({
+  page: Math.max(1, Number(searchParams.get('page') ?? '1')),
+  country: searchParams.get('country') ?? undefined,
+  countryId: searchParams.get('countryId') ?? null,
+  city: searchParams.get('city') ?? undefined,
+  minPrice: Number(searchParams.get('minPrice') ?? PRICE_RANGE.min),
+  maxPrice: Number(searchParams.get('maxPrice') ?? PRICE_RANGE.max),
+  starRating: searchParams.get('starRating')
+    ? (Number(searchParams.get('starRating')) as StarRatingFilter)
+    : undefined,
+  hotelType: (searchParams.get('hotelType') as HotelType) ?? undefined,
+})
 
-export const filterListings = (
-  listings: DestinationListing[],
-  filters: DestinationFilters,
-  cityQuery?: string,
-  category?: string,
-): DestinationListing[] => {
-  return listings.filter((listing) => {
-    if (category) {
-      const requiredAmenities = CATEGORY_AMENITY_MAP[category]
-      if (requiredAmenities && requiredAmenities.length > 0) {
-        const matchesCategory = requiredAmenities.every((a) => listing.amenities.includes(a))
-        if (!matchesCategory) return false
-      }
-    }
-
-    if (cityQuery) {
-      const query = cityQuery.toLowerCase()
-      const matchesCity =
-        listing.city.toLowerCase().includes(query) ||
-        listing.country.toLowerCase().includes(query) ||
-        listing.name.toLowerCase().includes(query)
-      if (!matchesCity) return false
-    }
-
-    if (listing.pricePerNight < filters.minPrice || listing.pricePerNight > filters.maxPrice) {
-      return false
-    }
-
-    if (filters.minStarRating !== null && listing.starRating < filters.minStarRating) {
-      return false
-    }
-
-    if (filters.amenityFilters.length > 0) {
-      const hasAllAmenities = filters.amenityFilters.every((amenity) =>
-        listing.amenities.includes(amenity),
-      )
-      if (!hasAllAmenities) return false
-    }
-
-    return true
-  })
-}
-
-export const paginateListings = (
-  listings: DestinationListing[],
-  page: number,
-  pageSize: number,
-): DestinationListing[] => {
-  const start = (page - 1) * pageSize
-  return listings.slice(start, start + pageSize)
+export const buildSearchParams = (
+  applied: SidebarFiltersState,
+  priceRange: typeof PRICE_RANGE,
+): URLSearchParams => {
+  const next = new URLSearchParams()
+  if (applied.country) next.set('country', applied.country)
+  if (applied.countryId) next.set('countryId', applied.countryId)
+  if (applied.city) next.set('city', applied.city)
+  if (applied.priceRange[0] !== priceRange.min) next.set('minPrice', String(applied.priceRange[0]))
+  if (applied.priceRange[1] !== priceRange.max) next.set('maxPrice', String(applied.priceRange[1]))
+  if (applied.starRating) next.set('starRating', String(applied.starRating))
+  if (applied.hotelType) next.set('hotelType', applied.hotelType)
+  next.set('page', '1')
+  return next
 }

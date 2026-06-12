@@ -7,6 +7,7 @@ import { LanguageSwitcher } from '@/components/common/LanguageSwitcher'
 import { useLogout } from '@/hooks/useLogout'
 import { useAppSelector } from '@/store/hooks'
 import { NAV_ITEMS } from './const'
+import Logo from '../../../../public/logo.png'
 import styles from './styles.module.css'
 
 const { Header: AntHeader } = Layout
@@ -20,9 +21,13 @@ export const Header = () => {
 
   const isProfileActive = location.pathname.startsWith('/profile')
 
+  const isAdmin = user?.role === 'Admin'
+
+  const visibleNavItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
+
   const selectedKey = isProfileActive
     ? ''
-    : (NAV_ITEMS.find((item) =>
+    : (visibleNavItems.find((item) =>
         item.path === '/' ? location.pathname === '/' : location.pathname.startsWith(item.path),
       )?.key ?? 'explore')
 
@@ -46,14 +51,14 @@ export const Header = () => {
   return (
     <AntHeader className={styles.header}>
       <Link to="/" className={styles.brand}>
-        {t('app.name')}
+        <img src={Logo} />
       </Link>
 
       <Menu
         mode="horizontal"
         selectedKeys={[selectedKey]}
         className={styles.nav}
-        items={NAV_ITEMS.map((item) => ({
+        items={visibleNavItems.map((item) => ({
           key: item.key,
           label: <Link to={item.path}>{t(item.labelKey)}</Link>,
         }))}
@@ -64,9 +69,9 @@ export const Header = () => {
         {isAuthenticated ? (
           <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" trigger={['click']}>
             <Button
-              type={isProfileActive ? 'text' : 'default'}
+              type="primary"
               icon={<UserOutlined />}
-              className={isProfileActive ? styles.profileLinkActive : styles.profileBtn}
+              className={styles.profileBtn}
               loading={isLoggingOut}
             >
               {user?.fullName ?? t('nav.profile')}
@@ -79,7 +84,7 @@ export const Header = () => {
             className={styles.profileBtn}
             onClick={() => navigate('/auth/login')}
           >
-            {t('nav.login')}
+            {t('nav.profile')}
           </Button>
         )}
       </div>

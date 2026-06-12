@@ -1,3 +1,17 @@
+export type HotelType =
+  | 'HOTEL'
+  | 'APARTMENT'
+  | 'RESORT'
+  | 'VILLA'
+  | 'GUEST_HOUSE'
+  | 'HOLIDAY_HOME'
+  | 'HOSTEL'
+  | 'MOTEL'
+  | 'BED_AND_BREAKFAST'
+  | 'CHALET'
+  | 'APART_HOTEL'
+  | 'OTHER'
+
 export type HotelAmenity =
   | 'WIFI'
   | 'POOL'
@@ -19,11 +33,12 @@ export type Hotel = {
   longitude: number
   pricePerNight: number
   starRating: number
+  hotelType: HotelType
   mainImageUrl: string
   isFeatured: boolean
   amenities: HotelAmenity[]
   imageUrls: string[]
-  averageRating: number
+  averageRating?: number
   reviewCount: number
 }
 
@@ -38,9 +53,54 @@ export type HotelLiveSearchParams = {
 
 /** Catalog listing with filters — paginated. */
 export type HotelCatalogParams = {
-  country: string
-  city: string
-  starRating?: number
   page?: number
   size?: number
+  country?: string
+  city?: string
+  minPrice?: number
+  maxPrice?: number
+  starRating?: number
+  type?: HotelType
+  sortBy?: string
+}
+
+export type HotelDetail = {
+  id: number
+  name: string
+  description: string
+  country: string
+  city: string
+  address: string
+  latitude: number
+  longitude: number
+  pricePerNight: number
+  starRating: number
+  mainImageUrl: string
+  isFeatured: boolean
+  amenities: string[]
+  imageUrls: string[]
+  averageRating: number
+  reviewCount: number
+}
+
+export type HotelReview = {
+  id: number
+  userId: number
+  rating: number
+  comment: string
+  createdAt: string
+}
+
+export type HotelReviewsPage = {
+  content: HotelReview[]
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
+  last: boolean
+}
+
+export type CreateHotelReviewPayload = {
+  rating: number
+  comment: string
 }

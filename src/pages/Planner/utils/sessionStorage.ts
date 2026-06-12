@@ -40,11 +40,13 @@ export const deleteSavedSession = (id: string): SavedPlannerSession[] => {
   return next
 }
 
-export const findSavedSessionByToken = (
-  sessionToken: string | null,
+export const findSavedSessionByPlanId = (
+  planId: string | null,
 ): SavedPlannerSession | undefined => {
-  if (!sessionToken) {
+  if (!planId) {
     return undefined
   }
-  return loadSavedSessions().find((item) => item.sessionToken === sessionToken)
+  return loadSavedSessions().find((item) => item.id === planId)
 }
+
+export const findSavedSessionByToken = findSavedSessionByPlanId

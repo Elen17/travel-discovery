@@ -1,0 +1,17 @@
+export const MOCK_PAYMENT_I18N = {
+  title: 'pages.hotelDetail.payment.title',
+  amount: 'pages.hotelDetail.payment.amount',
+  cardName: 'pages.hotelDetail.payment.cardName',
+  cardHolder: 'pages.hotelDetail.payment.cardHolder',
+  cvv: 'pages.hotelDetail.payment.cvv',
+  cardNameRequired: 'pages.hotelDetail.payment.cardNameRequired',
+  cardNameInvalid: 'pages.hotelDetail.payment.cardNameInvalid',
+  cardHolderRequired: 'pages.hotelDetail.payment.cardHolderRequired',
+  cardHolderInvalid: 'pages.hotelDetail.payment.cardHolderInvalid',
+  cvvRequired: 'pages.hotelDetail.payment.cvvRequired',
+  cvvInvalid: 'pages.hotelDetail.payment.cvvInvalid',
+  cancel: 'pages.hotelDetail.payment.cancel',
+  pay: 'pages.hotelDetail.payment.pay',
+  paymentError: 'pages.hotelDetail.payment.paymentError',
+  bookingValidationError: 'pages.hotelDetail.payment.bookingValidationError',
+} as const

@@ -1,17 +1,19 @@
 import type {
-  ExplorationId,
   PlannerChatPayload,
   PlannerChatResponse,
   PlannerMessage,
+  PlannerPlan,
+  PlannerPlanPayload,
   PlannerSuggestion,
 } from '@/types/planner'
+import { DEFAULT_EXPLORATION_ID } from '@/utils/exploration'
 
-const MOCK_SESSION_PREFIX = 'mock_sess_'
+const MOCK_PLAN_PREFIX = 'mock_plan_'
 
-const generateSessionToken = (): string =>
-  `${MOCK_SESSION_PREFIX}${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
+const generatePlanId = (): string =>
+  `${MOCK_PLAN_PREFIX}${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
 
-const sessionStore = new Map<string, PlannerMessage[]>()
+const planStore = new Map<string, PlannerMessage[]>()
 
 const ICELAND_INSIGHTS: PlannerSuggestion[] = [
   {
@@ -174,14 +176,14 @@ const AMALFI_INSIGHTS: PlannerSuggestion[] = [
   },
 ]
 
-const INSIGHTS_BY_EXPLORATION: Record<ExplorationId, PlannerSuggestion[]> = {
+const INSIGHTS_BY_EXPLORATION: Record<string, PlannerSuggestion[]> = {
   iceland: ICELAND_INSIGHTS,
   tuscany: TUSCANY_INSIGHTS,
   kyoto: KYOTO_INSIGHTS,
   amalfi: AMALFI_INSIGHTS,
 }
 
-const REPLY_TEMPLATES: Record<ExplorationId, string> = {
+const REPLY_TEMPLATES: Record<string, string> = {
   iceland:
     "Based on your preferences and today's weather near Vik, I've curated three experiences along Iceland's south coast — from waterfall walks to glacier caves.",
   tuscany:
@@ -192,10 +194,7 @@ const REPLY_TEMPLATES: Record<ExplorationId, string> = {
     "Along the Amalfi Coast, I've selected cliffside hikes, boat days, and Ravello garden visits tailored to your coastal expedition.",
 }
 
-const getExplorationFromMessage = (
-  message: string,
-  fallback: ExplorationId = 'iceland',
-): ExplorationId => {
+const getExplorationFromMessage = (message: string, fallback = DEFAULT_EXPLORATION_ID): string => {
   const lower = message.toLowerCase()
   if (lower.includes('tuscany') || lower.includes('chianti') || lower.includes('florence')) {
     return 'tuscany'
@@ -219,39 +218,68 @@ export const mockSendPlannerMessage = async (
 
   const explorationId =
     payload.explorationId ??
-    getExplorationFromMessage(payload.message, 'iceland')
-  const sessionToken = payload.sessionToken ?? generateSessionToken()
+    getExplorationFromMessage(payload.message, DEFAULT_EXPLORATION_ID)
+  const planId = payload.planId ?? generatePlanId()
+  const lowerMessage = payload.message.toLowerCase()
   const isGenerateInsights =
-    payload.message.toLowerCase().includes('generate insights') ||
-    payload.message.toLowerCase().includes('suggest')
+    lowerMessage.includes('generate insights') ||
+    lowerMessage.includes('suggest') ||
+    lowerMessage.includes('itinerar') ||
+    lowerMessage.includes('day plan')
 
-  const existing = sessionStore.get(sessionToken) ?? []
+  const existing = planStore.get(planId) ?? []
   const userMessage: PlannerMessage = { role: 'user', content: payload.message }
   const reply = isGenerateInsights
-    ? REPLY_TEMPLATES[explorationId]
+    ? (REPLY_TEMPLATES[explorationId] ??
+      `I've curated experiences for your ${explorationId} trip based on your preferences.`)
     : `I'd love to help you plan your ${explorationId} adventure. Tell me more about your interests, pace, and must-see spots — or tap "Generate Insights" for curated day plans.`
 
   const assistantMessage: PlannerMessage = { role: 'assistant', content: reply }
   const updated = [...existing, userMessage, assistantMessage]
-  sessionStore.set(sessionToken, updated)
+  planStore.set(planId, updated)
 
   return {
     reply,
-    sessionToken,
-    suggestions: isGenerateInsights ? INSIGHTS_BY_EXPLORATION[explorationId] : undefined,
+    planId,
+    suggestions: isGenerateInsights
+      ? (INSIGHTS_BY_EXPLORATION[explorationId] ?? INSIGHTS_BY_EXPLORATION[DEFAULT_EXPLORATION_ID])
+      : undefined,
   }
 }
 
-export const mockGetPlannerHistory = async (
-  sessionToken?: string,
-): Promise<PlannerMessage[]> => {
+export const mockGetPlannerHistory = async (planId: string): Promise<PlannerMessage[]> => {
   await new Promise((resolve) => setTimeout(resolve, 300))
-  if (!sessionToken) {
-    return []
-  }
-  return sessionStore.get(sessionToken) ?? []
+  return planStore.get(planId) ?? []
 }
 
-export const getMockInsightsForExploration = (
-  explorationId: ExplorationId,
-): PlannerSuggestion[] => INSIGHTS_BY_EXPLORATION[explorationId]
+export const getMockInsightsForExploration = (explorationId: string): PlannerSuggestion[] =>
+  INSIGHTS_BY_EXPLORATION[explorationId] ?? INSIGHTS_BY_EXPLORATION[DEFAULT_EXPLORATION_ID] ?? []
+
+export const mockGetPlannerPlans = async (): Promise<PlannerPlan[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 300))
+  return []
+}
+
+export const mockCreatePlannerPlan = async (payload: PlannerPlanPayload): Promise<PlannerPlan> => {
+  await new Promise((resolve) => setTimeout(resolve, 300))
+  const now = new Date().toISOString()
+
+  return {
+    id: `mock_plan_${Date.now()}`,
+    title: payload.title ?? 'Untitled plan',
+    description: payload.description,
+    explorationId: payload.explorationId ?? DEFAULT_EXPLORATION_ID,
+    duration: payload.duration,
+    type: payload.type,
+    travelersCount: payload.travelersCount,
+    imageUrl: payload.imageUrl,
+    createdAt: now,
+    updatedAt: now,
+    messages: payload.messages ?? [],
+    appliedItineraries: (payload.appliedItineraries ?? []).map((item, index) => ({
+      id: index + 1,
+      title: item.title,
+      description: item.description,
+    })),
+  }
+}
